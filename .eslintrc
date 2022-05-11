@@ -11,5 +11,8 @@
         "next": {
             "rootDir": "renderer"
         }
+    },
+    "env": {
+        "jest": true
     }
 }
