@@ -30,14 +30,19 @@ jobs:
       - run: yarn install
       - name: Build application
         run: yarn build
-      - name: Package application
+      - name: Package application (Linux, Mac)
+        if: runner.os != 'Windows'
         run: GH_TOKEN=${{ secrets.GITHUB_TOKEN }} yarn dist
-      - run: tar -cvzf ${{ matrix.os }}-dist.tar.gz dist
+      - name: Package application (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          set GH_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          yarn dist
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}-node${{ matrix.node-version }}
-          path: ${{ matrix.os }}-dist.tar.gz
+          path: dist
 
   test:
     name: Test and lint-checks for application
