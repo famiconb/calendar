@@ -1,3 +1,11 @@
 renderer/.next
 main
 node_modules
+renderer/out
+package.json
+jest.config.js
+jest.setup.js
+.eslintrc
+.babelrc
+dist
+tsconfig.json

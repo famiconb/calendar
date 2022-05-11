@@ -1,0 +1,57 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [main, static-analysis]
+  pull_request:
+    branches: [main, static-analysis] # currently
+
+jobs:
+  build:
+    name: Build application
+    runs-on: ${{ matrix.os }}
+    needs: test
+    strategy:
+      matrix:
+        node-version: [16.x]
+        os: [ubuntu-latest, windows-lates, macos-latest]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup ${{ matrix.node-version }} and ${{ matrix.os }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+      - run: yarn install
+      - name: Build and package application
+      - run: yarn build
+      - run: yarn dist
+      - run: tar -cvzf ${{ matrix.os }}-dist.tar.gz dist
+      - name: Upload artifact
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.os }}-node${{ matrix.node-version }}
+          path: ${{ matrix.os }}-dist.tar.gz
+
+  test:
+    name: Test and lint-checks for application
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node v16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "yarn"
+      - run: yarn install
+      - name: Check linting and format
+      - run: yarn lint
+      - run: yarn format-check
+      - name: Test application
+      - run: yarn test

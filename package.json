@@ -14,6 +14,7 @@
     "dist": "npm run build && electron-builder",
     "type-check": "tsc -p ./renderer/tsconfig.json && tsc -p ./electron-src/tsconfig.json",
     "lint": "cd renderer && next lint",
+    "format-check": "prettier . -c",
     "lint:fix": "eslint renderer --ext .js,jsx,.ts,.tsx --fix && yarn prettier --write renderer",
     "test": "jest",
     "test:watch": "jest --watch"
