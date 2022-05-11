@@ -29,11 +29,11 @@ jobs:
           cache: "yarn"
       - run: yarn install
       - name: Build and package application
-      - run: yarn build
+        run: yarn build
       - run: yarn dist
       - run: tar -cvzf ${{ matrix.os }}-dist.tar.gz dist
       - name: Upload artifact
-      - uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}-node${{ matrix.node-version }}
           path: ${{ matrix.os }}-dist.tar.gz
@@ -51,7 +51,7 @@ jobs:
           cache: "yarn"
       - run: yarn install
       - name: Check linting and format
-      - run: yarn lint
+        run: yarn lint
       - run: yarn format-check
       - name: Test application
-      - run: yarn test
+        run: yarn test
