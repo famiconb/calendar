@@ -1,0 +1,15 @@
+{
+    "extends": [
+        "next",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "prettier"
+    ],
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "settings": {
+        "next": {
+            "rootDir": "renderer"
+        }
+    }
+}

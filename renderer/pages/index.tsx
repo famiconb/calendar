@@ -1,22 +1,22 @@
-import { useEffect } from 'react'
-import Link from 'next/link'
-import Layout from '../components/Layout'
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Layout from "../components/Layout";
 
 const IndexPage = () => {
   useEffect(() => {
-    const handleMessage = (_event, args) => alert(args)
+    const handleMessage = (_event: any, args: any) => alert(args);
 
     // add a listener to 'message' channel
-    global.ipcRenderer.addListener('message', handleMessage)
+    global.ipcRenderer.addListener("message", handleMessage);
 
     return () => {
-      global.ipcRenderer.removeListener('message', handleMessage)
-    }
-  }, [])
+      global.ipcRenderer.removeListener("message", handleMessage);
+    };
+  }, []);
 
   const onSayHiClick = () => {
-    global.ipcRenderer.send('message', 'hi from next')
-  }
+    global.ipcRenderer.send("message", "hi from next");
+  };
 
   return (
     <Layout title="Home | Next.js + TypeScript + Electron Example">
@@ -28,7 +28,7 @@ const IndexPage = () => {
         </Link>
       </p>
     </Layout>
-  )
-}
+  );
+};
 
-export default IndexPage
+export default IndexPage;
