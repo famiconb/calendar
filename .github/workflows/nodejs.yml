@@ -5,7 +5,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [main, static-analysis]
+    branches: [main, static-analysis, github-actions]
   pull_request:
     branches: [main, static-analysis] # currently
 
