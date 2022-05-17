@@ -1,3 +1,13 @@
+# ディレクトリ構造
+
+| Part    | Source code (Typescript) | 機能             |
+| ------- | ------------------------ | ---------------- |
+| Next.js | `/renderer/components`   | 表示系の一部一部 |
+| Next.js | `/renderer/interface`    | 型に関する情報   |
+| Next.js | `/renderer/pages`        | 各画面           |
+
+pages がはじめに呼び出され、そこから components を使う
+
 # Electron with Typescript application example
 
 This example show how you can use Next.js inside an Electron application to avoid a lot of configuration, use Next.js router as view and use server-render to speed up the initial render of the application. Both Next.js and Electron layers are written in TypeScript and compiled to JavaScript during the build process.
