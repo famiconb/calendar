@@ -35,8 +35,14 @@ jobs:
       - run: yarn install
       - name: Build application
         run: yarn build
-      - name: Package application
-        run: yarn dist
+      - name: Package application (Linux, Mac)
+        if: runner.os != 'Windows'
+        run: GH_TOKEN=${{ secrets.GITHUB_TOKEN }} yarn dist
+      - name: Package application (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          $env:GH_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          yarn dist
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
