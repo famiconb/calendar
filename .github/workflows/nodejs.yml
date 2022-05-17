@@ -36,7 +36,7 @@ jobs:
       - name: Package application (Windows)
         if: runner.os == 'Windows'
         run: |
-          set GH_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $env:GITHUB_ENV
           yarn dist
       - name: Upload artifact
         uses: actions/upload-artifact@v3
