@@ -6,7 +6,7 @@ import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
 import getDay from "date-fns/getDay";
 import jaJP from "date-fns/locale/ja";
-import { Calendar as BigCalendar, dateFnsLocalizer } from "react-big-calendar";
+import { Calendar as BigCalendar, dateFnsLocalizer, Views } from "react-big-calendar";
 
 // BigCalendarの日付を日本時刻に
 const locales = {
@@ -54,6 +54,19 @@ const IndexPage = () => {
         min = {new Date('1997-01-01 8:00')}
         max = {new Date('1997-01-01 21:00')}
         onSelectEvent={onSelectEvent}
+        defaultView={Views.WEEK}
+        views={{
+          week:true,
+          day:true,
+          agenda:true,
+        }}
+        messages={{
+          week:'週',
+          day:'日',
+          agenda:'詳細',
+        }}
+        step={15}
+        timeslots={8}
       />
     </Layout>
   );
