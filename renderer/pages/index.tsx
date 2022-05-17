@@ -20,17 +20,17 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
+const eventList = [
+  {
+    id: 0,
+    title: 'システム開発基礎',
+    allDay: false,
+    start: new Date('2022-05-17 14:20'),
+    end: new Date('2022-05-17 17:50'),
+  }
+];
+
 const IndexPage = () => {
-  useEffect(() => {
-    const handleMessage = (_event: any, args: any) => alert(args);
-
-    // add a listener to 'message' channel
-    global.ipcRenderer.addListener("message", handleMessage);
-
-    return () => {
-      global.ipcRenderer.removeListener("message", handleMessage);
-    };
-  }, []);
 
   const onSayHiClick = () => {
     global.ipcRenderer.send("message", "hi from next");
@@ -41,7 +41,15 @@ const IndexPage = () => {
       <Link href="counter">
         <a>Counter</a>
       </Link>
-      <BigCalendar localizer={localizer} />
+      <BigCalendar 
+        localizer={localizer}
+        events={eventList}
+        startAccessor="start"
+        endAccessor="end"
+        style={{height:500}}
+        min = {new Date('1997-01-01 8:00')}
+        max = {new Date('1997-01-01 21:00')}
+      />
     </Layout>
   );
 };
