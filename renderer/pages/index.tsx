@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useCallback} from "react";
 import Link from "next/link";
 import Layout from "../components/Layout";
 import format from "date-fns/format";
@@ -8,6 +8,7 @@ import getDay from "date-fns/getDay";
 import jaJP from "date-fns/locale/ja";
 import { Calendar as BigCalendar, dateFnsLocalizer } from "react-big-calendar";
 
+// BigCalendarの日付を日本時刻に
 const locales = {
   "ja-JP": jaJP,
 };
@@ -20,6 +21,7 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
+// 時間割表示用イベント
 const eventList = [
   {
     id: 0,
@@ -30,11 +32,13 @@ const eventList = [
   }
 ];
 
+
 const IndexPage = () => {
 
-  const onSayHiClick = () => {
-    global.ipcRenderer.send("message", "hi from next");
-  };
+  // イベントクリック
+  const onSelectEvent = useCallback((calEvent) => {
+    window.alert(calEvent.title)
+  }, []) 
 
   return (
     <Layout title="Home | Next.js + TypeScript + Electron Example">
@@ -49,6 +53,7 @@ const IndexPage = () => {
         style={{height:500}}
         min = {new Date('1997-01-01 8:00')}
         max = {new Date('1997-01-01 21:00')}
+        onSelectEvent={onSelectEvent}
       />
     </Layout>
   );
