@@ -19,17 +19,23 @@ export function saveLectureTest() {
 
   localStorage.clear();
   saveLecture(testdata);
+  loadLectureTest(testdata);
+}
+export function loadLectureTest(expect: Lecture[]) {
   const data: Lecture[] = loadLecture();
   const datastr: string = JSON.stringify(data);
-  const testdatastr: string = JSON.stringify(testdata);
+  const expectstr: string = JSON.stringify(expect);
   console.log(datastr);
-  console.log(testdatastr);
-  console.log(datastr === testdatastr);
-  return datastr === testdatastr;
+  console.log(expectstr);
+  console.log(datastr === expectstr);
+  return datastr === expectstr;
 }
 
 describe("test lecture saveload", () => {
   test("with simple data", () => {
-    //expect(saveLectureTest()) //localstrageが使えない
+    localStorage.setItem.mockClear();
+    expect(loadLectureTest([]));
+    expect(saveLectureTest());
+    expect(Object.keys(localStorage.__STORE__).length).toBe(1);
   });
 });
