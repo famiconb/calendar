@@ -21,16 +21,16 @@ export type User = {
 };
 
 export type LectureDate = {
-  dayOfWeek: number // 0=="日", 1=="月", ...
-  period: number[] //3,4限なら =[3,4]
-}
+  dayOfWeek: number; // 0=="日", 1=="月", ...
+  period: number[]; //3,4限なら =[3,4]
+};
 export type LectureMemo = {
-  title: string // "zoom url"
-  text: string // "ttps://~"
-}
+  title: string; // "zoom url"
+  text: string; // "ttps://~"
+};
 export type Lecture = {
-  id: number
-  name: string
-  dates: LectureDate[]
-  memo: LectureMemo[]
-}
+  id: number;
+  name: string;
+  dates: LectureDate[];
+  memo: LectureMemo[];
+};

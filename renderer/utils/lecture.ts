@@ -1,11 +1,10 @@
-import { Lecture } from '../interfaces'
+import { Lecture } from "../interfaces";
 
-
-export function loadLecture(): Lecture[]  {
-    //TODO
-    return []
+export function loadLecture(): Lecture[] {
+  //TODO
+  return [];
 }
-export function saveLecture(lectures: Lecture[])  {
-    //TODO
-    return
+export function saveLecture(lectures: Lecture[]) {
+  //TODO
+  return;
 }
