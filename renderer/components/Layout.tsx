@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
 type Props = {
   children: ReactNode;
