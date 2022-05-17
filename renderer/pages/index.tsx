@@ -41,7 +41,7 @@ const IndexPage = () => {
       <Link href="counter">
         <a>Counter</a>
       </Link>
-      <BigCalendar localizer={localizer} views={["week", "agenda"]} />
+      <BigCalendar localizer={localizer} />
     </Layout>
   );
 };
