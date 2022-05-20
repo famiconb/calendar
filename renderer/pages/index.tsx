@@ -1,4 +1,4 @@
-import {useCallback} from "react";
+import {useCallback, useMemo} from "react";
 import Link from "next/link";
 import Layout from "../components/Layout";
 import format from "date-fns/format";
@@ -32,13 +32,28 @@ const eventList = [
   }
 ];
 
-
 const IndexPage = () => {
 
   // イベントクリック
   const onSelectEvent = useCallback((calEvent) => {
     window.alert(calEvent.title)
   }, []) 
+
+  const {messages, views} = useMemo(
+    () => ({
+      messages: {
+        week:'週',
+        day:'日',
+        agenda:'詳細',
+      },
+      views: {
+        week:true,
+        day:true,
+        agenda:true,
+      },
+    }),
+    []
+  )
 
   return (
     <Layout title="Home | Next.js + TypeScript + Electron Example">
@@ -55,16 +70,8 @@ const IndexPage = () => {
         max = {new Date('1997-01-01 21:00')}
         onSelectEvent={onSelectEvent}
         defaultView={Views.WEEK}
-        views={{
-          week:true,
-          day:true,
-          agenda:true,
-        }}
-        messages={{
-          week:'週',
-          day:'日',
-          agenda:'詳細',
-        }}
+        views={views}
+        messages={messages}
         step={15}
         timeslots={8}
       />
