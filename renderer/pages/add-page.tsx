@@ -1,8 +1,5 @@
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
-import { useHistory, BrowserRouter, useNavigate } from "react-router-dom";
-// import { Link } from "react-router-dom";
-import Link from "next/link";
 import Layout from "../components/Layout";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces/index"
 import { saveLecture } from "../utils/lecture";
@@ -11,19 +8,18 @@ import {useRouter } from "next/router";
 const AddPage = () => {
   const router = useRouter();
 
-  //const history = useHistory();
   const data = {} as Lecture;
   const [title, setTitle] = useState('');
   const handleTitleChange = (event: any) => {
     setTitle(event.target.value);
     console.log(title);
   };
-  const [dows,setDow] = useState(new Set());
+  const [dows,setDow] = useState(new Set<number>());
   const handleDowChange = (event: any) => {
     if (dows.has(event.target.name)) {
-      dows.delete(event.target.name);
+      dows.delete(Number(event.target.value));
     } else {
-      dows.add(event.target.name);
+      dows.add(Number(event.target.value));
     }
     console.log(dows)
   };
@@ -53,17 +49,6 @@ const AddPage = () => {
     console.log(memo);
   }
 
-  useEffect(() => {
-    const handleMessage = (_event: any, args: any) => alert(args);
-
-    // add a listener to 'message' channel
-    global.ipcRenderer.addListener("message", handleMessage);
-
-    return () => {
-      global.ipcRenderer.removeListener("message", handleMessage);
-    };
-  }, []);
-
   const {
     handleSubmit,
     control, // 追加
@@ -79,11 +64,9 @@ const AddPage = () => {
       data.dates.push(date);
     }
     data.memo = memo;
-    console.log("saved");
     console.log(data);
     saveLecture([data]);
     router.push('/');
-    console.log("pushed");
   };
 
   // 追加
@@ -95,10 +78,6 @@ const AddPage = () => {
   const addInputForm = () => {
     append({} as LectureMemo);
   }
-
-  const onAddLecure = () => {
-    global.ipcRenderer.send("message", "追加しました");
-  };
 
   return (
     <Layout title="授業情報の追加">
@@ -113,7 +92,7 @@ const AddPage = () => {
               </p>
               <p className="add-page_row" style={{margin:'10px 0px'}}>
                 開講日時<br/>
-                <span style={{display:'inline-block'}}><input type="checkbox" name="dow-0" style={{margin:'0px 0px 0px 10px'}} onChange={handleDowChange}/> 日曜日</span>
+                <span style={{display:'inline-block'}}><input type="checkbox" value='0' name="dow-0" style={{margin:'0px 0px 0px 10px'}} onChange={handleDowChange}/> 日曜日</span>
                 <span style={{display:'inline-block'}}><input type="checkbox" value='1' name="dow-1" style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 月曜日</span>
                 <span style={{display:'inline-block'}}><input type="checkbox" value='2' name="dow-2" style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 火曜日</span>
                 <span style={{display:'inline-block'}}><input type="checkbox" value='3' name="dow-3" style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 水曜日</span>
