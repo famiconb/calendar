@@ -21,21 +21,18 @@ export function saveLectureTest() {
   saveLecture(testdata);
   loadLectureTest(testdata);
 }
-export function loadLectureTest(expect: Lecture[]) {
+export function loadLectureTest(expect_lec: Lecture[]) {
   const data: Lecture[] = loadLecture();
   const datastr: string = JSON.stringify(data);
-  const expectstr: string = JSON.stringify(expect);
-  console.log(datastr);
-  console.log(expectstr);
-  console.log(datastr === expectstr);
-  return datastr === expectstr;
+  const expectstr: string = JSON.stringify(expect_lec);
+  expect(datastr).toBe(expectstr);
 }
 
 describe("test lecture saveload", () => {
   test("with simple data", () => {
     localStorage.setItem.mockClear();
-    expect(loadLectureTest([]));
-    expect(saveLectureTest());
+    loadLectureTest([]);
+    saveLectureTest();
     expect(Object.keys(localStorage.__STORE__).length).toBe(1);
   });
 });
