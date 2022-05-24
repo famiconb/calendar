@@ -20,6 +20,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@types/date-arithmetic": "^4.1.1",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "date-fns": "^2.28.0",
     "electron-is-dev": "^1.1.0",
