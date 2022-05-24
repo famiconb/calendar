@@ -1,93 +1,67 @@
 import { useCallback, useMemo } from "react";
 import Link from "next/link";
 import Layout from "../components/Layout";
-import format from "date-fns/format";
-import parse from "date-fns/parse";
-import startOfWeek from "date-fns/startOfWeek";
-import getDay from "date-fns/getDay";
-import jaJP from "date-fns/locale/ja";
-import {
-  Calendar as BigCalendar,
-  dateFnsLocalizer,
-  Views,
-  DateLocalizer,
-} from "react-big-calendar";
-import PropTypes from "prop-types";
 
-// BigCalendarの日付を日本時刻に
-const locales = {
-  "ja-JP": jaJP,
+// 表示用の講義データ index.tsに少しだけ寄っている
+const lecture = {
+  id: 0,
+  name: "システム開発基礎",
+  dates: [5,8],
+  weekday: 2,
+  memo: "",
 };
 
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales,
-});
-
-// 時間割表示用イベント
-const eventList = [
-  {
-    id: 0,
-    title: "システム開発基礎",
-    allDay: false,
-    start: new Date("2022-05-24 14:20"),
-    end: new Date("2022-05-24 17:50"),
-  },
-];
-
 const IndexPage = () => {
-  // イベントクリック
-  const onSelectEvent = useCallback((calEvent) => {
-    window.alert(calEvent.title);
-  }, []);
+  // イベントクリック 今は無用のもの
+  // const onSelectEvent = useCallback((calEvent) => {
+  //   window.alert(calEvent.title);
+  // }, []);
 
-  const { messages, views } = useMemo(
-    () => ({
-      messages: {
-        week: "週",
-        day: "日",
-        agenda: "詳細",
-        previous: "先週",
-        next: "来週",
-        today: "今週",
-      },
-      views: {
-        week: true,
-        agenda: true,
-      },
-    }),
-    []
-  );
+  // 各表の行を表示する
+  // number 何限目
+  // lecture 講義データ Demo
+  const row_view = (number, lecture) =>{
+    const row=[];
+    for (let i=0; i<6; i++){
+      if(i==0){
+        row.push(<th>{number + "時限目"}</th>)
+      }else{
+        if((lecture.dates[0] <= number && lecture.dates[1] >= number) && lecture.weekday == i){
+          // TODO idをlecture.idにする
+          row.push(<th height="50"><Link href="/lecture-info?id=1">{lecture.name}</Link></th>)
+        }else{
+          row.push(<th height="50"></th>)
+        }
+      }
+    }
+    return <tr>{row}</tr>;
+  };
 
   return (
-    <Layout title="Home | Next.js + TypeScript + Electron Example">
+    <Layout title="CUCalendar">
       <Link href="counter">
         <a>Counter</a>
       </Link>
-      <BigCalendar
-        localizer={localizer}
-        events={eventList}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 500 }}
-        min={new Date("1997-01-01 8:00")}
-        max={new Date("1997-01-01 21:00")}
-        onSelectEvent={onSelectEvent}
-        defaultView={Views.WEEK}
-        views={views}
-        messages={messages}
-        step={15}
-        timeslots={8}
-      />
+      <table border="4">
+        <tr>
+          <th width="100"></th>
+          <th width="100">月</th>
+          <th width="100">火</th>
+          <th width="100">水</th>
+          <th width="100">木</th>
+          <th width="100">金</th>
+        </tr>
+          {row_view(1,lecture)}
+          {row_view(2,lecture)}
+          {row_view(3,lecture)}
+          {row_view(4,lecture)}
+          {row_view(5,lecture)}
+          {row_view(6,lecture)}
+          {row_view(7,lecture)}
+          {row_view(8,lecture)}
+      </table>
     </Layout>
   );
 };
 
 export default IndexPage;
-
-IndexPage.propTypes = {
-  localizer: PropTypes.instanceOf(DateLocalizer),
-};
