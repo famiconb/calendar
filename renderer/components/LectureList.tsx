@@ -7,7 +7,7 @@ type Props = {
   lecture: Lecture;
 };
 
-const getStringOfDayOfWeek = (item: { dayOfWeek: any }) => {
+const getStringOfDayOfWeek = (item: LectureDate) => {
   switch (item.dayOfWeek) {
     case 0:
       return "日";
@@ -28,7 +28,7 @@ const getStringOfDayOfWeek = (item: { dayOfWeek: any }) => {
   }
 };
 
-const getStringOfPeriod = (item: { period: any }) => {
+const getStringOfPeriod = (item: LectureDate) => {
   const tmp: String = "";
   if (item.period.length != 2) {
     return "期間のサイズがおかしい!!";
