@@ -22,8 +22,11 @@ jobs:
           node-version: 16
           cache: "yarn"
       - run: yarn install
-      - name: Check linting and format
+      - name: type checking
+        run: yarn type-check
+      - name: Check linting
         run: yarn lint
-      - run: yarn format-check
+      - name: Check format
+        run: yarn format-check
       - name: Test application
         run: yarn test
