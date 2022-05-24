@@ -14,7 +14,7 @@ const LectureList = ({lecture}: Props) => (
     <h3>講義の日程</h3>
     {lecture.dates.map((item,i) => (
       <li key={i}>
-        曜日: {
+        {
           useMemo( () => {
             switch(item.dayOfWeek){
               case 0:
@@ -34,7 +34,7 @@ const LectureList = ({lecture}: Props) => (
               default:
                 return "曜日設定が間違っているぞ!!"
           }},[item])
-        }<br></br>
+        }曜日<br></br>
         時限: {
           useMemo( () => {let tmp : String = "";
             if(item.period.length != 2){
@@ -50,7 +50,7 @@ const LectureList = ({lecture}: Props) => (
     {lecture.memo.map((item,i) => (
       <li key={i}>
         {item.title}<br></br>
-        {item.text}
+        <input type = "text" value = {item.text} contentEditable = {false}/>
       </li>
     ))}
   </ul>
