@@ -2,13 +2,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Layout from "../components/Layout";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
-import { saveLecture } from "../utils/lecture";
+import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
 
 const AddPage = () => {
   const router = useRouter();
 
-  const data = {} as Lecture;
   const [title, setTitle] = useState("");
   const handleTitleChange = (event: any) => {
     setTitle(event.target.value);
@@ -36,8 +35,7 @@ const AddPage = () => {
     console.log(end);
   };
 
-  const [memo, setMemo] = useState([] as LectureMemo[]);
-  memo.push({} as LectureMemo);
+  const [memo, setMemo] = useState<LectureMemo[]>([{title:"", text:""}]);
   const handleMemoChange = (event: any) => {
     const num = Number(event.target.dataset.num);
     if (event.target.name == "title") {
@@ -51,27 +49,27 @@ const AddPage = () => {
 
   const onSubmit = () => {
     console.log("onSubmit")
-    data.name = title;
-    data.dates = [] as LectureDate[];
+    const data:Lecture = {
+      id: 0,
+      name: title,
+      dates: [],
+      memo: memo
+    };
     for (const dow of dows) {
-      const date = {} as LectureDate;
-      date.dayOfWeek = dow;
-      date.period = [begin, end];
+      const date = {
+        dayOfWeek: dow,
+        period: [begin, end]
+      }
       data.dates.push(date);
     }
-    data.memo = memo;
     console.log(data);
-    saveLecture([data]);
+    saveLecture([...loadLecture(), data]);
     router.push("/");
   };
 
-  const {
-    handleSubmit,
-  } = useForm<LectureMemo>();
-
   const addInputForm = () => {
     console.log("addInputForm");
-    memo.push({} as LectureMemo);
+    setMemo(x => [...x, {title:"", text:""}]);
     console.log(memo);
   };
 
