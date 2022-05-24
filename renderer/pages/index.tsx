@@ -64,9 +64,6 @@ const IndexPage = () => {
 
   return (
     <Layout title="Home | Next.js + TypeScript + Electron Example">
-      <Link href="counter">
-        <a>Counter</a>
-      </Link>
       <BigCalendar
         localizer={localizer}
         events={eventList}
