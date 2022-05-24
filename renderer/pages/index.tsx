@@ -26,7 +26,7 @@ const IndexPage = () => {
     // dayOfWeek 何曜日
     for (let dayOfWeek = 0; dayOfWeek < 6; dayOfWeek++) {
       if (dayOfWeek == 0) {
-        row.push(<th style={{border: "solid 1px"}}>{number + "時限目"}</th>);
+        row.push(<th style={{ border: "solid 1px" }}>{number + "時限目"}</th>);
       } else {
         let found = false;
         for (let i = 0; i < lecture.dates.length; ++i) {
@@ -36,7 +36,7 @@ const IndexPage = () => {
               lecture.dates[i].dayOfWeek == dayOfWeek
             ) {
               row.push(
-                <th style={{ height: "50px" ,border: "solid 1px"}}>
+                <th style={{ height: "50px", border: "solid 1px" }}>
                   <Link href="/lecture-info?id=1">{lecture.name}</Link>
                 </th>
               );
@@ -44,7 +44,8 @@ const IndexPage = () => {
             }
           }
         }
-        if (!found) row.push(<th style={{ height: "50px" ,border: "solid 1px"}}></th>);
+        if (!found)
+          row.push(<th style={{ height: "50px", border: "solid 1px" }}></th>);
       }
     }
     return <tr>{row}</tr>;
@@ -55,14 +56,14 @@ const IndexPage = () => {
       <Link href="counter">
         <a>Counter</a>
       </Link>
-      <table style={{ border: "solid 1px"}}>
+      <table style={{ border: "solid 1px" }}>
         <tr>
-          <th style={{ width: "100px" ,border: "solid 1px"}}></th>
-          <th style={{ width: "100px" ,border: "solid 1px"}}>月</th>
-          <th style={{ width: "100px" ,border: "solid 1px"}}>火</th>
-          <th style={{ width: "100px" ,border: "solid 1px"}}>水</th>
-          <th style={{ width: "100px" ,border: "solid 1px"}}>木</th>
-          <th style={{ width: "100px" ,border: "solid 1px"}}>金</th>
+          <th style={{ width: "100px", border: "solid 1px" }}></th>
+          <th style={{ width: "100px", border: "solid 1px" }}>月</th>
+          <th style={{ width: "100px", border: "solid 1px" }}>火</th>
+          <th style={{ width: "100px", border: "solid 1px" }}>水</th>
+          <th style={{ width: "100px", border: "solid 1px" }}>木</th>
+          <th style={{ width: "100px", border: "solid 1px" }}>金</th>
         </tr>
         {row_view(1, lecture)}
         {row_view(2, lecture)}
