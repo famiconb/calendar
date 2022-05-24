@@ -6,10 +6,12 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces/index"
 import { saveLecture } from "../utils/lecture";
+import {useRouter } from "next/router";
 
 const AddPage = () => {
+  const router = useRouter();
 
-  const history = useHistory();
+  //const history = useHistory();
   const data = {} as Lecture;
   const [title, setTitle] = useState('');
   const handleTitleChange = (event: any) => {
@@ -77,8 +79,11 @@ const AddPage = () => {
       data.dates.push(date);
     }
     data.memo = memo;
+    console.log("saved");
     console.log(data);
     saveLecture([data]);
+    router.push('/');
+    console.log("pushed");
   };
 
   // 追加
@@ -153,15 +158,11 @@ const AddPage = () => {
                       <textarea name='memo-content' style={{width:'100%', height:"5em", boxSizing:'border-box', margin:'0'}} placeholder='content' onChange={handleMemoChange} data-num={index+1}/>
                     </a>
                   ))}
+                  <button onClick={addInputForm}> 追加ボタン </button>
               </p>
-              <button onClick={addInputForm}> 追加ボタン </button><br/>
-              <Link href="/">
-                  <a>Go Home</a>
-                </Link>
-              <input type="submit"/>
+              <button onClick={()=>{router.push('/')}}>時間割に戻る</button>
+              <input type="submit" value="授業を追加"/>
             </form>
-
-            <button onClick={()=> {history.push('/');}}>aaa</button>
           </div>
         </div>
       </div>
