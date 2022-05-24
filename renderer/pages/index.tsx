@@ -19,26 +19,32 @@ const IndexPage = () => {
   // 各表の行を表示する
   // number 何限目
   // lecture 講義データ Demo
-  const row_view = (number:number, lecture:Lecture) =>{
-
+  const row_view = (number: number, lecture: Lecture) => {
     // 時間割のnumber限目の列
-    const row=[];
+    const row = [];
 
     // dayOfWeek 何曜日
-    for (let dayOfWeek=0; dayOfWeek<6; dayOfWeek++){
-      if(dayOfWeek==0){
-        row.push(<th>{number + "時限目"}</th>)
-      }else{
+    for (let dayOfWeek = 0; dayOfWeek < 6; dayOfWeek++) {
+      if (dayOfWeek == 0) {
+        row.push(<th>{number + "時限目"}</th>);
+      } else {
         let found = false;
-        for(let i = 0;i < lecture.dates.length; ++i) {
-          for(let j = 0; j < lecture.dates[i].period.length; ++j){
-            if(lecture.dates[i].period[j] == number && lecture.dates[i].dayOfWeek == dayOfWeek) {
-              row.push(<th style={{height:'50'}}><Link href="/lecture-info?id=1">{lecture.name}</Link></th>)
+        for (let i = 0; i < lecture.dates.length; ++i) {
+          for (let j = 0; j < lecture.dates[i].period.length; ++j) {
+            if (
+              lecture.dates[i].period[j] == number &&
+              lecture.dates[i].dayOfWeek == dayOfWeek
+            ) {
+              row.push(
+                <th style={{ height: "50" }}>
+                  <Link href="/lecture-info?id=1">{lecture.name}</Link>
+                </th>
+              );
               found = true;
             }
           }
         }
-        if(!found) row.push(<th style={{height:'50'}}></th>)
+        if (!found) row.push(<th style={{ height: "50" }}></th>);
       }
     }
     return <tr>{row}</tr>;
@@ -49,23 +55,23 @@ const IndexPage = () => {
       <Link href="counter">
         <a>Counter</a>
       </Link>
-      <table style={{border:'4'}}>
+      <table style={{ border: "4" }}>
         <tr>
-          <th style={{width:'100'}}></th>
-          <th style={{width:'100'}}>月</th>
-          <th style={{width:'100'}}>火</th>
-          <th style={{width:'100'}}>水</th>
-          <th style={{width:'100'}}>木</th>
-          <th style={{width:'100'}}>金</th>
+          <th style={{ width: "100" }}></th>
+          <th style={{ width: "100" }}>月</th>
+          <th style={{ width: "100" }}>火</th>
+          <th style={{ width: "100" }}>水</th>
+          <th style={{ width: "100" }}>木</th>
+          <th style={{ width: "100" }}>金</th>
         </tr>
-          {row_view(1,lecture)}
-          {row_view(2,lecture)}
-          {row_view(3,lecture)}
-          {row_view(4,lecture)}
-          {row_view(5,lecture)}
-          {row_view(6,lecture)}
-          {row_view(7,lecture)}
-          {row_view(8,lecture)}
+        {row_view(1, lecture)}
+        {row_view(2, lecture)}
+        {row_view(3, lecture)}
+        {row_view(4, lecture)}
+        {row_view(5, lecture)}
+        {row_view(6, lecture)}
+        {row_view(7, lecture)}
+        {row_view(8, lecture)}
       </table>
     </Layout>
   );
