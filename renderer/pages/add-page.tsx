@@ -233,7 +233,7 @@ const AddPage = () => {
             >
               時間割に戻る
             </button>
-            <button onClick={onSubmit}>授業を追加</button>
+            <button onClick={onSubmit}>講義を追加</button>
           </div>
         </div>
       </div>
