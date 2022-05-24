@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Layout from "../components/Layout";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { saveLecture } from "../utils/lecture";
@@ -49,12 +49,8 @@ const AddPage = () => {
     console.log(memo);
   };
 
-  const {
-    handleSubmit,
-    control, // 追加
-  } = useForm<LectureMemo>();
-
   const onSubmit = () => {
+    console.log("onSubmit")
     data.name = title;
     data.dates = [] as LectureDate[];
     for (const dow of dows) {
@@ -69,14 +65,13 @@ const AddPage = () => {
     router.push("/");
   };
 
-  // 追加
-  const { fields, append } = useFieldArray({
-    control,
-    name: "memoForm",
-  });
+  const {
+    handleSubmit,
+  } = useForm<LectureMemo>();
 
   const addInputForm = () => {
-    append({} as LectureMemo);
+    console.log("addInputForm");
+    memo.push({} as LectureMemo);
   };
 
   return (
@@ -204,32 +199,8 @@ const AddPage = () => {
               <p className="add-page_row" style={{ margin: "10px 0px" }}>
                 メモ
                 <br />
-                <input
-                  name="title"
-                  style={{
-                    width: "100%",
-                    height: "1.5em",
-                    boxSizing: "border-box",
-                  }}
-                  placeholder="title"
-                  onChange={handleMemoChange}
-                  data-num={0}
-                ></input>
-                <br />
-                <textarea
-                  name="memo-content"
-                  style={{
-                    width: "100%",
-                    height: "5em",
-                    boxSizing: "border-box",
-                    margin: "0",
-                  }}
-                  placeholder="content"
-                  onChange={handleMemoChange}
-                  data-num={0}
-                />
-                {fields.map((field, index) => (
-                  <a style={{ margin: "3px 0px" }} key={field.id}>
+                {memo.map((_, index) => (
+                  <a style={{ margin: "3px 0px" }} key = {index}>
                     <input
                       name="title"
                       style={{
@@ -239,7 +210,7 @@ const AddPage = () => {
                       }}
                       placeholder="title"
                       onChange={handleMemoChange}
-                      data-num={index + 1}
+                      data-num={index}
                     ></input>
                     <textarea
                       name="memo-content"
@@ -251,7 +222,7 @@ const AddPage = () => {
                       }}
                       placeholder="content"
                       onChange={handleMemoChange}
-                      data-num={index + 1}
+                      data-num={index}
                     />
                   </a>
                 ))}
