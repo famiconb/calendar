@@ -1,7 +1,7 @@
 import { Lecture } from "../interfaces";
 import { saveLecture, loadLecture } from "./lecture";
 
-export function saveLectureTest() {
+function saveLectureTest() {
   const testdata: Lecture[] = [
     {
       id: 0,
@@ -21,7 +21,7 @@ export function saveLectureTest() {
   saveLecture(testdata);
   loadLectureTest(testdata);
 }
-export function loadLectureTest(expect_lec: Lecture[]) {
+function loadLectureTest(expect_lec: Lecture[]) {
   const data: Lecture[] = loadLecture();
   const datastr: string = JSON.stringify(data);
   const expectstr: string = JSON.stringify(expect_lec);
