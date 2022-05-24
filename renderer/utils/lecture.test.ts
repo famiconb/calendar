@@ -30,6 +30,8 @@ function loadLectureTest(expect_lec: Lecture[]) {
 
 describe("test lecture saveload", () => {
   test("with simple data", () => {
+    // このライブラリ使うのやめて新しくモック作るのも一案かもしれない
+    // @ts-ignore
     localStorage.setItem.mockClear();
     loadLectureTest([]);
     saveLectureTest();
