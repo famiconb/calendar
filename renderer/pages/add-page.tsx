@@ -72,6 +72,7 @@ const AddPage = () => {
   const addInputForm = () => {
     console.log("addInputForm");
     memo.push({} as LectureMemo);
+    console.log(memo);
   };
 
   return (
@@ -86,7 +87,6 @@ const AddPage = () => {
             className="add-page_inner"
             style={{ margin: "10px", display: "block" }}
           >
-            <form onSubmit={handleSubmit(onSubmit)}>
               <p
                 className="add-page_row"
                 style={{ margin: "10px 0px", display: "block" }}
@@ -235,8 +235,7 @@ const AddPage = () => {
               >
                 時間割に戻る
               </button>
-              <input type="submit" value="授業を追加" />
-            </form>
+              <button onClick={onSubmit}>授業を追加</button>
           </div>
         </div>
       </div>
