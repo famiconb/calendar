@@ -10,45 +10,6 @@ on:
     branches: [main, static-analysis] # currently
 
 jobs:
-  build:
-    name: Build application
-    runs-on: ${{ matrix.os }}
-    needs: test
-    strategy:
-      matrix:
-        node-version: [16.x]
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    steps:
-      - name: Set Context
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - uses: actions/checkout@v3
-      - name: Setup ${{ matrix.node-version }} and ${{ matrix.os }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "yarn"
-      - run: yarn install
-      - name: Build application
-        run: yarn build
-      - name: Package application (Linux, Mac)
-        if: runner.os != 'Windows'
-        run: GH_TOKEN=${{ secrets.GITHUB_TOKEN }} yarn dist
-      - name: Package application (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          $env:GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-          yarn dist
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.os }}-node${{ matrix.node-version }}
-          path: dist
-
   test:
     name: Test and lint-checks for application
     runs-on: ubuntu-latest
