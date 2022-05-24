@@ -28,6 +28,15 @@ const getStringOfDayOfWeek = (item: { dayOfWeek: any }) => {
   }
 };
 
+const getStringOfPeriod = (item: { period: any }) => {
+  const tmp: String = "";
+  if (item.period.length != 2) {
+    return "期間のサイズがおかしい!!";
+  } else {
+    return item.period[0] + "~" + item.period[1];
+  }
+};
+
 const LectureList = ({ lecture }: Props) => (
   <ul>
     <h1>講義情報ページ</h1>
@@ -37,15 +46,7 @@ const LectureList = ({ lecture }: Props) => (
       <li key={i}>
         {getStringOfDayOfWeek(item)}
         曜日<br></br>
-        時限:{" "}
-        {() => {
-          const tmp: String = "";
-          if (item.period.length != 2) {
-            return "期間のサイズがおかしい!!";
-          } else {
-            return item.period[0] + "~" + item.period[1];
-          }
-        }}
+        時限:{getStringOfPeriod(item)}
       </li>
     ))}
     <h3>講義に関するメモ</h3>
