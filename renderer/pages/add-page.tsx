@@ -16,7 +16,7 @@ const AddPage = () => {
   };
   const [dows,setDow] = useState(new Set<number>());
   const handleDowChange = (event: any) => {
-    if (dows.has(event.target.name)) {
+    if (dows.has(Number(event.target.value))) {
       dows.delete(Number(event.target.value));
     } else {
       dows.add(Number(event.target.value));
@@ -92,13 +92,13 @@ const AddPage = () => {
               </p>
               <p className="add-page_row" style={{margin:'10px 0px'}}>
                 開講日時<br/>
-                <span style={{display:'inline-block'}}><input type="checkbox" value='0' name="dow-0" style={{margin:'0px 0px 0px 10px'}} onChange={handleDowChange}/> 日曜日</span>
-                <span style={{display:'inline-block'}}><input type="checkbox" value='1' name="dow-1" style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 月曜日</span>
-                <span style={{display:'inline-block'}}><input type="checkbox" value='2' name="dow-2" style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 火曜日</span>
-                <span style={{display:'inline-block'}}><input type="checkbox" value='3' name="dow-3" style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 水曜日</span>
-                <span style={{display:'inline-block'}}><input type="checkbox" value='4' name="dow-4" style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 木曜日</span>
-                <span style={{display:'inline-block'}}><input type="checkbox" value='5' name="dow-5" style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 金曜日</span>
-                <span style={{display:'inline-block'}}><input type="checkbox" value='6' name="dow-6" style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 土曜日</span>
+                <span style={{display:'inline-block'}}><input type="checkbox" value='0' style={{margin:'0px 0px 0px 10px'}} onChange={handleDowChange}/> 日曜日</span>
+                <span style={{display:'inline-block'}}><input type="checkbox" value='1' style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 月曜日</span>
+                <span style={{display:'inline-block'}}><input type="checkbox" value='2' style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 火曜日</span>
+                <span style={{display:'inline-block'}}><input type="checkbox" value='3' style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 水曜日</span>
+                <span style={{display:'inline-block'}}><input type="checkbox" value='4' style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 木曜日</span>
+                <span style={{display:'inline-block'}}><input type="checkbox" value='5' style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 金曜日</span>
+                <span style={{display:'inline-block'}}><input type="checkbox" value='6' style={{margin:'0px 0px 0px 10px'}} onClick={handleDowChange}/> 土曜日</span>
                 <br/>
                 <select name="begin" onChange={handleBeginChange}>
                   <option value='1'>1限</option>
