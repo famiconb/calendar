@@ -1,6 +1,24 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Layout from "../components/Layout";
+import format from "date-fns/format";
+import parse from "date-fns/parse";
+import startOfWeek from "date-fns/startOfWeek";
+import getDay from "date-fns/getDay";
+import jaJP from "date-fns/locale/ja";
+import { Calendar as BigCalendar, dateFnsLocalizer } from "react-big-calendar";
+
+const locales = {
+  "ja-JP": jaJP,
+};
+
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales,
+});
 
 const IndexPage = () => {
   useEffect(() => {
@@ -20,13 +38,10 @@ const IndexPage = () => {
 
   return (
     <Layout title="Home | Next.js + TypeScript + Electron Example">
-      <h1>Hello Next.js 👋</h1>
-      <button onClick={onSayHiClick}>Say hi to electron</button>
-      <p>
-        <Link href="/about">
-          <a>About</a>
-        </Link>
-      </p>
+      <Link href="counter">
+        <a>Counter</a>
+      </Link>
+      <BigCalendar localizer={localizer} />
     </Layout>
   );
 };
