@@ -41,7 +41,7 @@ const IndexPage = () => {
               ) {
                 row.push(
                   <th style={{ height: "50px", border: "solid 1px" }}>
-                    <Link href="/lecture/[id]" as={`/lecture/${lecture.id}`}>{lecture.name}</Link>
+                    <Link href="/lecture-info?id=1">{lecture.name}</Link>
                   </th>
                 );
                 found = true;
