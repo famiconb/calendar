@@ -1,22 +1,20 @@
 import Link from "next/link";
 import Layout from "../components/Layout";
 import { Lecture } from "../interfaces";
-
-// 表示用の講義データ
-const lectures: Lecture[] = [
-  {
-    id: 0,
-    name: "システム開発基礎",
-    dates: [{ dayOfWeek: 2, period: [5, 6, 7, 8] }],
-    memo: [{ title: "zoom", text: "https://A" }],
-  },
-];
+import { loadLecture } from "../utils/lecture";
 
 const IndexPage = () => {
   // イベントクリック 今は無用のもの
   // const onSelectEvent = useCallback((calEvent) => {
   //   window.alert(calEvent.title);
   // }, []);
+
+  // 表示用の講義データ
+  let lectures: Lecture[] = [];
+  try {
+    //TODO: 一時的措置なのでちゃんと直す
+    lectures = loadLecture();
+  } catch (err: any) {}
 
   // 各表の行を表示する
   // number 何限目
@@ -41,7 +39,9 @@ const IndexPage = () => {
               ) {
                 row.push(
                   <th style={{ height: "50px", border: "solid 1px" }}>
-                    <Link href="/lecture-info?id=1">{lecture.name}</Link>
+                    <Link href={`/lecture-info?id=${lecture.id}`}>
+                      {lecture.name}
+                    </Link>
                   </th>
                 );
                 found = true;
@@ -58,9 +58,6 @@ const IndexPage = () => {
 
   return (
     <Layout title="CUCalendar">
-      <Link href="counter">
-        <a>Counter</a>
-      </Link>
       <table style={{ border: "solid 1px" }}>
         <tr>
           <th style={{ width: "100px", border: "solid 1px" }}></th>
