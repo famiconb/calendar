@@ -15,7 +15,7 @@ describe("test useLecutureData hook", () => {
   test("save lecture data testing with empty data after initialized", () => {
     const { result } = renderHook(useLectureData);
     setTimeout(() => {
-      expect(result.current.load()).toBeUndefined();
+      expect(result.current.lectures).toBeUndefined();
       const data = {
         id: 0,
         memo: [],
@@ -29,7 +29,7 @@ describe("test useLecutureData hook", () => {
       };
 
       result.current.save([{ ...data }]);
-      expect(result.current.load()).toEqual([data]);
+      expect(result.current.lectures).toEqual([data]);
     });
   });
 });

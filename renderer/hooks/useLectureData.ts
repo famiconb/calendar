@@ -3,7 +3,7 @@ import { Lecture } from "../interfaces";
 import { loadLecture, saveLecture } from "../utils/lecture";
 
 type UseLectureDataType = () => {
-  load: () => Lecture[] | undefined;
+  lectures?: Lecture[];
   save: (_: Lecture[]) => void;
   initialized: boolean;
 };
@@ -12,6 +12,10 @@ type UseLectureDataType = () => {
  * Saving and loading wrapper for lecture data in localstorage
  *
  * When window is not defined, `save` throws error and `load` returns undefined
+ *
+ * @example
+ * const { lectures } = useLectureData();
+ * return lectures != null ? <div>lectures[0].name</div> : <div>"loading..."</div>;
  */
 export const useLectureData: UseLectureDataType = () => {
   const [lectureData, setLectureData] = useState<Lecture[] | undefined>();
@@ -40,12 +44,5 @@ export const useLectureData: UseLectureDataType = () => {
     [initialized]
   );
 
-  const load = useCallback((): Lecture[] | undefined => {
-    if (!initialized) {
-      return undefined;
-    }
-    return lectureData;
-  }, [initialized, lectureData]);
-
-  return { load, save, initialized };
+  return { save, initialized, lectures: lectureData };
 };
