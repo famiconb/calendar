@@ -33,7 +33,8 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
     {children}
     <footer>
       <hr />
-      <span>I&apos;m here to stay (Footer)</span>
+      {/* ここがフッター */}
+      <span></span>
     </footer>
   </div>
 );
