@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Layout from "../components/Layout";
-import LectureList from "../components/LectureList";
-import { Lecture, LectureDate, LectureMemo, User } from "../interfaces";
+import Layout from "../../components/Layout";
+import LectureList from "../../components/LectureList";
+import { Lecture, LectureDate, LectureMemo, User } from "../../interfaces";
 
 type Props = {
   lecture: Lecture;
