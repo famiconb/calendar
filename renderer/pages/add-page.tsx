@@ -49,21 +49,28 @@ const AddPage = () => {
 
   const onSubmit = () => {
     console.log("onSubmit");
+    const saved_lectures = loadLecture();
     const data: Lecture = {
-      id: 0,
+      id:
+        saved_lectures.length > 0
+          ? saved_lectures[saved_lectures.length - 1].id + 1
+          : 0,
       name: title,
       dates: [],
       memo: memo,
     };
     for (const dow of dows) {
-      const date = {
+      const date: LectureDate = {
         dayOfWeek: dow,
-        period: [begin, end],
+        period: [],
       };
+      for (let i = begin; i <= end; ++i) {
+        date.period.push(i);
+      }
       data.dates.push(date);
     }
     console.log(data);
-    saveLecture([...loadLecture(), data]);
+    saveLecture([...saved_lectures, data]);
     router.push("/");
   };
 
