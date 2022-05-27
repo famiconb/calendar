@@ -58,9 +58,6 @@ const IndexPage = () => {
 
   return (
     <Layout title="CUCalendar">
-      <Link href="counter">
-        <a>Counter</a>
-      </Link>
       <table style={{ border: "solid 1px" }}>
         <tr>
           <th style={{ width: "100px", border: "solid 1px" }}></th>
