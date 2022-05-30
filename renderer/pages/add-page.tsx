@@ -56,10 +56,13 @@ const AddPage = () => {
       memo: memo,
     };
     for (const dow of dows) {
-      const date = {
+      const date: LectureDate = {
         dayOfWeek: dow,
-        period: [begin, end],
+        period: [],
       };
+      for (let i = begin; i <= end; ++i) {
+        date.period.push(i);
+      }
       data.dates.push(date);
     }
     console.log(data);
