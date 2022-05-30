@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import Layout from "../components/Layout";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { loadLecture, saveLecture } from "../utils/lecture";
@@ -13,7 +12,7 @@ const AddPage = () => {
     setTitle(event.target.value);
     console.log(title);
   };
-  const [dows, setDow] = useState(new Set<number>());
+  const dows = new Set<number>();
   const handleDowChange = (event: any) => {
     if (dows.has(Number(event.target.value))) {
       dows.delete(Number(event.target.value));
