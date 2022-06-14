@@ -12,7 +12,7 @@ export function loadLecture(quater: number = 0): Lecture[] {
   }
   return JSON.parse(data_str) as Lecture[];
 }
-export function saveLecture(lectures: Lecture[], quater: number = 1) {
+export function saveLecture(lectures: Lecture[], quater: number = 0) {
   const data_str: string = JSON.stringify(lectures);
   localStorage.setItem(STORAGE_KEY + quater.toString(), data_str);
   return;
