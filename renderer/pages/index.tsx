@@ -83,7 +83,9 @@ const IndexPage = () => {
         {row_view(8, lectures)}
       </table>
     </Layout>
-  ) : (<div>loading...</div>);
+  ) : (
+    <div>loading...</div>
+  );
 };
 
 export default IndexPage;
