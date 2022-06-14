@@ -12,7 +12,7 @@ const AddPage = () => {
     setTitle(event.target.value);
     console.log(title);
   };
-  const dows = new Set<number>();
+  const [dows, _] = useState(new Set<number>());
   const handleDowChange = (event: any) => {
     if (dows.has(Number(event.target.value))) {
       dows.delete(Number(event.target.value));
