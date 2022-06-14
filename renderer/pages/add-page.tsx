@@ -3,9 +3,13 @@ import Layout from "../components/Layout";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
+import { useQuarter } from "../hooks/useQuarter";
 
 const AddPage = () => {
   const router = useRouter();
+
+  // queryパラメータからquarterを取る
+  const quarter: number = useQuarter();
 
   const [title, setTitle] = useState("");
   const handleTitleChange = (event: any) => {
@@ -66,7 +70,7 @@ const AddPage = () => {
     }
     console.log(data);
     saveLecture([...loadLecture(), data]);
-    router.push("/");
+    router.push("/?quarter=" + quarter.toString());
   };
 
   const addInputForm = () => {
@@ -230,7 +234,7 @@ const AddPage = () => {
             </p>
             <button
               onClick={() => {
-                router.push("/");
+                router.push("/?quarter=" + quarter.toString());
               }}
             >
               時間割に戻る
