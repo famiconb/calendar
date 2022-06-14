@@ -21,12 +21,12 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
           <a>Home</a>
         </Link>{" "}
         |{" "}
-        <Link href="/about">
-          <a>About</a>
+        <Link href="/add-page">
+          <a>講義追加</a>
         </Link>{" "}
         |{" "}
-        <Link href="/initial-props">
-          <a>With Initial Props</a>
+        <Link href="/lecture-info?id=1">
+          <a>講義情報(DEBUG)</a>
         </Link>
       </nav>
     </header>
