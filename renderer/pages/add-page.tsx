@@ -48,8 +48,12 @@ const AddPage = () => {
 
   const onSubmit = () => {
     console.log("onSubmit");
+    const saved_lectures = loadLecture();
     const data: Lecture = {
-      id: 0,
+      id:
+        saved_lectures.length > 0
+          ? saved_lectures[saved_lectures.length - 1].id + 1
+          : 0,
       name: title,
       dates: [],
       memo: memo,
@@ -65,7 +69,7 @@ const AddPage = () => {
       data.dates.push(date);
     }
     console.log(data);
-    saveLecture([...loadLecture(), data]);
+    saveLecture([...saved_lectures, data]);
     router.push("/");
   };
 
