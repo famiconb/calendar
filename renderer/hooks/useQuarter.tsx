@@ -13,5 +13,5 @@ export function useQuarter(): number {
             ? query_quarter_raw[0]
             : query_quarter_raw
         );
-  return  quarter;
+  return quarter;
 }

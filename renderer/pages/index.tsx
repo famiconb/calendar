@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import { Lecture } from "../interfaces";
 import { useLectureData } from "../hooks/useLectureData";
+import { useQuarter } from "../hooks/useQuarter";
 
 //// 表示用の講義データ
 // const lectures: Lecture[] = [
@@ -21,17 +21,7 @@ const IndexPage = () => {
   // }, []);
 
   // queryパラメータからquarterを取る
-  const router = useRouter();
-  const query_quarter_raw = router.query["quarter"];
-  const quarter: number =
-    query_quarter_raw === undefined
-      ? 0
-      : parseInt(
-          //変な文字でも0になるので例外処理は不要
-          Array.isArray(query_quarter_raw)
-            ? query_quarter_raw[0]
-            : query_quarter_raw
-        );
+  const quarter: number = useQuarter();
 
   // 表示用の講義データ
   const { lectures } = useLectureData(quarter);
@@ -59,7 +49,9 @@ const IndexPage = () => {
               ) {
                 row.push(
                   <th style={{ height: "50px", border: "solid 1px" }}>
-                    <Link href={`/lecture-info?id=${lecture.id}&quarter=${quarter}`}>
+                    <Link
+                      href={`/lecture-info?id=${lecture.id}&quarter=${quarter}`}
+                    >
                       {lecture.name}
                     </Link>
                   </th>
