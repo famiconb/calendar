@@ -9,3 +9,5 @@ jest.setup.js
 .babelrc
 dist
 tsconfig.json
+postcss.config.js
+tailwind.config.js
