@@ -1,7 +1,5 @@
 import React, { useMemo } from "react";
-import ListItem from "./ListItem";
-import { Lecture, LectureDate, LectureMemo, User } from "../interfaces";
-import { stringify } from "querystring";
+import { Lecture, LectureDate, LectureMemo } from "../interfaces";
 
 type Props = {
   lecture: Lecture;
