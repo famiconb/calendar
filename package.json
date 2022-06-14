@@ -20,6 +20,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@types/react-modal": "^3.13.1",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "date-fns": "^2.28.0",
     "electron-is-dev": "^1.1.0",
@@ -27,9 +28,10 @@
     "eslint-config-next": "^12.1.6",
     "eslint-config-prettier": "^8.5.0",
     "react": "^18",
-    "react-hook-form": "^7.31.1",
     "react-big-calendar": "^0.40.1",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hook-form": "^7.31.1",
+    "react-modal": "^3.15.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
