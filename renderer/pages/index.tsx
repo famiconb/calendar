@@ -59,7 +59,7 @@ const IndexPage = () => {
               ) {
                 row.push(
                   <th style={{ height: "50px", border: "solid 1px" }}>
-                    <Link href={`/lecture-info?id=${lecture.id}`}>
+                    <Link href={`/lecture-info?id=${lecture.id}&quarter=${quarter}`}>
                       {lecture.name}
                     </Link>
                   </th>
