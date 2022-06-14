@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Layout from "../components/Layout";
 import LectureList from "../components/LectureList";
+import { useQuarter } from "../hooks/useQuarter";
 import { Lecture, LectureDate, LectureMemo, User } from "../interfaces";
 
 type Props = {
@@ -12,7 +13,7 @@ const LectureInfoPage = ({ lecture = sampleLectureInfo }: Props) => (
   <Layout title="講義情報 | Next.js + TypeScript + Electron Example">
     <LectureList lecture={lecture} />
     <p>
-      <Link href="/">
+      <Link href={`/?quarter=${useQuarter()}`}>
         <a>Go home</a>
       </Link>
     </p>
