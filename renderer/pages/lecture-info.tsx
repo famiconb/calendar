@@ -10,34 +10,40 @@ type Props = {
   lectureList: LectureMemo[];
 };
 
-const LectureInfoPage = () => (
-  <Layout title="講義情報 | Next.js + TypeScript + Electron Example">
-    <LectureList lecture={getLectureData()} />
-    <p>
-      <Link href="/">
-        <a>Go home</a>
-      </Link>
-    </p>
-  </Layout>
-);
-
-function getLectureData():Lecture {
+const LectureInfoPage = () => {
   const router = useRouter();
   const query_id_raw = router.query["id"];
 
   if (query_id_raw === undefined) {
-    console.log("query is undefined")
-    return sampleLectureInfo;
+    return LectureInfoErrorPage("query is undefined");
   }
   try {
     const id = Array.isArray(query_id_raw) ? query_id_raw[0] : query_id_raw;
     const lecture = findLecture(id);
-    return lecture;
+    return (
+      <Layout title="講義情報 | Next.js + TypeScript + Electron Example">
+        <LectureList lecture={lecture} />
+        <p>
+          <Link href="/">
+            <a>Go home</a>
+          </Link>
+        </p>
+      </Layout>
+    );
   }catch(e:any){
-    console.log("error in findLecture")
+    return LectureInfoErrorPage("lecture is not found");
   }
-  return sampleLectureInfo;
 }
+
+const LectureInfoErrorPage = (err: string) => {
+  return (
+    <Layout title={`Error`}>
+      <p>
+        <span style={{ color: "red" }}>Error:</span> {err}
+      </p>
+    </Layout>
+  );
+};
 
 function findLecture(id: number | string) {
   const lectures: Lecture[] = loadLecture();
@@ -48,16 +54,6 @@ function findLecture(id: number | string) {
   }
 
   return found;
-}
-
-function getLectureDataFromDataList(id:number,lectureDataList:Lecture[]):Lecture {
-  var lectureData:Lecture=lectureDataList[0];
-  for(var i = 0; i < lectureDataList.length ; i++){
-    if(lectureDataList[i].id == id){
-      lectureData=lectureDataList[i];
-    }
-  }
-  return lectureData;
 }
 
 const sampleLectureDates: LectureDate[] = [
