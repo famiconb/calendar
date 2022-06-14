@@ -4,7 +4,7 @@ import LectureList from "../components/LectureList";
 import { Lecture, LectureDate, LectureMemo, User } from "../interfaces";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import React, { useState } from "react";
-import Modal from 'react-modal'
+import Modal from "react-modal";
 import { useRouter } from "next/router";
 
 type Props = {
@@ -14,16 +14,16 @@ type Props = {
 
 const customStyles = {
   content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
   },
-}
+};
 
-Modal.setAppElement('body');
+Modal.setAppElement("body");
 
 const LectureInfoPage = ({ lecture = sampleLectureInfo }: Props) => {
   const router = useRouter();
@@ -40,7 +40,7 @@ const LectureInfoPage = ({ lecture = sampleLectureInfo }: Props) => {
   }
 
   function afterOpenModal() {
-    if (subtitle) subtitle.style.color = '#f00';
+    if (subtitle) subtitle.style.color = "#f00";
   }
 
   /**
@@ -53,15 +53,15 @@ const LectureInfoPage = ({ lecture = sampleLectureInfo }: Props) => {
   /**
    * 開かれているページの講義情報を削除する
    */
-  const deletePage  = () => {
+  const deletePage = () => {
     console.log("delete click");
     const lecData = loadLecture();
     console.log(lecData);
-    for (let i = 0; i < lecData.length; i++){
+    for (let i = 0; i < lecData.length; i++) {
       // 保存済講義に同じidの講義を見つけたら削除
-      if(lecData[i].id == lecture.id){
+      if (lecData[i].id == lecture.id) {
         console.log("deleted!" + lecData[i].name);
-        lecData.splice(i,1);
+        lecData.splice(i, 1);
         break;
       }
     }
@@ -69,7 +69,7 @@ const LectureInfoPage = ({ lecture = sampleLectureInfo }: Props) => {
     saveLecture(lecData);
     console.log(loadLecture());
     router.push("/");
-  }
+  };
 
   return (
     <Layout title="講義の詳細情報">
@@ -87,7 +87,9 @@ const LectureInfoPage = ({ lecture = sampleLectureInfo }: Props) => {
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>「{lecture.name}」を消して大丈夫ですか？</h2>
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
+          「{lecture.name}」を消して大丈夫ですか？
+        </h2>
         <button onClick={closeModal}>やっぱやめる</button>
         <button onClick={deletePage}>消します!</button>
       </Modal>
