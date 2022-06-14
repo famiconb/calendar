@@ -1,7 +1,7 @@
 import { Lecture } from "../interfaces";
 import { saveLecture, loadLecture } from "./lecture";
 
-function saveLectureTest(quater: number = 0) {
+function saveLectureTest(quarter: number = 0) {
   const testdata0: Lecture[] = [
     {
       id: 0,
@@ -34,22 +34,22 @@ function saveLectureTest(quater: number = 0) {
     },
   ];
   localStorage.clear();
-  saveLecture(testdata0, quater);
-  loadLectureTest(testdata0, quater);
-  loadLectureTest([], (quater + 1) % 4);
-  loadLectureTest([], (quater + 2) % 4);
-  loadLectureTest([], (quater + 3) % 4);
+  saveLecture(testdata0, quarter);
+  loadLectureTest(testdata0, quarter);
+  loadLectureTest([], (quarter + 1) % 4);
+  loadLectureTest([], (quarter + 2) % 4);
+  loadLectureTest([], (quarter + 3) % 4);
 
-  saveLecture(testdata1, (quater + 1) % 4);
-  loadLectureTest(testdata0, quater);
-  loadLectureTest(testdata1, (quater + 1) % 4);
-  loadLectureTest([], (quater + 2) % 4);
-  loadLectureTest([], (quater + 3) % 4);
+  saveLecture(testdata1, (quarter + 1) % 4);
+  loadLectureTest(testdata0, quarter);
+  loadLectureTest(testdata1, (quarter + 1) % 4);
+  loadLectureTest([], (quarter + 2) % 4);
+  loadLectureTest([], (quarter + 3) % 4);
 
   expect(Object.keys(localStorage.__STORE__).length).toBe(2);
 }
-function loadLectureTest(expect_lec: Lecture[], quater: number) {
-  const data: Lecture[] = loadLecture(quater);
+function loadLectureTest(expect_lec: Lecture[], quarter: number) {
+  const data: Lecture[] = loadLecture(quarter);
   const datastr: string = JSON.stringify(data);
   const expectstr: string = JSON.stringify(expect_lec);
   expect(datastr).toBe(expectstr);
