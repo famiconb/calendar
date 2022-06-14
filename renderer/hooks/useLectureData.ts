@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Lecture } from "../interfaces";
 import { loadLecture, saveLecture } from "../utils/lecture";
 
-type UseLectureDataType = () => {
+type UseLectureDataType = (quater: number) => {
   lectures?: Lecture[];
   save: (_: Lecture[]) => void;
   initialized: boolean;
@@ -17,7 +17,7 @@ type UseLectureDataType = () => {
  * const { lectures } = useLectureData();
  * return lectures != null ? <div>lectures[0].name</div> : <div>"loading..."</div>;
  */
-export const useLectureData: UseLectureDataType = () => {
+export const useLectureData: UseLectureDataType = (quater: number) => {
   const [lectureData, setLectureData] = useState<Lecture[] | undefined>();
   const [initialized, setInitialized] = useState(false);
 
@@ -25,13 +25,13 @@ export const useLectureData: UseLectureDataType = () => {
     const f = () => {
       if (typeof window !== "undefined") {
         setInitialized(true);
-        setLectureData(loadLecture());
+        setLectureData(loadLecture(quater));
       } else {
         setTimeout(f, 10);
       }
     };
     f();
-  }, []);
+  }, [quater]);
 
   const save = useCallback(
     (data: Lecture[]) => {
@@ -39,9 +39,9 @@ export const useLectureData: UseLectureDataType = () => {
         throw new Error("Cannot call save function before initialization");
       }
       setLectureData(data);
-      saveLecture(data);
+      saveLecture(data, quater);
     },
-    [initialized]
+    [initialized, quater]
   );
 
   return { save, initialized, lectures: lectureData };
