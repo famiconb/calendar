@@ -73,8 +73,9 @@ const IndexPage = () => {
   return lectures != null ? (
     <Layout title="CUCalendar">
       <h1>{quarter + 1}Q の時間割</h1>
-      <Link href={`/?quarter=${prevQ}`}> {`${prevQ + 1}Q`} </Link>
-      <Link href={`/?quarter=${nextQ}`}> {`${nextQ + 1}Q`} </Link>
+      <Link href={`/?quarter=${prevQ}`}>{`[ ${prevQ + 1}Q ]`}</Link>
+      {"   "}
+      <Link href={`/?quarter=${nextQ}`}>{`[ ${nextQ + 1}Q ]`}</Link>
       <table style={{ border: "solid 1px" }}>
         <tr>
           <th style={{ width: "100px", border: "solid 1px" }}></th>
