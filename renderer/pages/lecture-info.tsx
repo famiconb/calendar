@@ -16,6 +16,17 @@ const LectureInfoPage = ({ lecture = sampleLectureInfo }: Props) => {
     console.log("delete click");
     lecData = loadLecture();
     console.log(lecData);
+    for (let i = 0; i < lecData.length; i++){
+      // 保存済講義に同じidの講義を見つけたとき
+      if(lecData[i].id == lecture.id){
+        console.log("deleted!" + lecData[i].name);
+        lecData.splice(i,1);
+        break;
+      }
+    }
+    //lecDataの上書き
+    saveLecture(lecData);
+    console.log(loadLecture());
   }
 
   return (
