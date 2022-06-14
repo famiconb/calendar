@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import { Lecture } from "../interfaces";
 import { useLectureData } from "../hooks/useLectureData";
@@ -19,8 +20,21 @@ const IndexPage = () => {
   //   window.alert(calEvent.title);
   // }, []);
 
+  // queryパラメータからquarterを取る
+  const router = useRouter();
+  const query_quarter_raw = router.query["quarter"];
+  const quarter: number =
+    query_quarter_raw === undefined
+      ? 0
+      : parseInt(
+          //変な文字でも0になるので例外処理は不要
+          Array.isArray(query_quarter_raw)
+            ? query_quarter_raw[0]
+            : query_quarter_raw
+        );
+
   // 表示用の講義データ
-  const { lectures } = useLectureData();
+  const { lectures } = useLectureData(quarter);
 
   // 各表の行を表示する
   // number 何限目
@@ -64,6 +78,7 @@ const IndexPage = () => {
 
   return lectures != null ? (
     <Layout title="CUCalendar">
+      <h1>{quarter + 1}Q の時間割</h1>
       <table style={{ border: "solid 1px" }}>
         <tr>
           <th style={{ width: "100px", border: "solid 1px" }}></th>
