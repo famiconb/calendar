@@ -52,7 +52,7 @@ const AddPage = () => {
 
   const onSubmit = () => {
     console.log("onSubmit");
-    const saved_lectures = loadLecture();
+    const saved_lectures = loadLecture(quarter);
     const data: Lecture = {
       id:
         saved_lectures.length > 0
@@ -73,7 +73,7 @@ const AddPage = () => {
       data.dates.push(date);
     }
     console.log(data);
-    saveLecture([...saved_lectures, data]);
+    saveLecture([...saved_lectures, data], quarter);
     router.push("/?quarter=" + quarter.toString());
   };
 
