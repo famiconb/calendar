@@ -1,6 +1,3 @@
-import React, { useState } from 'react'
-import { BrowserRouter, Router, useLocation } from 'react-router-dom'
-
 import Link from "next/link";
 import Layout from "../components/Layout";
 import LectureList from "../components/LectureList";
