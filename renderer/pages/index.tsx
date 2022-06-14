@@ -1,22 +1,26 @@
 import Link from "next/link";
 import Layout from "../components/Layout";
 import { Lecture } from "../interfaces";
+import { useLectureData } from "../hooks/useLectureData";
 
-// 表示用の講義データ
-const lectures: Lecture[] = [
-  {
-    id: 0,
-    name: "システム開発基礎",
-    dates: [{ dayOfWeek: 2, period: [5, 6, 7, 8] }],
-    memo: [{ title: "zoom", text: "https://A" }],
-  },
-];
+//// 表示用の講義データ
+// const lectures: Lecture[] = [
+//   {
+//     id: 0,
+//     name: "システム開発基礎",
+//     dates: [{ dayOfWeek: 2, period: [5, 6, 7, 8] }],
+//     memo: [{ title: "zoom", text: "https://A" }],
+//   },
+// ];
 
 const IndexPage = () => {
   // イベントクリック 今は無用のもの
   // const onSelectEvent = useCallback((calEvent) => {
   //   window.alert(calEvent.title);
   // }, []);
+
+  // 表示用の講義データ
+  const { lectures } = useLectureData();
 
   // 各表の行を表示する
   // number 何限目
@@ -41,7 +45,9 @@ const IndexPage = () => {
               ) {
                 row.push(
                   <th style={{ height: "50px", border: "solid 1px" }}>
-                    <Link href="/lecture-info?id=1">{lecture.name}</Link>
+                    <Link href={`/lecture-info?id=${lecture.id}`}>
+                      {lecture.name}
+                    </Link>
                   </th>
                 );
                 found = true;
@@ -56,7 +62,7 @@ const IndexPage = () => {
     return <tr>{row}</tr>;
   };
 
-  return (
+  return lectures != null ? (
     <Layout title="CUCalendar">
       <table style={{ border: "solid 1px" }}>
         <tr>
@@ -77,7 +83,7 @@ const IndexPage = () => {
         {row_view(8, lectures)}
       </table>
     </Layout>
-  );
+  ) : (<div>loading...</div>);
 };
 
 export default IndexPage;
