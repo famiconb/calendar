@@ -51,7 +51,7 @@ const LectureInfoPage = ({ lecture = sampleLectureInfo }: Props) => {
   }
 
   /**
-   * 開かれているページの講義情報を削除する
+   * 開かれているページ(lectureのidと一致するもの)の講義情報を削除する
    */
   const deletePage = () => {
     console.log("delete click");
