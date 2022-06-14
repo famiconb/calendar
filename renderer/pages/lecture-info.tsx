@@ -2,22 +2,34 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import LectureList from "../components/LectureList";
 import { Lecture, LectureDate, LectureMemo, User } from "../interfaces";
+import { loadLecture, saveLecture } from "../utils/lecture";
 
 type Props = {
   lecture: Lecture;
   lectureList: LectureMemo[];
 };
 
-const LectureInfoPage = ({ lecture = sampleLectureInfo }: Props) => (
-  <Layout title="講義情報 | Next.js + TypeScript + Electron Example">
-    <LectureList lecture={lecture} />
-    <p>
-      <Link href="/">
-        <a>Go home</a>
-      </Link>
-    </p>
-  </Layout>
-);
+const LectureInfoPage = ({ lecture = sampleLectureInfo }: Props) => {
+
+  let lecData;
+  const deletePage  = () => {
+    console.log("delete click");
+    lecData = loadLecture();
+    console.log(lecData);
+  }
+
+  return (
+    <Layout title="講義の詳細情報">
+      <LectureList lecture={lecture} />
+      <p>
+        <Link href="/">
+          <a>Go home</a>
+        </Link>
+        <button onClick={deletePage}>この講義を削除</button>
+      </p>
+    </Layout>
+  );
+};
 
 const sampleLectureDates: LectureDate[] = [
   { dayOfWeek: 1, period: [1, 2] },
