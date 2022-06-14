@@ -16,7 +16,7 @@ const EditPage = ({ lecture  = sampleLectureInfo}: Props) => {
     setTitle(event.target.value);
     console.log(title);
   };
-  const dows = new Set<number>();
+  const [dows, setDows] = useState(new Set<number>());
   useEffect(() => {
     lecture.dates.forEach((date)=>{
       dows.add(date.dayOfWeek);
