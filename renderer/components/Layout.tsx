@@ -16,7 +16,7 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
     <header>
-      <nav>
+      {/* <nav>
         <Link href="/">
           <a>Home</a>
         </Link>{" "}
@@ -28,7 +28,7 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
         <Link href="/lecture-info?id=1">
           <a>講義情報(DEBUG)</a>
         </Link>
-      </nav>
+      </nav> */}
     </header>
     {children}
     <footer>

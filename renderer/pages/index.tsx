@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import { Lecture } from "../interfaces";
 import { useLectureData } from "../hooks/useLectureData";
 import React from "react";
+import { useRouter } from "next/router";
 
 /// 各表の行を表示する
 /// number 何限目
@@ -66,10 +67,20 @@ const IndexPage = () => {
 
   // 表示用の講義データ
   const { lectures } = useLectureData();
+  const router = useRouter();
 
   return lectures != null ? (
     <Layout title="CUCalendar">
-      <div className="p-2 w-screen h-screen">
+      <button
+        className="border rounded-sm border-black p-0.5 mx-2 mt-1.5 -my-0.5"
+        onClick={() => router.push("/add-page")}
+      >
+        講義追加
+      </button>
+      <div
+        className="p-2 w-screen h-screen"
+        style={{ height: "calc(100vh - 2.25rem)" }}
+      >
         <table className="border border-solid w-full h-full">
           <thead>
             <tr>
