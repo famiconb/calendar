@@ -75,100 +75,45 @@ const AddPage = () => {
     console.log(memo);
   };
 
+  const weekdays = [
+    "日曜日",
+    "月曜日",
+    "火曜日",
+    "水曜日",
+    "木曜日",
+    "金曜日",
+    "土曜日",
+  ];
+
   return (
     <Layout title="授業情報の追加">
-      <div className="content" style={{ margin: "10px" }}>
+      <div className="content m-2.5">
         <h1>授業情報の追加</h1>
-        <div
-          className="add-page_content"
-          style={{ margin: "auto", width: "90%", border: "solid thin black" }}
-        >
-          <div
-            className="add-page_inner"
-            style={{ margin: "10px", display: "block" }}
-          >
-            <p
-              className="add-page_row"
-              style={{ margin: "10px 0px", display: "block" }}
-            >
+        <div className="add-page_content m-auto w-11/12 border-solid border border-black">
+          <div className="add-page_inner m-2.5 block">
+            <p className="add-page_row my-2.5 block">
               授業名
               <br />
               <input
                 name="title"
-                style={{
-                  width: "100%",
-                  height: "2em",
-                  boxSizing: "border-box",
-                }}
+                className="border border-black rounded-sm w-full h-8 box-border"
                 onChange={handleTitleChange}
               ></input>
             </p>
-            <p className="add-page_row" style={{ margin: "10px 0px" }}>
+            <p className="add-page_row my-2.5">
               開講日時
               <br />
-              <span style={{ display: "inline-block" }}>
-                <input
-                  type="checkbox"
-                  value="0"
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onChange={handleDowChange}
-                />{" "}
-                日曜日
-              </span>
-              <span style={{ display: "inline-block" }}>
-                <input
-                  type="checkbox"
-                  value="1"
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onClick={handleDowChange}
-                />{" "}
-                月曜日
-              </span>
-              <span style={{ display: "inline-block" }}>
-                <input
-                  type="checkbox"
-                  value="2"
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onClick={handleDowChange}
-                />{" "}
-                火曜日
-              </span>
-              <span style={{ display: "inline-block" }}>
-                <input
-                  type="checkbox"
-                  value="3"
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onClick={handleDowChange}
-                />{" "}
-                水曜日
-              </span>
-              <span style={{ display: "inline-block" }}>
-                <input
-                  type="checkbox"
-                  value="4"
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onClick={handleDowChange}
-                />{" "}
-                木曜日
-              </span>
-              <span style={{ display: "inline-block" }}>
-                <input
-                  type="checkbox"
-                  value="5"
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onClick={handleDowChange}
-                />{" "}
-                金曜日
-              </span>
-              <span style={{ display: "inline-block" }}>
-                <input
-                  type="checkbox"
-                  value="6"
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onClick={handleDowChange}
-                />{" "}
-                土曜日
-              </span>
+              {weekdays.map((w, i) => (
+                <span className="inline-block" key={`${w}-${i}`}>
+                  <input
+                    type="checkbox"
+                    value={i}
+                    style={{ margin: "0px 0px 0px 10px" }}
+                    onChange={handleDowChange}
+                  />{" "}
+                  {w}
+                </span>
+              ))}
               <br />
               <select name="begin" onChange={handleBeginChange}>
                 <option value="1">1限</option>
@@ -196,46 +141,53 @@ const AddPage = () => {
                 <option value="10">10限</option>
               </select>
             </p>
-            <p className="add-page_row" style={{ margin: "10px 0px" }}>
-              メモ
-              <br />
+            <div className="add-page_row space-y-1 my-2.5">
+              <p>メモ</p>
               {memo.map((_, index) => (
-                <a style={{ margin: "3px 0px" }} key={index}>
+                <div style={{ margin: "3px 0px" }} key={`memo-${index}`}>
                   <input
                     name="title"
-                    style={{
-                      width: "100%",
-                      height: "1.5em",
-                      boxSizing: "border-box",
-                    }}
+                    className="border border-black rounded-sm p-1 w-full h-7 box-border"
                     placeholder="title"
                     onChange={handleMemoChange}
                     data-num={index}
                   ></input>
                   <textarea
                     name="memo-content"
-                    style={{
-                      width: "100%",
-                      height: "5em",
-                      boxSizing: "border-box",
-                      margin: "0",
-                    }}
+                    className="border border-black w-full m-0 p-1 h-20 box-border"
                     placeholder="content"
                     onChange={handleMemoChange}
                     data-num={index}
                   />
-                </a>
+                </div>
               ))}
-              <button onClick={addInputForm}> 追加ボタン </button>
-            </p>
-            <button
-              onClick={() => {
-                router.push("/");
-              }}
-            >
-              時間割に戻る
-            </button>
-            <button onClick={onSubmit}>講義を追加</button>
+            </div>
+            <div className="flex flex-col space-y-2">
+              <div>
+                <button
+                  onClick={addInputForm}
+                  className="border border-black p-1 rounded"
+                >
+                  追加ボタン
+                </button>
+              </div>
+              <div className="flex space-x-1">
+                <button
+                  className="border border-black p-1 rounded"
+                  onClick={() => {
+                    router.push("/");
+                  }}
+                >
+                  時間割に戻る
+                </button>
+                <button
+                  onClick={onSubmit}
+                  className="border border-black p-1 rounded"
+                >
+                  講義を追加
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
