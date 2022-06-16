@@ -91,7 +91,7 @@ const EditPage = ({ lecture  = sampleLectureInfo}: Props) => {
   };
 
   return (
-    <Layout title="授業情報の追加">
+    <Layout title="授業情報の編集">
       <div className="content" style={{ margin: "10px" }}>
         <h1>授業情報の追加</h1>
         <div
