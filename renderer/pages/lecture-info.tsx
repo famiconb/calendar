@@ -2,8 +2,8 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import LectureList from "../components/LectureList";
 import { Lecture, LectureDate, LectureMemo, User } from "../interfaces";
-import { loadLecture } from '../utils/lecture';
-import { useRouter } from 'next/router';
+import { loadLecture } from "../utils/lecture";
+import { useRouter } from "next/router";
 
 type Props = {
   lecture: Lecture;
@@ -30,10 +30,10 @@ const LectureInfoPage = () => {
         </p>
       </Layout>
     );
-  }catch(e:any){
+  } catch (e: any) {
     return LectureInfoErrorPage("lecture is not found");
   }
-}
+};
 
 const LectureInfoErrorPage = (err: string) => {
   return (
