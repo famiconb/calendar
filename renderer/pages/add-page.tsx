@@ -22,13 +22,13 @@ const AddPage = () => {
     console.log(dows);
   };
 
-  const [begin, setBegin] = useState(0);
+  const [begin, setBegin] = useState(1);
   const handleBeginChange = (event: any) => {
     setBegin(Number(event.target.value));
     console.log(begin);
   };
 
-  const [end, setEnd] = useState(0);
+  const [end, setEnd] = useState(1);
   const handleEndChange = (event: any) => {
     setEnd(Number(event.target.value));
     console.log(end);
