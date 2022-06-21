@@ -12,6 +12,10 @@ const AddPage = () => {
     setTitle(event.target.value);
     console.log(title);
   };
+  const [code, setCode] = useState("");
+  const handleCodeChange = (event: any) => {
+    setCode(event.target.value);
+  };
   const [dows, _] = useState(new Set<number>());
   const handleDowChange = (event: any) => {
     if (dows.has(Number(event.target.value))) {
@@ -106,6 +110,22 @@ const AddPage = () => {
                   boxSizing: "border-box",
                 }}
                 onChange={handleTitleChange}
+              ></input>
+            </p>
+            <p
+              className="add-page_row"
+              style={{ margin: "10px 0px", display: "block" }}
+            >
+              科目コード
+              <br />
+              <input
+                name="科目コード"
+                style={{
+                  width: "100%",
+                  height: "2em",
+                  boxSizing: "border-box",
+                }}
+                onChange={handleCodeChange}
               ></input>
             </p>
             <p className="add-page_row" style={{ margin: "10px 0px" }}>
