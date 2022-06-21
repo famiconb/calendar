@@ -72,14 +72,9 @@ const LectureInfoPage = () => {
     };
 
     return (
-      <Layout title="講義の詳細情報">
+      <Layout title="講義の詳細情報" goBack={() => router.push("/")}>
         <LectureList lecture={lecture} />
-        <p>
-          <Link href="/">
-            <a>Go home</a>
-          </Link>
-          <button onClick={openModal}>この講義を削除</button>
-        </p>
+        <button onClick={openModal}>この講義を削除</button>
         <Modal
           contentLabel="Check Modal"
           isOpen={modalIsOpen}

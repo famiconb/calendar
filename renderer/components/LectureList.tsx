@@ -42,7 +42,6 @@ const getStringOfPeriod = (item: LectureDate) => {
 
 const LectureList = ({ lecture }: Props) => (
   <div>
-    <h1>講義情報ページ</h1>
     <h2>講義名: {lecture.name}</h2>
     <h3>講義の日程</h3>
     <ul>

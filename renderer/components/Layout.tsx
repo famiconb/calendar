@@ -31,22 +31,8 @@ const Layout = ({
           <p className="ml-4 p-1">{title}</p>
         </div>
       )}
-
-      {/* <nav>
-        <Link href="/">
-          <a>Home</a>
-        </Link>{" "}
-        |{" "}
-        <Link href="/add-page">
-          <a>講義追加</a>
-        </Link>{" "}
-        |{" "}
-        <Link href="/lecture-info?id=1">
-          <a>講義情報(DEBUG)</a>
-        </Link>
-      </nav> */}
     </header>
-    {children}
+    <div className={goBack && "h-screen w-screen p-2.5"}>{children}</div>
   </div>
 );
 
