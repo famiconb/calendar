@@ -3,12 +3,14 @@ import Layout from "../components/Layout";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
+import { useQuarter } from "../hooks/useQuarter";
 
 const EditPage = () => {
   const router = useRouter();
+  const quarter: number = useQuarter();
 
   const id = Number(router.query['id']);
-  const lecture = loadLecture().filter(lecture => lecture.id==id)[0];
+  const lecture = loadLecture(quarter).filter(lecture => lecture.id==id)[0];
 
   const [title, setTitle] = useState(lecture.name);
   const handleTitleChange = (event: any) => {
@@ -93,14 +95,14 @@ const EditPage = () => {
     }
     console.log(data);
 
-    const saved_lectures = loadLecture().map(saved_lecture => {
+    const saved_lectures = loadLecture(quarter).map(saved_lecture => {
       if(saved_lecture.id != id){
         return saved_lecture;
       } else {
         return lecture;
       }
     });
-    saveLecture([...saved_lectures, data]);
+    saveLecture([...saved_lectures, data], quarter);
     router.push("/");
   };
 
