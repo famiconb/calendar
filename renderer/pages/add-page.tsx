@@ -84,17 +84,16 @@ const AddPage = () => {
           <div className="add-page_content m-auto w-11/12 mt-4">
             <div className="add-page_inner m-2.5 block space-y-4">
               <p className="add-page_row my-2.5 block">
-                授業名
-                <br />
+                <p>授業名</p>
                 <input
                   name="title"
-                  className="border border-black rounded-sm w-full h-8 box-border"
+                  className="border border-black rounded-sm w-full h-8 box-border p-1"
+                  placeholder="授業名..."
                   onChange={handleTitleChange}
                 ></input>
               </p>
               <p className="add-page_row my-2.5">
-                開講曜日/時限
-                <br />
+                <p>開講曜日/時限</p>
                 {weekdays.map((w, i) => (
                   <span className="inline-block" key={`${w}-${i}`}>
                     <input
@@ -155,14 +154,14 @@ const AddPage = () => {
                     <input
                       name="title"
                       className="border border-black rounded-sm p-1 w-full h-7 box-border"
-                      placeholder="title"
+                      placeholder="メモタイトル..."
                       onChange={handleMemoChange}
                       data-num={index}
                     ></input>
                     <textarea
                       name="memo-content"
                       className="border border-black w-full m-0 p-1 h-20 box-border"
-                      placeholder="content"
+                      placeholder="コンテンツ..."
                       onChange={handleMemoChange}
                       data-num={index}
                     />
