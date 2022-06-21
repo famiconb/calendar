@@ -6,8 +6,6 @@ import { loadLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
 
 type Props = {
-  lecture: Lecture;
-  lectureList: LectureMemo[];
 };
 
 const LectureInfoPage = () => {
