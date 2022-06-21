@@ -55,6 +55,7 @@ const AddPage = () => {
           ? saved_lectures[saved_lectures.length - 1].id + 1
           : 0,
       name: title,
+      code: code,
       dates: [],
       memo: memo,
     };
