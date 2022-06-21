@@ -37,18 +37,18 @@ const LectureInfoPage = ({ lecture = sampleLectureInfo }: Props) => {
    */
   const openModal = () => {
     setIsOpen(true);
-  }
+  };
 
   const afterOpenModal = () => {
     if (subtitle) subtitle.style.color = "#f00";
-  }
+  };
 
   /**
    * モーダルを閉じる
    */
   const closeModal = () => {
     setIsOpen(false);
-  }
+  };
 
   /**
    * 開かれているページ(lectureのidと一致するもの)の講義情報を削除する
