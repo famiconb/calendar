@@ -277,7 +277,7 @@ const EditPage = () => {
             >
               時間割に戻る
             </button>
-            <button onClick={onSubmit}>講義を追加</button>
+            <button onClick={onSubmit}>講義を編集</button>
           </div>
         </div>
       </div>
