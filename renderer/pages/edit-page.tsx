@@ -10,11 +10,14 @@ const EditPage = () => {
   const id = Number(router.query['id']);
   const lecture = loadLecture().filter(lecture => lecture.id==id)[0];
 
+  const [dataLoaded, setDataLoaded] = useState(false);
+
   const [title, setTitle] = useState(lecture.name);
   const handleTitleChange = (event: any) => {
     setTitle(event.target.value);
     console.log(title);
   };
+
   const [dows, setDows] = useState(new Set<number>());
   useEffect(() => {
     lecture.dates.forEach((date)=>{
@@ -23,6 +26,7 @@ const EditPage = () => {
     console.log(id);
     console.log(dows);
     console.log(lecture);
+    setDataLoaded(true);
   }, []);
   const handleDowChange = (event: any) => {
     if (dows.has(Number(event.target.value))) {
@@ -30,6 +34,7 @@ const EditPage = () => {
     } else {
       dows.add(Number(event.target.value));
     }
+    setDows(dows);
     console.log(dows);
   };
 
@@ -64,7 +69,7 @@ const EditPage = () => {
 
   const onSubmit = () => {
     console.log("onSubmit");
-    const data: Lecture = {
+    const edited_lecture: Lecture = {
       id: id,
       name: title,
       dates: [],
@@ -78,29 +83,21 @@ const EditPage = () => {
       for (let i = begin; i <= end; ++i) {
         date.period.push(i);
       }
-      data.dates.push(date);
+      edited_lecture.dates.push(date);
     }
     
-    for (const dow of dows) {
-      const date: LectureDate = {
-        dayOfWeek: dow,
-        period: [],
-      };
-      for (let i = begin; i <= end; ++i) {
-        date.period.push(i);
-      }
-      data.dates.push(date);
-    }
-    console.log(data);
+    console.log(edited_lecture);
 
-    const saved_lectures = loadLecture().map(saved_lecture => {
+    const saved_lectures = loadLecture()
+    const edited_lectures = saved_lectures.map(saved_lecture => {
       if(saved_lecture.id != id){
         return saved_lecture;
       } else {
-        return lecture;
+        return edited_lecture;
       }
     });
-    saveLecture([...saved_lectures, data]);
+    console.log(edited_lectures);
+    saveLecture(edited_lectures);
     router.push("/");
   };
 
@@ -110,7 +107,7 @@ const EditPage = () => {
     console.log(memo);
   };
 
-  return (
+  return !dataLoaded ? (<div>loading...</div>) : (
     <Layout title="授業情報の編集">
       <div className="content" style={{ margin: "10px" }}>
         <h1>授業情報の追加</h1>
@@ -144,11 +141,12 @@ const EditPage = () => {
               <br />
               <span style={{ display: "inline-block" }}>
                 <input
+                  name="dow0"
                   type="checkbox"
                   value="0"
                   style={{ margin: "0px 0px 0px 10px" }}
                   onChange={handleDowChange}
-                  checked={dows.has(0)}
+                  defaultChecked={dows.has(0)}
                 />{" "}
                 日曜日
               </span>
@@ -158,7 +156,7 @@ const EditPage = () => {
                   value="1"
                   style={{ margin: "0px 0px 0px 10px" }}
                   onClick={handleDowChange}
-                  checked={dows.has(1)}
+                  defaultChecked={dows.has(1)}
                 />{" "}
                 月曜日
               </span>
@@ -168,7 +166,7 @@ const EditPage = () => {
                   value="2"
                   style={{ margin: "0px 0px 0px 10px" }}
                   onClick={handleDowChange}
-                  checked={dows.has(2)}
+                  defaultChecked={dows.has(2)}
                 />{" "}
                 火曜日
               </span>
@@ -178,7 +176,7 @@ const EditPage = () => {
                   value="3"
                   style={{ margin: "0px 0px 0px 10px" }}
                   onClick={handleDowChange}
-                  checked={dows.has(3)}
+                  defaultChecked={dows.has(3)}
                 />{" "}
                 水曜日
               </span>
@@ -188,7 +186,7 @@ const EditPage = () => {
                   value="4"
                   style={{ margin: "0px 0px 0px 10px" }}
                   onClick={handleDowChange}
-                  checked={dows.has(4)}
+                  defaultChecked={dows.has(4)}
                 />{" "}
                 木曜日
               </span>
@@ -198,7 +196,7 @@ const EditPage = () => {
                   value="5"
                   style={{ margin: "0px 0px 0px 10px" }}
                   onClick={handleDowChange}
-                  checked={dows.has(5)}
+                  defaultChecked={dows.has(5)}
                 />{" "}
                 金曜日
               </span>
@@ -208,7 +206,7 @@ const EditPage = () => {
                   value="6"
                   style={{ margin: "0px 0px 0px 10px" }}
                   onClick={handleDowChange}
-                  checked={dows.has(6)}
+                  defaultChecked={dows.has(6)}
                 />{" "}
                 土曜日
               </span>
