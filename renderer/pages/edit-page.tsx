@@ -7,8 +7,8 @@ import { useRouter } from "next/router";
 const EditPage = () => {
   const router = useRouter();
 
-  const id = Number(router.query['id']);
-  const lecture = loadLecture().filter(lecture => lecture.id==id)[0];
+  const id = Number(router.query["id"]);
+  const lecture = loadLecture().filter((lecture) => lecture.id == id)[0];
 
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -20,12 +20,9 @@ const EditPage = () => {
 
   const [dows, setDows] = useState(new Set<number>());
   useEffect(() => {
-    lecture.dates.forEach((date)=>{
+    lecture.dates.forEach((date) => {
       dows.add(date.dayOfWeek);
     });
-    console.log(id);
-    console.log(dows);
-    console.log(lecture);
     setDataLoaded(true);
   }, []);
   const handleDowChange = (event: any) => {
@@ -52,9 +49,9 @@ const EditPage = () => {
 
   const [memo, setMemo] = useState<LectureMemo[]>([]);
   useEffect(() => {
-    lecture.memo.forEach((memo)=>{
+    lecture.memo.forEach((memo) => {
       setMemo((x) => [...x, { title: memo.title, text: memo.text }]);
-    })
+    });
   }, []);
   const handleMemoChange = (event: any) => {
     const num = Number(event.target.dataset.num);
@@ -85,12 +82,12 @@ const EditPage = () => {
       }
       edited_lecture.dates.push(date);
     }
-    
+
     console.log(edited_lecture);
 
-    const saved_lectures = loadLecture()
-    const edited_lectures = saved_lectures.map(saved_lecture => {
-      if(saved_lecture.id != id){
+    const saved_lectures = loadLecture();
+    const edited_lectures = saved_lectures.map((saved_lecture) => {
+      if (saved_lecture.id != id) {
         return saved_lecture;
       } else {
         return edited_lecture;
@@ -107,7 +104,9 @@ const EditPage = () => {
     console.log(memo);
   };
 
-  return !dataLoaded ? (<div>loading...</div>) : (
+  return !dataLoaded ? (
+    <div>loading...</div>
+  ) : (
     <Layout title="授業情報の編集">
       <div className="content" style={{ margin: "10px" }}>
         <h1>授業情報の追加</h1>
@@ -211,9 +210,7 @@ const EditPage = () => {
                 土曜日
               </span>
               <br />
-              <select name="begin"
-              value={begin}
-              onChange={handleBeginChange}>
+              <select name="begin" value={begin} onChange={handleBeginChange}>
                 <option value="1">1限</option>
                 <option value="2">2限</option>
                 <option value="3">3限</option>
@@ -226,9 +223,7 @@ const EditPage = () => {
                 <option value="10">10限</option>
               </select>
               〜
-              <select name="end"
-              value={end}
-              onChange={handleEndChange}>
+              <select name="end" value={end} onChange={handleEndChange}>
                 <option value="1">1限</option>
                 <option value="2">2限</option>
                 <option value="3">3限</option>
