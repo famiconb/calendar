@@ -17,6 +17,10 @@ const EditPage = () => {
     setTitle(event.target.value);
     console.log(title);
   };
+  const [code, setCode] = useState(lecture.code);
+  const handleCodeChange = (event: any) => {
+    setCode(event.target.value);
+  };
 
   const [dows, setDows] = useState(new Set<number>());
   useEffect(() => {
@@ -69,6 +73,7 @@ const EditPage = () => {
     const edited_lecture: Lecture = {
       id: id,
       name: title,
+      code: code,
       dates: [],
       memo: memo,
     };
@@ -133,6 +138,22 @@ const EditPage = () => {
                 }}
                 value={title}
                 onChange={handleTitleChange}
+              ></input>
+            </p>
+            <p
+              className="add-page_row"
+              style={{ margin: "10px 0px", display: "block" }}
+            >
+              科目コード
+              <br />
+              <input
+                name="科目コード"
+                style={{
+                  width: "100%",
+                  height: "2em",
+                  boxSizing: "border-box",
+                }}
+                onChange={handleCodeChange}
               ></input>
             </p>
             <p className="add-page_row" style={{ margin: "10px 0px" }}>
