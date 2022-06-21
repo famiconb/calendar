@@ -5,9 +5,6 @@ import { Lecture, LectureDate, LectureMemo, User } from "../interfaces";
 import { loadLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
 
-type Props = {
-};
-
 const LectureInfoPage = () => {
   const router = useRouter();
   const query_id_raw = router.query["id"];
