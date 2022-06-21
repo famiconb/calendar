@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import { Lecture } from "../interfaces";
 import { useLectureData } from "../hooks/useLectureData";
 import { useQuarter } from "../hooks/useQuarter";
+import { useEffect } from "react";
 
 //// 表示用の講義データ
 // const lectures: Lecture[] = [
@@ -68,6 +69,24 @@ const IndexPage = () => {
     return <tr>{row}</tr>;
   };
 
+  useEffect(() => {
+    const handleMessage = (_event: any[], args: any[]) => {
+      console.log("from python:", args);
+    }
+
+    // add a listener to 'message' channel
+    global.ipcRenderer.addListener('python message', handleMessage)
+
+    return () => {
+      global.ipcRenderer.removeListener('python message', handleMessage)
+    }
+  }, [])
+
+  const onSayHiClick = () => {
+    global.ipcRenderer.send('python message', 'hi from next')
+  }
+
+
   const prevQ = (quarter - 1 + 4) % 4;
   const nextQ = (quarter + 1) % 4;
   return lectures != null ? (
@@ -94,6 +113,7 @@ const IndexPage = () => {
         {row_view(7, lectures)}
         {row_view(8, lectures)}
       </table>
+      <button onClick={onSayHiClick}>Say hi to electron</button>
     </Layout>
   ) : (
     <div>loading...</div>
