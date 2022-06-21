@@ -35,18 +35,18 @@ const LectureInfoPage = ({ lecture = sampleLectureInfo }: Props) => {
   /**
    * モーダルを開く
    */
-  function openModal() {
+  const openModal = () => {
     setIsOpen(true);
   }
 
-  function afterOpenModal() {
+  const afterOpenModal = () => {
     if (subtitle) subtitle.style.color = "#f00";
   }
 
   /**
    * モーダルを閉じる
    */
-  function closeModal() {
+  const closeModal = () => {
     setIsOpen(false);
   }
 
