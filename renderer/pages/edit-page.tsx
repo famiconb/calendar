@@ -4,12 +4,11 @@ import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
 
-type Props = {
-  lecture: Lecture;
-};
-
-const EditPage = ({ lecture  = sampleLectureInfo}: Props) => {
+const EditPage = () => {
   const router = useRouter();
+
+  const id = Number(router.query['id']);
+  const lecture = loadLecture().filter(lecture => lecture.id==id)[0];
 
   const [title, setTitle] = useState(lecture.name);
   const handleTitleChange = (event: any) => {
@@ -21,7 +20,9 @@ const EditPage = ({ lecture  = sampleLectureInfo}: Props) => {
     lecture.dates.forEach((date)=>{
       dows.add(date.dayOfWeek);
     });
+    console.log(id);
     console.log(dows);
+    console.log(lecture);
   }, []);
   const handleDowChange = (event: any) => {
     if (dows.has(Number(event.target.value))) {
@@ -63,8 +64,6 @@ const EditPage = ({ lecture  = sampleLectureInfo}: Props) => {
 
   const onSubmit = () => {
     console.log("onSubmit");
-    const saved_lectures = loadLecture();
-    const id = 0;
     const data: Lecture = {
       id: id,
       name: title,
@@ -94,6 +93,7 @@ const EditPage = ({ lecture  = sampleLectureInfo}: Props) => {
     }
     console.log(data);
 
+    const saved_lectures = loadLecture();
     saved_lectures.filter(saved_lecture => saved_lecture.id != id);
     saveLecture([...saved_lectures, data]);
     router.push("/");
@@ -285,21 +285,6 @@ const EditPage = ({ lecture  = sampleLectureInfo}: Props) => {
       </div>
     </Layout>
   );
-};
-
-const sampleLectureDates: LectureDate[] = [
-  { dayOfWeek: 1, period: [1, 2] },
-  { dayOfWeek: 4, period: [1, 2] },
-];
-const sampleLectureMemo: LectureMemo[] = [
-  { title: "title1", text: "text1 \n link" },
-  { title: "title2", text: "text2 \n link" },
-];
-const sampleLectureInfo: Lecture = {
-  id: 1,
-  name: "サンプル",
-  dates: sampleLectureDates,
-  memo: sampleLectureMemo,
 };
 
 export default EditPage;
