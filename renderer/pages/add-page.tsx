@@ -115,7 +115,11 @@ const AddPage = () => {
                 </span>
               ))}
               <br />
-              <select name="begin" onChange={handleBeginChange}>
+              <select
+                name="begin"
+                className="border rounded-sm border-black"
+                onChange={handleBeginChange}
+              >
                 <option value="1">1限</option>
                 <option value="2">2限</option>
                 <option value="3">3限</option>
@@ -128,7 +132,11 @@ const AddPage = () => {
                 <option value="10">10限</option>
               </select>
               〜
-              <select name="end" onChange={handleEndChange}>
+              <select
+                name="end"
+                className="border rounded-sm border-black"
+                onChange={handleEndChange}
+              >
                 <option value="1">1限</option>
                 <option value="2">2限</option>
                 <option value="3">3限</option>

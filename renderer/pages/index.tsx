@@ -15,7 +15,12 @@ const row_view = (number: number, lectures: Lecture[]) => {
   // dayOfWeek 何曜日
   for (let dayOfWeek = 0; dayOfWeek < 6; dayOfWeek++) {
     if (dayOfWeek == 0) {
-      row.push(<th style={{ border: "solid 1px" }}>{number + "時限目"}</th>);
+      row.push(
+        <th className="border-solid border border-black">
+          <p>{number}時限目</p>
+          <p></p>
+        </th>
+      );
     } else {
       let found = false;
       for (let lectures_i = 0; lectures_i < lectures.length; ++lectures_i) {
@@ -27,7 +32,7 @@ const row_view = (number: number, lectures: Lecture[]) => {
               lecture.dates[i].dayOfWeek == dayOfWeek
             ) {
               row.push(
-                <th style={{ height: "50px", border: "solid 1px" }}>
+                <th className="border-solid border border-black h-12">
                   <Link href={`/lecture-info?id=${lecture.id}`}>
                     {lecture.name}
                   </Link>
@@ -39,7 +44,7 @@ const row_view = (number: number, lectures: Lecture[]) => {
         }
       }
       if (!found)
-        row.push(<th style={{ height: "50px", border: "solid 1px" }}></th>);
+        row.push(<th className="border-solid border h-12 border-black"></th>);
     }
   }
   return <tr>{row}</tr>;
