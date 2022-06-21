@@ -72,7 +72,7 @@ const LectureInfoPage = () => {
     };
 
     return (
-      <Layout title="講義情報">
+      <Layout title="講義の詳細情報">
         <LectureList lecture={lecture} />
         <p>
           <Link href="/">
