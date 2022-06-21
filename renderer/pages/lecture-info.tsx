@@ -81,7 +81,7 @@ const LectureInfoPage = ({ lecture = sampleLectureInfo }: Props) => {
         <button onClick={openModal}>この講義を削除</button>
       </p>
       <Modal
-        contentLabel="Example Modal"
+        contentLabel="Check Modal"
         isOpen={modalIsOpen}
         style={customStyles}
         onAfterOpen={afterOpenModal}
