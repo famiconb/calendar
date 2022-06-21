@@ -41,7 +41,7 @@ const EditPage = () => {
     console.log(begin);
   };
 
-  const [end, setEnd] = useState(lecture.dates[0].period[1]);
+  const [end, setEnd] = useState(lecture.dates[0].period.slice(-1)[0]);
   const handleEndChange = (event: any) => {
     setEnd(Number(event.target.value));
     console.log(end);
