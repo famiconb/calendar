@@ -1,22 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
-import { useQuarter } from "../hooks/useQuarter";
 
-const AddPage = () => {
+const EditPage = () => {
   const router = useRouter();
 
-  // queryパラメータからquarterを取る
-  const quarter: number = useQuarter();
+  const id = Number(router.query['id']);
+  const lecture = loadLecture().filter(lecture => lecture.id==id)[0];
 
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(lecture.name);
   const handleTitleChange = (event: any) => {
     setTitle(event.target.value);
     console.log(title);
   };
-  const [dows, _] = useState(new Set<number>());
+  const [dows, setDows] = useState(new Set<number>());
+  useEffect(() => {
+    lecture.dates.forEach((date)=>{
+      dows.add(date.dayOfWeek);
+    });
+    console.log(id);
+    console.log(dows);
+    console.log(lecture);
+  }, []);
   const handleDowChange = (event: any) => {
     if (dows.has(Number(event.target.value))) {
       dows.delete(Number(event.target.value));
@@ -26,19 +33,24 @@ const AddPage = () => {
     console.log(dows);
   };
 
-  const [begin, setBegin] = useState(1);
+  const [begin, setBegin] = useState(lecture.dates[0].period[0]);
   const handleBeginChange = (event: any) => {
     setBegin(Number(event.target.value));
     console.log(begin);
   };
 
-  const [end, setEnd] = useState(1);
+  const [end, setEnd] = useState(lecture.dates[0].period[1]);
   const handleEndChange = (event: any) => {
     setEnd(Number(event.target.value));
     console.log(end);
   };
 
-  const [memo, setMemo] = useState<LectureMemo[]>([{ title: "", text: "" }]);
+  const [memo, setMemo] = useState<LectureMemo[]>([]);
+  useEffect(() => {
+    lecture.memo.forEach((memo)=>{
+      setMemo((x) => [...x, { title: memo.title, text: memo.text }]);
+    })
+  }, []);
   const handleMemoChange = (event: any) => {
     const num = Number(event.target.dataset.num);
     if (event.target.name == "title") {
@@ -52,13 +64,8 @@ const AddPage = () => {
 
   const onSubmit = () => {
     console.log("onSubmit");
-    const saved_lectures = loadLecture(quarter);
-    console.log(saved_lectures);
     const data: Lecture = {
-      id:
-        saved_lectures.length > 0
-          ? saved_lectures[saved_lectures.length - 1].id + 1
-          : 0,
+      id: id,
       name: title,
       dates: [],
       memo: memo,
@@ -73,9 +80,28 @@ const AddPage = () => {
       }
       data.dates.push(date);
     }
+    
+    for (const dow of dows) {
+      const date: LectureDate = {
+        dayOfWeek: dow,
+        period: [],
+      };
+      for (let i = begin; i <= end; ++i) {
+        date.period.push(i);
+      }
+      data.dates.push(date);
+    }
     console.log(data);
-    saveLecture([...saved_lectures, data], quarter);
-    router.push("/?quarter=" + quarter.toString());
+
+    const saved_lectures = loadLecture().map(saved_lecture => {
+      if(saved_lecture.id != id){
+        return saved_lecture;
+      } else {
+        return lecture;
+      }
+    });
+    saveLecture([...saved_lectures, data]);
+    router.push("/");
   };
 
   const addInputForm = () => {
@@ -85,7 +111,7 @@ const AddPage = () => {
   };
 
   return (
-    <Layout title="授業情報の追加">
+    <Layout title="授業情報の編集">
       <div className="content" style={{ margin: "10px" }}>
         <h1>授業情報の追加</h1>
         <div
@@ -109,6 +135,7 @@ const AddPage = () => {
                   height: "2em",
                   boxSizing: "border-box",
                 }}
+                value={title}
                 onChange={handleTitleChange}
               ></input>
             </p>
@@ -121,6 +148,7 @@ const AddPage = () => {
                   value="0"
                   style={{ margin: "0px 0px 0px 10px" }}
                   onChange={handleDowChange}
+                  checked={dows.has(0)}
                 />{" "}
                 日曜日
               </span>
@@ -130,6 +158,7 @@ const AddPage = () => {
                   value="1"
                   style={{ margin: "0px 0px 0px 10px" }}
                   onClick={handleDowChange}
+                  checked={dows.has(1)}
                 />{" "}
                 月曜日
               </span>
@@ -139,6 +168,7 @@ const AddPage = () => {
                   value="2"
                   style={{ margin: "0px 0px 0px 10px" }}
                   onClick={handleDowChange}
+                  checked={dows.has(2)}
                 />{" "}
                 火曜日
               </span>
@@ -148,6 +178,7 @@ const AddPage = () => {
                   value="3"
                   style={{ margin: "0px 0px 0px 10px" }}
                   onClick={handleDowChange}
+                  checked={dows.has(3)}
                 />{" "}
                 水曜日
               </span>
@@ -157,6 +188,7 @@ const AddPage = () => {
                   value="4"
                   style={{ margin: "0px 0px 0px 10px" }}
                   onClick={handleDowChange}
+                  checked={dows.has(4)}
                 />{" "}
                 木曜日
               </span>
@@ -166,6 +198,7 @@ const AddPage = () => {
                   value="5"
                   style={{ margin: "0px 0px 0px 10px" }}
                   onClick={handleDowChange}
+                  checked={dows.has(5)}
                 />{" "}
                 金曜日
               </span>
@@ -175,11 +208,14 @@ const AddPage = () => {
                   value="6"
                   style={{ margin: "0px 0px 0px 10px" }}
                   onClick={handleDowChange}
+                  checked={dows.has(6)}
                 />{" "}
                 土曜日
               </span>
               <br />
-              <select name="begin" onChange={handleBeginChange}>
+              <select name="begin"
+              value={begin}
+              onChange={handleBeginChange}>
                 <option value="1">1限</option>
                 <option value="2">2限</option>
                 <option value="3">3限</option>
@@ -192,7 +228,9 @@ const AddPage = () => {
                 <option value="10">10限</option>
               </select>
               〜
-              <select name="end" onChange={handleEndChange}>
+              <select name="end"
+              value={end}
+              onChange={handleEndChange}>
                 <option value="1">1限</option>
                 <option value="2">2限</option>
                 <option value="3">3限</option>
@@ -218,6 +256,7 @@ const AddPage = () => {
                       boxSizing: "border-box",
                     }}
                     placeholder="title"
+                    value={memo[index].title}
                     onChange={handleMemoChange}
                     data-num={index}
                   ></input>
@@ -230,6 +269,7 @@ const AddPage = () => {
                       margin: "0",
                     }}
                     placeholder="content"
+                    value={memo[index].text}
                     onChange={handleMemoChange}
                     data-num={index}
                   />
@@ -239,7 +279,7 @@ const AddPage = () => {
             </p>
             <button
               onClick={() => {
-                router.push("/?quarter=" + quarter.toString());
+                router.push("/");
               }}
             >
               時間割に戻る
@@ -252,4 +292,4 @@ const AddPage = () => {
   );
 };
 
-export default AddPage;
+export default EditPage;

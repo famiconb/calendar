@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { useMemo } from "react";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces";
 
@@ -43,6 +44,7 @@ const LectureList = ({ lecture }: Props) => (
   <ul>
     <h1>講義情報ページ</h1>
     <h2>講義名: {lecture.name}</h2>
+    <Link href={`/edit-page?id=${lecture.id}`}>edit</Link>
     <h3>講義の日程</h3>
     {lecture.dates.map((item, i) => (
       <li key={i}>
