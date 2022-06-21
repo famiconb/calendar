@@ -93,8 +93,13 @@ const EditPage = () => {
     }
     console.log(data);
 
-    const saved_lectures = loadLecture();
-    saved_lectures.filter(saved_lecture => saved_lecture.id != id);
+    const saved_lectures = loadLecture().map(saved_lecture => {
+      if(saved_lecture.id != id){
+        return saved_lecture;
+      } else {
+        return lecture;
+      }
+    });
     saveLecture([...saved_lectures, data]);
     router.push("/");
   };
