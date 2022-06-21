@@ -249,7 +249,7 @@ const EditPage = () => {
                       boxSizing: "border-box",
                     }}
                     placeholder="title"
-                    value={memo[index].title}
+                    defaultValue={memo[index].title}
                     onChange={handleMemoChange}
                     data-num={index}
                   ></input>
@@ -262,7 +262,7 @@ const EditPage = () => {
                       margin: "0",
                     }}
                     placeholder="content"
-                    value={memo[index].text}
+                    defaultValue={memo[index].text}
                     onChange={handleMemoChange}
                     data-num={index}
                   />
