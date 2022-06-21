@@ -41,22 +41,24 @@ const getStringOfPeriod = (item: LectureDate) => {
 };
 
 const LectureList = ({ lecture }: Props) => (
-  <div>
+  <div className="m-2.5">
     <h2>講義名: {lecture.name}</h2>
     <h3>講義の日程</h3>
-    <ul>
+    <ul className="pl-2">
       {lecture.dates.map((item, i) => (
         <li key={i}>
           <div>
-            <p>{getStringOfDayOfWeek(item)}曜日</p>
-            <p>時限:{getStringOfPeriod(item)}</p>
+            <p>
+              {getStringOfDayOfWeek(item)}曜日 時限:{getStringOfPeriod(item)}
+            </p>
+            <p></p>
           </div>
         </li>
       ))}
     </ul>
 
     <h3>講義に関するメモ</h3>
-    <ul>
+    <ul className="pl-2 space-y-2">
       {lecture.memo.map((item, i) => (
         <li key={i}>
           <p>{item.title}</p>

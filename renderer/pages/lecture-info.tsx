@@ -74,7 +74,12 @@ const LectureInfoPage = () => {
     return (
       <Layout title="講義の詳細情報" goBack={() => router.push("/")}>
         <LectureList lecture={lecture} />
-        <button onClick={openModal}>この講義を削除</button>
+        <button
+          onClick={openModal}
+          className="bg-red-500 p-1.5 rounded hover:bg-red-400 shadow-lg"
+        >
+          削除
+        </button>
         <Modal
           contentLabel="Check Modal"
           isOpen={modalIsOpen}
@@ -82,11 +87,23 @@ const LectureInfoPage = () => {
           onAfterOpen={afterOpenModal}
           onRequestClose={closeModal}
         >
-          <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
+          <h2 ref={(_subtitle) => (subtitle = _subtitle)} className="text-lg">
             「{lecture.name}」を消して大丈夫ですか？
           </h2>
-          <button onClick={closeModal}>やっぱやめる</button>
-          <button onClick={deletePage}>消します!</button>
+          <div className="space-x-2 pt-2">
+            <button
+              onClick={closeModal}
+              className="border border-black rounded-sm"
+            >
+              やっぱやめる
+            </button>
+            <button
+              onClick={deletePage}
+              className="bg-red-400 p-0.5 rounded-sm"
+            >
+              消します!
+            </button>
+          </div>
         </Modal>
       </Layout>
     );

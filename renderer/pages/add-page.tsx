@@ -37,12 +37,21 @@ const AddPage = () => {
   const [memo, setMemo] = useState<LectureMemo[]>([{ title: "", text: "" }]);
   const handleMemoChange = (event: any) => {
     const num = Number(event.target.dataset.num);
-    if (event.target.name == "title") {
-      memo[num].title = event.target.value;
-    }
-    if (event.target.name == "text") {
-      memo[num].text = event.target.value;
-    }
+
+    setMemo((m) =>
+      m.map((x, n) => {
+        if (n === num) {
+          if (event.target.name === "text") {
+            return { ...x, text: event.target.value };
+          } else {
+            return { ...x, title: event.target.value };
+          }
+        } else {
+          return x;
+        }
+      })
+    );
+
     console.log(memo);
   };
 
@@ -161,7 +170,7 @@ const AddPage = () => {
                   data-num={index}
                 ></input>
                 <textarea
-                  name="memo-content"
+                  name="text"
                   className="border border-black w-full m-0 p-1 h-20 box-border"
                   placeholder="コンテンツ..."
                   onChange={handleMemoChange}
