@@ -63,8 +63,10 @@ const EditPage = ({ lecture  = sampleLectureInfo}: Props) => {
 
   const onSubmit = () => {
     console.log("onSubmit");
+    const saved_lectures = loadLecture();
+    const id = 0;
     const data: Lecture = {
-      id: 0,
+      id: id,
       name: title,
       dates: [],
       memo: memo,
@@ -79,8 +81,21 @@ const EditPage = ({ lecture  = sampleLectureInfo}: Props) => {
       }
       data.dates.push(date);
     }
+    
+    for (const dow of dows) {
+      const date: LectureDate = {
+        dayOfWeek: dow,
+        period: [],
+      };
+      for (let i = begin; i <= end; ++i) {
+        date.period.push(i);
+      }
+      data.dates.push(date);
+    }
     console.log(data);
-    saveLecture([...loadLecture(), data]);
+
+    saved_lectures.filter(saved_lecture => saved_lecture.id != id);
+    saveLecture([...saved_lectures, data]);
     router.push("/");
   };
 
