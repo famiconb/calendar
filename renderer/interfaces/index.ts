@@ -31,7 +31,7 @@ export type LectureMemo = {
 export type Lecture = {
   id: number;
   name: string;
-  code: string;//科目コード
+  code: string; //科目コード
   dates: LectureDate[];
   memo: LectureMemo[];
 };
