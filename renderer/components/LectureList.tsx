@@ -29,11 +29,15 @@ const getStringOfDayOfWeek = (item: LectureDate) => {
 };
 
 const getStringOfPeriod = (item: LectureDate) => {
-  const tmp: String = "";
-  if (item.period.length != 2) {
-    return "期間のサイズがおかしい!!";
+  let tmp: String = "";
+  if (item.period.length < 1) {
+    return "期間のサイズがおかしい!! : " + item.period.length;
   } else {
-    return item.period[0] + "~" + item.period[1];
+    for (let i = 0; i < item.period.length - 1; i++) {
+      tmp += item.period[i] + ",";
+    }
+    tmp += item.period[item.period.length - 1] + "";
+    return tmp;
   }
 };
 
