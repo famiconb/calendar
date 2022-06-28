@@ -4,36 +4,54 @@ import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
+import { useLectureData } from "../hooks/useLectureData";
 
 const EditPage = () => {
   const router = useRouter();
 
   const id = Number(router.query["id"]);
-  const [lecture] = useState(
-    loadLecture().filter((lecture) => lecture.id == id)[0]
-  );
+  const { lectures, initialized } = useLectureData();
+  const empty_lecture: Lecture = {
+    id: 0,
+    name: "_",
+    code: "",
+    dates: [{ dayOfWeek: 1, period: [1] }],
+    memo: [],
+  };
+  const [lectureLoaded, setlectureLoaded] = useState(false);
+  const [lecture, setLecture] = useState(empty_lecture);
+  useEffect(() => {
+    if (lectures != null && initialized) {
+      setLecture(lectures.filter((lecture) => lecture.id == id)[0]);
+      setlectureLoaded(true);
+    }
+  }, [lectures, id, initialized]);
 
   const [dataLoaded, setDataLoaded] = useState(false);
 
-  const [title, setTitle] = useState(lecture.name);
+  const [title, setTitle] = useState("");
+  useEffect(() => setTitle(lecture.name), [lecture]);
   const handleTitleChange = (event: any) => {
     setTitle(event.target.value);
     console.log(title);
   };
-  const [code, setCode] = useState(lecture.code);
+  const [code, setCode] = useState("");
+  useEffect(() => setCode(lecture.code), [lecture]);
   const handleCodeChange = (event: any) => {
     setCode(event.target.value);
   };
 
   const [dows, setDows] = useState(new Set<number>());
   useEffect(() => {
-    const dowSet = new Set<number>();
-    lecture.dates.forEach((date) => {
-      dowSet.add(date.dayOfWeek);
-    });
-    setDows(dowSet);
-    setDataLoaded(true);
-  }, [lecture]);
+    if(lectureLoaded) {
+      const dowSet = new Set<number>();
+      lecture.dates.forEach((date) => {
+        dowSet.add(date.dayOfWeek);
+      });
+      setDows(dowSet);
+      setDataLoaded(true);
+    }
+  }, [lecture, lectureLoaded]);
   const handleDowChange = (event: any) => {
     if (dows.has(Number(event.target.value))) {
       dows.delete(Number(event.target.value));
@@ -44,13 +62,15 @@ const EditPage = () => {
     console.log(dows);
   };
 
-  const [begin, setBegin] = useState(lecture.dates[0].period[0]);
+  const [begin, setBegin] = useState(1);
+  useEffect(() => setBegin(lecture.dates[0].period[0]), [lecture, lectureLoaded]);
   const handleBeginChange = (event: any) => {
     setBegin(Number(event.target.value));
     console.log(begin);
   };
 
-  const [end, setEnd] = useState(lecture.dates[0].period.slice(-1)[0]);
+  const [end, setEnd] = useState(1);
+  useEffect(() => setEnd(lecture.dates[0].period.slice(-1)[0]), [lecture, lectureLoaded]);
   const handleEndChange = (event: any) => {
     setEnd(Number(event.target.value));
     console.log(end);
@@ -62,7 +82,7 @@ const EditPage = () => {
     lecture.memo.forEach((memo) => {
       setMemo((x) => [...x, { title: memo.title, text: memo.text }]);
     });
-  }, [lecture]);
+  }, [lecture, lectureLoaded]);
 
   const handleMemoChange = (event: any) => {
     const num = Number(event.target.dataset.num);
