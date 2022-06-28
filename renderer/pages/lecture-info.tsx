@@ -75,7 +75,10 @@ const LectureInfoPage = () => {
     };
 
     return (
-      <Layout title="講義の詳細情報" goBack={() => router.push("/?quarter=" + quarter.toString())}>
+      <Layout
+        title="講義の詳細情報"
+        goBack={() => router.push("/?quarter=" + quarter.toString())}
+      >
         <LectureList lecture={lecture} />
         <Button onClick={openModal} color="red">
           削除

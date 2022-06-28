@@ -101,7 +101,10 @@ const AddPage = () => {
   const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
 
   return (
-    <Layout title="授業情報の追加" goBack={() => router.push("/?quarter=" + quarter.toString())}>
+    <Layout
+      title="授業情報の追加"
+      goBack={() => router.push("/?quarter=" + quarter.toString())}
+    >
       <div className="add-page_content m-auto w-11/12 mt-4">
         <div className="add-page_inner m-2.5 block space-y-4">
           <div className="add-page_row my-2.5 block">
