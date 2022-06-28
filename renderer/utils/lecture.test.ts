@@ -22,6 +22,7 @@ function saveLectureTest(quarter: number = 0) {
     {
       id: 4,
       name: "こうぎ4",
+      code: "XCO.T476",
       dates: [
         { dayOfWeek: 1, period: [3, 4] },
         { dayOfWeek: 3, period: [1, 2] },
@@ -30,6 +31,7 @@ function saveLectureTest(quarter: number = 0) {
     },
     {
       id: 5,
+      code: "",
       name: "こうぎ5",
       dates: [{ dayOfWeek: 4, period: [1, 2, 5, 6] }],
       memo: [{ title: "zoom", text: "https://D" }],
