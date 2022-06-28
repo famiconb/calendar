@@ -153,6 +153,7 @@ const EditPage = () => {
                   height: "2em",
                   boxSizing: "border-box",
                 }}
+                value={code}
                 onChange={handleCodeChange}
               ></input>
             </p>
