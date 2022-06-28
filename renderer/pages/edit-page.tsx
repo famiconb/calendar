@@ -147,7 +147,7 @@ const EditPage = () => {
                 period == saved_lecture_period
               ) {
                 passed = false;
-                errorMessages.push("開講日時が既存の講義と重複しています。");
+                errorMessages.push("開講日時が"+saved_lecture.name+"と重複しています。");
               }
             }
           }
