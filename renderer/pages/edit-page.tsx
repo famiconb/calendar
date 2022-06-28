@@ -68,8 +68,7 @@ const EditPage = () => {
     const num = Number(event.target.dataset.num);
     if (event.target.name == "title") {
       memo[num].title = event.target.value;
-    }
-    if (event.target.name == "text") {
+    } else if (event.target.name == "text") {
       memo[num].text = event.target.value;
     }
     console.log(memo);
@@ -197,7 +196,7 @@ const EditPage = () => {
                   data-num={index}
                 ></input>
                 <textarea
-                  name="memo-content"
+                  name="text"
                   style={{
                     width: "100%",
                     height: "5em",
