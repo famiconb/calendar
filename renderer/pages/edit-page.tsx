@@ -110,7 +110,7 @@ const EditPage = () => {
     let passed = true;
     if (edited_lecture.name == null || edited_lecture.name == "") {
       passed = false;
-      errorMessages.push("titleは必要です。");
+      errorMessages.push("授業名は必要です。");
     }
     if (edited_lecture.dates.length == 0) {
       passed = false;

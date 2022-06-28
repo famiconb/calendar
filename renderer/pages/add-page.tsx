@@ -97,7 +97,7 @@ const AddPage = () => {
     let passed = true;
     if (data.name == null || data.name == "") {
       passed = false;
-      errorMessages.push("titleは必要です。");
+      errorMessages.push("授業名は必要です。");
     }
     if (data.dates.length == 0) {
       passed = false;
