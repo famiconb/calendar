@@ -45,7 +45,7 @@ const EditPage = () => {
     console.log(begin);
   };
 
-  const [end, setEnd] = useState(lecture.dates[0].period[1]);
+  const [end, setEnd] = useState(lecture.dates[0].period.slice(-1)[0]);
   const handleEndChange = (event: any) => {
     setEnd(Number(event.target.value));
     console.log(end);
@@ -270,7 +270,7 @@ const EditPage = () => {
                       boxSizing: "border-box",
                     }}
                     placeholder="title"
-                    value={memo[index].title}
+                    defaultValue={memo[index].title}
                     onChange={handleMemoChange}
                     data-num={index}
                   ></input>
@@ -283,7 +283,7 @@ const EditPage = () => {
                       margin: "0",
                     }}
                     placeholder="content"
-                    value={memo[index].text}
+                    defaultValue={memo[index].text}
                     onChange={handleMemoChange}
                     data-num={index}
                   />
@@ -298,7 +298,7 @@ const EditPage = () => {
             >
               時間割に戻る
             </button>
-            <button onClick={onSubmit}>講義を追加</button>
+            <button onClick={onSubmit}>講義を編集</button>
           </div>
         </div>
       </div>
