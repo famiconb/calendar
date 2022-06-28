@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
 import Link from "next/link";
 import Head from "next/head";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 
 type Props = {
   children: ReactNode;
@@ -14,7 +13,7 @@ const Layout = ({
   title = "This is the default title",
   goBack,
 }: Props) => (
-  <div className="bg-gray-100">
+  <div className="bg-gray-100 w-screen h-screen">
     <Head>
       <title>{title}</title>
       <meta charSet="utf-8" />
@@ -24,7 +23,10 @@ const Layout = ({
       {goBack && (
         <div className="p-2 flex bg-blue-200">
           <div>
-            <button className="rounded-full text-xl w-8 h-8" onClick={goBack}>
+            <button
+              className="rounded-full text-xl w-8 h-8 hover:bg-blue-300"
+              onClick={goBack}
+            >
               ←
             </button>
           </div>
@@ -32,7 +34,7 @@ const Layout = ({
         </div>
       )}
     </header>
-    <div className={goBack && "h-screen w-screen p-2.5"}>{children}</div>
+    <div className={goBack && "w-screen p-2.5"}>{children}</div>
   </div>
 );
 

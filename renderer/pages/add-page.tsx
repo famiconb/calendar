@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
+import Button from "../components/Button";
 
 const AddPage = () => {
   const router = useRouter();
@@ -181,12 +182,7 @@ const AddPage = () => {
           </div>
           <div className="flex flex-col space-y-2">
             <div className="flex space-x-1">
-              <button
-                onClick={onSubmit}
-                className="p-1.5 rounded bg-blue-400 shadow-lg hover:bg-blue-300"
-              >
-                追加
-              </button>
+              <Button onClick={onSubmit}>追加</Button>
             </div>
           </div>
         </div>

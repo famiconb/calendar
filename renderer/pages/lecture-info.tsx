@@ -6,6 +6,7 @@ import { loadLecture, saveLecture } from "../utils/lecture";
 import React, { useState } from "react";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
+import Button from "../components/Button";
 
 const customStyles = {
   content: {
@@ -74,12 +75,9 @@ const LectureInfoPage = () => {
     return (
       <Layout title="講義の詳細情報" goBack={() => router.push("/")}>
         <LectureList lecture={lecture} />
-        <button
-          onClick={openModal}
-          className="bg-red-500 p-1.5 rounded hover:bg-red-400 shadow-lg"
-        >
+        <Button onClick={openModal} color="red">
           削除
-        </button>
+        </Button>
         <Modal
           contentLabel="Check Modal"
           isOpen={modalIsOpen}
