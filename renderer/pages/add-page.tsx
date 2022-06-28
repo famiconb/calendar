@@ -110,7 +110,7 @@ const AddPage = () => {
         }
         if (date.period.length == 0) {
           passed = false;
-          errorMessages.push("開講時間は必要です。");
+          errorMessages.push("講義開始時限は終了時限以前である必要があります。");
         }
       }
     }
