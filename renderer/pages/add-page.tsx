@@ -53,7 +53,6 @@ const AddPage = () => {
   const onSubmit = () => {
     console.log("onSubmit");
     const saved_lectures = loadLecture(quarter);
-    console.log(saved_lectures);
     const data: Lecture = {
       id:
         saved_lectures.length > 0
