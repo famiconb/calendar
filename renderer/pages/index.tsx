@@ -13,13 +13,29 @@ const row_view = (number: number, lectures: Lecture[]) => {
   // 時間割のnumber限目の列
   const row = [];
 
+  // 時間帯
+  const lecture_time = (number: number) => {
+    const times = [
+      "",
+      "8:50-9:40",
+      "9:40-10:30",
+      "10:45-11:35",
+      "11:35-12:25",
+      "14:20-15:10",
+      "15:10-16:00",
+      "16:15-17:05",
+      "17:05-17:55",
+    ];
+    return times[number];
+  };
+
   // dayOfWeek 何曜日
   for (let dayOfWeek = 0; dayOfWeek < 6; dayOfWeek++) {
     if (dayOfWeek == 0) {
       row.push(
         <th className="border-solid border border-black">
           <p>{number}時限目</p>
-          <p></p>
+          <p>{lecture_time(number)}</p>
         </th>
       );
     } else {
@@ -51,25 +67,11 @@ const row_view = (number: number, lectures: Lecture[]) => {
   return <tr>{row}</tr>;
 };
 
-//// 表示用の講義データ
-// const lectures: Lecture[] = [
-//   {
-//     id: 0,
-//     name: "システム開発基礎",
-//     dates: [{ dayOfWeek: 2, period: [5, 6, 7, 8] }],
-//     memo: [{ title: "zoom", text: "https://A" }],
-//   },
-// ];
-
 const TableHead: React.FC<{ children?: React.ReactNode }> = (props) => (
   <th className="border border-solid border-black w-28">{props.children}</th>
 );
 
 const IndexPage = () => {
-  // イベントクリック 今は無用のもの
-  // const onSelectEvent = useCallback((calEvent) => {
-  //   window.alert(calEvent.title);
-  // }, []);
 
   // 表示用の講義データ
   const { lectures } = useLectureData();
