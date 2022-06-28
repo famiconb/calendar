@@ -97,7 +97,7 @@ const EditPage = () => {
     });
     console.log(edited_lectures);
     saveLecture(edited_lectures, quarter);
-    router.push("/");
+    router.push("/?quarter=" + quarter.toString());
   };
 
   const addInputForm = () => {
@@ -274,7 +274,7 @@ const EditPage = () => {
             </p>
             <button
               onClick={() => {
-                router.push("/");
+                router.push("/?quarter=" + quarter.toString());
               }}
             >
               時間割に戻る

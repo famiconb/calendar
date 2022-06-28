@@ -70,7 +70,7 @@ const LectureInfoPage = () => {
       //lecDataの上書き
       saveLecture(lecData);
       console.log(loadLecture());
-      router.push("/");
+      router.push("/?quarter=" + quarter.toString());
     };
 
     return (
