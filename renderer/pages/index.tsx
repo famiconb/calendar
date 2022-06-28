@@ -75,7 +75,6 @@ const TableHead: React.FC<{ children?: React.ReactNode }> = (props) => (
 );
 
 const IndexPage = () => {
-
   // 表示用の講義データ
   const { lectures } = useLectureData();
   const router = useRouter();
