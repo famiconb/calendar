@@ -58,7 +58,7 @@ const EditPage = () => {
     if (event.target.name == "title") {
       memo[num].title = event.target.value;
     }
-    if (event.target.name == "text") {
+    else if (event.target.name == "memo-content") {
       memo[num].text = event.target.value;
     }
     console.log(memo);
