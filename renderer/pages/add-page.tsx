@@ -7,7 +7,6 @@ import Button from "../components/Button";
 
 const AddPage = () => {
   const router = useRouter();
-  const errorMessages: string[] = [];
 
   const [title, setTitle] = useState("");
   const handleTitleChange = (event: any) => {
@@ -63,6 +62,7 @@ const AddPage = () => {
 
   const onSubmit = () => {
     console.log("onSubmit");
+    const errorMessages: string[] = [];
     const saved_lectures = loadLecture();
     const data: Lecture = {
       id:

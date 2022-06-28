@@ -7,7 +7,6 @@ import Button from "../components/Button";
 
 const EditPage = () => {
   const router = useRouter();
-  const errorMessages: string[] = [];
 
   const id = Number(router.query["id"]);
   const lecture = loadLecture().filter((lecture) => lecture.id == id)[0];
@@ -72,6 +71,7 @@ const EditPage = () => {
 
   const onSubmit = () => {
     console.log("onSubmit");
+    const errorMessages: string[] = [];
     const edited_lecture: Lecture = {
       id: id,
       name: title,
