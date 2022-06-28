@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { useMemo } from "react";
 import ListItem from "./ListItem";
 import { Lecture, LectureDate, LectureMemo, User } from "../interfaces";
@@ -43,6 +44,7 @@ const getStringOfPeriod = (item: LectureDate) => {
 const LectureList = ({ lecture }: Props) => (
   <div className="m-2.5">
     <h2>講義名: {lecture.name}</h2>
+    <Link href={`/edit-page?id=${lecture.id}`}>edit</Link>
     <h3>講義の日程</h3>
     <ul className="pl-2">
       {lecture.dates.map((item, i) => (
