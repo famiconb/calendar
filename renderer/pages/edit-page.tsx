@@ -120,7 +120,10 @@ const EditPage = () => {
   return !dataLoaded ? (
     <div>loading...</div>
   ) : (
-    <Layout title="授業情報の編集" goBack={() => router.push("/")}>
+    <Layout
+      title="授業情報の編集"
+      goBack={() => router.push(`/lecture-info?id=${lecture.id}`)}
+    >
       <div className="edit-page_content m-auto w-11/12 mt-4">
         <div className="edit-page_inner m-2.5 block space-y-4">
           <div className="edit-page_row my-2.5 block">
@@ -212,7 +215,7 @@ const EditPage = () => {
               </a>
             ))}
           </div>
-          <Button onClick={onSubmit}>講義を編集</Button>
+          <Button onClick={onSubmit}>編集を反映</Button>
         </div>
       </div>
     </Layout>
