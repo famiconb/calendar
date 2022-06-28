@@ -4,15 +4,23 @@ import { Lecture } from "../interfaces";
 import { useLectureData } from "../hooks/useLectureData";
 
 const IndexPage = () => {
-
   // 表示用の講義データ
   const { lectures } = useLectureData();
 
   const lecture_time = (number: number) => {
-    const times = ["", "8:50-9:40", "9:40-10:30", "10:45-11:35", "11:35-12:25" , "14:20-15:10", "15:10-16:00", "16:15-17:05", "17:05-17:55"];
-    // const times = ["", "8:50~", "~10:30", "10:45~", "~12:25" , "14:20~", "~16:00", "16:15~", "~17:55"];
-    return times[number]
-  } ;
+    const times = [
+      "",
+      "8:50-9:40",
+      "9:40-10:30",
+      "10:45-11:35",
+      "11:35-12:25",
+      "14:20-15:10",
+      "15:10-16:00",
+      "16:15-17:05",
+      "17:05-17:55",
+    ];
+    return times[number];
+  };
 
   /**
    * 各表の行を表示する
@@ -27,7 +35,11 @@ const IndexPage = () => {
     // dayOfWeek 何曜日
     for (let dayOfWeek = 0; dayOfWeek < 6; dayOfWeek++) {
       if (dayOfWeek == 0) {
-        row.push(<th style={{ border: "solid 1px" }}>{number + "時限目" + lecture_time(number)}</th>);
+        row.push(
+          <th style={{ border: "solid 1px" }}>
+            {number + "時限目" + lecture_time(number)}
+          </th>
+        );
       } else {
         let found = false;
         for (let lectures_i = 0; lectures_i < lectures.length; ++lectures_i) {
