@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 const AddPage = () => {
   const router = useRouter();
+  const errorMessages: string[] = [];
 
   const [title, setTitle] = useState("");
   const handleTitleChange = (event: any) => {
@@ -56,8 +57,9 @@ const AddPage = () => {
           : 0,
       name: title,
       dates: [],
-      memo: memo,
+      memo: [],
     };
+    
     for (const dow of dows) {
       const date: LectureDate = {
         dayOfWeek: dow,
@@ -68,9 +70,65 @@ const AddPage = () => {
       }
       data.dates.push(date);
     }
+
+    for (const memoi of memo){
+      if(memoi.title || memoi.text){
+        data.memo.push(memoi);
+      }
+    }
+
     console.log(data);
+
+    let passed = true;
+    if(data.name == null || data.name == ''){
+      passed = false;
+      errorMessages.push('titleは必要です。')
+    }
+    if(data.dates.length == 0){
+      passed = false;
+      errorMessages.push('開講日時は必要です。')
+    }else{
+      for(const date of data.dates){
+        if(date.dayOfWeek == null){
+          passed = false;
+          errorMessages.push('開講曜日は必要です。')
+        }
+        if (date.period.length == 0){
+          passed = false;
+          errorMessages.push('開講時間は必要です。')
+        }
+      }
+    }
+    for (const memoi of data.memo){
+      if (memoi.title == null || memoi.title == ''){
+        passed = false;
+        errorMessages.push('メモのtitleは必要です。')
+      }
+    }
+    // 開講日時の重複をvalidate
+    for(const date of data.dates){
+      for(const period of date.period){
+        for(const saved_lecture of saved_lectures){
+          for(const saved_lecture_date of saved_lecture.dates){
+            for(const saved_lecture_period of saved_lecture_date.period){
+              if(date.dayOfWeek == saved_lecture_date.dayOfWeek && period == saved_lecture_period){
+                passed = false;
+                errorMessages.push('開講日時が既存の講義と重複しています。')
+              }
+            }
+          }
+        }
+      }
+    }
+
+    if (passed){
     saveLecture([...saved_lectures, data]);
     router.push("/");
+    }else{
+      console.log('faild');
+      console.log(errorMessages);
+      window.alert(errorMessages);
+    }
   };
 
   const addInputForm = () => {
