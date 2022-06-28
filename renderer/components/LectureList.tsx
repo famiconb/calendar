@@ -41,6 +41,22 @@ const getStringOfPeriod = (item: LectureDate) => {
   }
 };
 
+const makeHypertext = (str: String): JSX.Element => {
+  const strList = str.split(/\s/);
+  const element: React.ReactNode[] = [];
+  strList.forEach((s: string) => {
+    const url = s.match(
+      /https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#\u3000-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+/
+    );
+    if (url != null) {
+      element.push(<a href={url[0]}>{url[0]} </a>);
+    } else {
+      element.push(s + " ");
+    }
+  });
+  return <>{element}</>;
+};
+
 const LectureList = ({ lecture }: Props) => (
   <div className="m-2.5">
     <h2>講義名: {lecture.name}</h2>
@@ -65,11 +81,7 @@ const LectureList = ({ lecture }: Props) => (
       {lecture.memo.map((item, i) => (
         <li key={i}>
           <p>{item.title}</p>
-          <textarea
-            className="border border-black"
-            value={item.text}
-            contentEditable={false}
-          />
+          {makeHypertext(item.text)}
         </li>
       ))}
     </ul>
