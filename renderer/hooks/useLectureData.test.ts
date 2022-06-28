@@ -22,6 +22,7 @@ describe("test useLecutureData hook", () => {
     //     id: 0,
     //     memo: [],
     //     name: "Doughnut",
+    //     code: "LAH.A401",
     //     dates: [
     //       {
     //         dayOfWeek: 2,

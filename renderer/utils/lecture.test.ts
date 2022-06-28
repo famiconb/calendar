@@ -6,12 +6,14 @@ function saveLectureTest(quarter: number = 0) {
     {
       id: 0,
       name: "こうぎ1",
+      code: "XCO.T475",
       dates: [{ dayOfWeek: 1, period: [3, 4] }],
       memo: [{ title: "zoom", text: "https://A" }],
     },
     {
       id: 2,
       name: "こうぎ9",
+      code: "",
       dates: [{ dayOfWeek: 4, period: [1, 2] }],
       memo: [{ title: "zoom", text: "https://B" }],
     },

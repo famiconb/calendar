@@ -47,6 +47,7 @@ const LectureList = ({ lecture }: Props) => {
     <ul>
       <h1>講義情報ページ</h1>
       <h2>講義名: {lecture.name}</h2>
+      <h2>科目コード: {lecture.code}</h2>
       <Link href={`/edit-page?id=${lecture.id}&quarter=${quarter}`}>edit</Link>
       <h3>講義の日程</h3>
       {lecture.dates.map((item, i) => (
