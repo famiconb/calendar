@@ -9,7 +9,9 @@ const EditPage = () => {
   const router = useRouter();
 
   const id = Number(router.query["id"]);
-  const lecture = loadLecture().filter((lecture) => lecture.id == id)[0];
+  const [lecture] = useState(
+    loadLecture().filter((lecture) => lecture.id == id)[0]
+  );
 
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -25,11 +27,13 @@ const EditPage = () => {
 
   const [dows, setDows] = useState(new Set<number>());
   useEffect(() => {
+    const dowSet = new Set<number>();
     lecture.dates.forEach((date) => {
-      dows.add(date.dayOfWeek);
+      dowSet.add(date.dayOfWeek);
     });
+    setDows(dowSet);
     setDataLoaded(true);
-  }, []);
+  }, [lecture]);
   const handleDowChange = (event: any) => {
     if (dows.has(Number(event.target.value))) {
       dows.delete(Number(event.target.value));
@@ -53,11 +57,13 @@ const EditPage = () => {
   };
 
   const [memo, setMemo] = useState<LectureMemo[]>([]);
+
   useEffect(() => {
     lecture.memo.forEach((memo) => {
       setMemo((x) => [...x, { title: memo.title, text: memo.text }]);
     });
-  }, []);
+  }, [lecture]);
+
   const handleMemoChange = (event: any) => {
     const num = Number(event.target.dataset.num);
     if (event.target.name == "title") {
