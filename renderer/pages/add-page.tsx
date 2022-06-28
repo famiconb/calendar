@@ -13,6 +13,10 @@ const AddPage = () => {
     setTitle(event.target.value);
     console.log(title);
   };
+  const [code, setCode] = useState("");
+  const handleCodeChange = (event: any) => {
+    setCode(event.target.value);
+  };
   const [dows, _] = useState(new Set<number>());
   const handleDowChange = (event: any) => {
     if (dows.has(Number(event.target.value))) {
@@ -65,6 +69,7 @@ const AddPage = () => {
           ? saved_lectures[saved_lectures.length - 1].id + 1
           : 0,
       name: title,
+      code: code,
       dates: [],
       memo: memo,
     };
@@ -102,6 +107,14 @@ const AddPage = () => {
               className="border border-black rounded-sm w-full h-8 box-border p-1"
               placeholder="授業名..."
               onChange={handleTitleChange}
+            ></input>
+          </div>
+          <div className="add-page_row my-3 block">
+            <p>科目コード</p>
+            <input
+              name="科目コード"
+              className="border border-black rounded-sm w-full h-8 box-border p-1"
+              onChange={handleCodeChange}
             ></input>
           </div>
           <div className="add-page_row my-2.5">
