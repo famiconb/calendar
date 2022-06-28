@@ -13,7 +13,7 @@ import Button from "../components/Button";
  * @param lectures 講義情報
  * @returns number行目の時間割情報を表示
  */
-const row_view = (number: number, lectures: Lecture[]) => {
+const row_view = (number: number, lectures: Lecture[], quarter: number) => {
   // 時間割のnumber限目の列
   const row = [];
 
@@ -114,14 +114,14 @@ const IndexPage = () => {
             </tr>
           </thead>
           <tbody>
-            {row_view(1, lectures)}
-            {row_view(2, lectures)}
-            {row_view(3, lectures)}
-            {row_view(4, lectures)}
-            {row_view(5, lectures)}
-            {row_view(6, lectures)}
-            {row_view(7, lectures)}
-            {row_view(8, lectures)}
+            {row_view(1, lectures, quarter)}
+            {row_view(2, lectures, quarter)}
+            {row_view(3, lectures, quarter)}
+            {row_view(4, lectures, quarter)}
+            {row_view(5, lectures, quarter)}
+            {row_view(6, lectures, quarter)}
+            {row_view(7, lectures, quarter)}
+            {row_view(8, lectures, quarter)}
           </tbody>
         </table>
       </div>
