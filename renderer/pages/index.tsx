@@ -38,7 +38,7 @@ const row_view = (number: number, lectures: Lecture[]) => {
       row.push(
         <th className="border-solid border border-black">
           <p>{number}時限目</p>
-          <p>{lecture_time(number)}</p>
+          <p className="text-xs">{lecture_time(number)}</p>
         </th>
       );
     } else {
@@ -123,8 +123,8 @@ const IndexPage = () => {
       >
         講義追加
       </Button>
-      <div className="p-2 w-screen">
-        <table className="border border-solid w-full h-full">
+      <div className="p-2 h-full">
+        <table className="border border-solid w-full">
           <thead>
             <tr>
               <TableHead></TableHead>
@@ -146,9 +146,10 @@ const IndexPage = () => {
             {row_view(8, lectures)}
           </tbody>
         </table>
-
-        <div className="whitespace-normal overflow-scroll h-20">
-          {otherLecture(lectures)}
+        <div className="h-20 overflow-auto border-double border-4 border-black">
+          <div className="whitespace-normal p-1">
+            {otherLecture(lectures)}
+          </div>
         </div>
       </div>
     </Layout>
