@@ -125,10 +125,11 @@ const AddPage = () => {
     }
 
     if (passed) {
+      console.log("passed");
       saveLecture([...saved_lectures, data]);
       router.push("/");
     } else {
-      console.log("faild");
+      console.log("failed");
       console.log(errorMessages);
       window.alert(errorMessages);
     }
