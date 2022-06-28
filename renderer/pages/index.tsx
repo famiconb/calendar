@@ -3,28 +3,23 @@ import Layout from "../components/Layout";
 import { Lecture } from "../interfaces";
 import { useLectureData } from "../hooks/useLectureData";
 
-//// 表示用の講義データ
-// const lectures: Lecture[] = [
-//   {
-//     id: 0,
-//     name: "システム開発基礎",
-//     dates: [{ dayOfWeek: 2, period: [5, 6, 7, 8] }],
-//     memo: [{ title: "zoom", text: "https://A" }],
-//   },
-// ];
-
 const IndexPage = () => {
-  // イベントクリック 今は無用のもの
-  // const onSelectEvent = useCallback((calEvent) => {
-  //   window.alert(calEvent.title);
-  // }, []);
 
   // 表示用の講義データ
   const { lectures } = useLectureData();
 
-  // 各表の行を表示する
-  // number 何限目
-  // lecture 講義データ Demo
+  const lecture_time = (number: number) => {
+    const times = ["", "8:50-9:40", "9:40-10:30", "10:45-11:35", "11:35-12:25" , "14:20-15:10", "15:10-16:00", "16:15-17:05", "17:05-17:55"];
+    // const times = ["", "8:50~", "~10:30", "10:45~", "~12:25" , "14:20~", "~16:00", "16:15~", "~17:55"];
+    return times[number]
+  } ;
+
+  /**
+   * 各表の行を表示する
+   * @param number 何限目
+   * @param lectures 講義データ
+   * @returns number限目の行row
+   */
   const row_view = (number: number, lectures: Lecture[]) => {
     // 時間割のnumber限目の列
     const row = [];
@@ -32,7 +27,7 @@ const IndexPage = () => {
     // dayOfWeek 何曜日
     for (let dayOfWeek = 0; dayOfWeek < 6; dayOfWeek++) {
       if (dayOfWeek == 0) {
-        row.push(<th style={{ border: "solid 1px" }}>{number + "時限目"}</th>);
+        row.push(<th style={{ border: "solid 1px" }}>{number + "時限目" + lecture_time(number)}</th>);
       } else {
         let found = false;
         for (let lectures_i = 0; lectures_i < lectures.length; ++lectures_i) {
@@ -66,7 +61,7 @@ const IndexPage = () => {
     <Layout title="CUCalendar">
       <table style={{ border: "solid 1px" }}>
         <tr>
-          <th style={{ width: "100px", border: "solid 1px" }}></th>
+          <th style={{ width: "80px", border: "solid 1px" }}></th>
           <th style={{ width: "100px", border: "solid 1px" }}>月</th>
           <th style={{ width: "100px", border: "solid 1px" }}>火</th>
           <th style={{ width: "100px", border: "solid 1px" }}>水</th>
