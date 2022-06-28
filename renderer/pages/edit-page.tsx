@@ -77,7 +77,7 @@ const EditPage = () => {
       name: title,
       code: code,
       dates: [],
-      memo: memo,
+      memo: [],
     };
     for (const dow of dows) {
       const date: LectureDate = {
