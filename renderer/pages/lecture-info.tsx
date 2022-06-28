@@ -51,13 +51,13 @@ const LectureInfoPage = () => {
   }
   try {
     const id = Array.isArray(query_id_raw) ? query_id_raw[0] : query_id_raw;
-    const lecture = findLecture(id);
+    const lecture = findLecture(id, quarter);
     /**
      * 開かれているページ(lectureのidと一致するもの)の講義情報を削除する
      */
     const deletePage = () => {
       console.log("delete click");
-      const lecData = loadLecture();
+      const lecData = loadLecture(quarter);
       console.log(lecData);
       for (let i = 0; i < lecData.length; i++) {
         // 保存済講義に同じidの講義を見つけたら削除
@@ -68,8 +68,8 @@ const LectureInfoPage = () => {
         }
       }
       //lecDataの上書き
-      saveLecture(lecData);
-      console.log(loadLecture());
+      saveLecture(lecData, quarter);
+      console.log(loadLecture(quarter));
       router.push("/?quarter=" + quarter.toString());
     };
 
@@ -112,8 +112,8 @@ const LectureInfoErrorPage = (err: string) => {
   );
 };
 
-function findLecture(id: number | string) {
-  const lectures: Lecture[] = loadLecture();
+function findLecture(id: number | string, quarter: number) {
+  const lectures: Lecture[] = loadLecture(quarter);
   const found = lectures.find((lec) => lec.id === Number(id));
 
   if (!found) {
