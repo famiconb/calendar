@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
+import Button from "../components/Button";
 
 const EditPage = () => {
   const router = useRouter();
@@ -104,181 +105,95 @@ const EditPage = () => {
     console.log(memo);
   };
 
+  const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+
   return !dataLoaded ? (
     <div>loading...</div>
   ) : (
-    <Layout title="授業情報の編集">
-      <div className="content" style={{ margin: "10px" }}>
-        <h1>授業情報の追加</h1>
-        <div
-          className="add-page_content"
-          style={{ margin: "auto", width: "90%", border: "solid thin black" }}
-        >
-          <div
-            className="add-page_inner"
-            style={{ margin: "10px", display: "block" }}
-          >
-            <p
-              className="add-page_row"
-              style={{ margin: "10px 0px", display: "block" }}
-            >
-              授業名
-              <br />
-              <input
-                name="title"
-                style={{
-                  width: "100%",
-                  height: "2em",
-                  boxSizing: "border-box",
-                }}
-                value={title}
-                onChange={handleTitleChange}
-              ></input>
-            </p>
-            <p className="add-page_row" style={{ margin: "10px 0px" }}>
-              開講日時
-              <br />
-              <span style={{ display: "inline-block" }}>
-                <input
-                  name="dow0"
-                  type="checkbox"
-                  value="0"
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onChange={handleDowChange}
-                  defaultChecked={dows.has(0)}
-                />{" "}
-                日曜日
-              </span>
-              <span style={{ display: "inline-block" }}>
-                <input
-                  type="checkbox"
-                  value="1"
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onClick={handleDowChange}
-                  defaultChecked={dows.has(1)}
-                />{" "}
-                月曜日
-              </span>
-              <span style={{ display: "inline-block" }}>
-                <input
-                  type="checkbox"
-                  value="2"
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onClick={handleDowChange}
-                  defaultChecked={dows.has(2)}
-                />{" "}
-                火曜日
-              </span>
-              <span style={{ display: "inline-block" }}>
-                <input
-                  type="checkbox"
-                  value="3"
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onClick={handleDowChange}
-                  defaultChecked={dows.has(3)}
-                />{" "}
-                水曜日
-              </span>
-              <span style={{ display: "inline-block" }}>
-                <input
-                  type="checkbox"
-                  value="4"
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onClick={handleDowChange}
-                  defaultChecked={dows.has(4)}
-                />{" "}
-                木曜日
-              </span>
-              <span style={{ display: "inline-block" }}>
-                <input
-                  type="checkbox"
-                  value="5"
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onClick={handleDowChange}
-                  defaultChecked={dows.has(5)}
-                />{" "}
-                金曜日
-              </span>
-              <span style={{ display: "inline-block" }}>
-                <input
-                  type="checkbox"
-                  value="6"
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onClick={handleDowChange}
-                  defaultChecked={dows.has(6)}
-                />{" "}
-                土曜日
-              </span>
-              <br />
-              <select name="begin" value={begin} onChange={handleBeginChange}>
-                <option value="1">1限</option>
-                <option value="2">2限</option>
-                <option value="3">3限</option>
-                <option value="4">4限</option>
-                <option value="5">5限</option>
-                <option value="6">6限</option>
-                <option value="7">7限</option>
-                <option value="8">8限</option>
-                <option value="9">9限</option>
-                <option value="10">10限</option>
-              </select>
-              〜
-              <select name="end" value={end} onChange={handleEndChange}>
-                <option value="1">1限</option>
-                <option value="2">2限</option>
-                <option value="3">3限</option>
-                <option value="4">4限</option>
-                <option value="5">5限</option>
-                <option value="6">6限</option>
-                <option value="7">7限</option>
-                <option value="8">8限</option>
-                <option value="9">9限</option>
-                <option value="10">10限</option>
-              </select>
-            </p>
-            <p className="add-page_row" style={{ margin: "10px 0px" }}>
-              メモ
-              <br />
-              {memo.map((_, index) => (
-                <a style={{ margin: "3px 0px" }} key={index}>
-                  <input
-                    name="title"
-                    style={{
-                      width: "100%",
-                      height: "1.5em",
-                      boxSizing: "border-box",
-                    }}
-                    placeholder="title"
-                    defaultValue={memo[index].title}
-                    onChange={handleMemoChange}
-                    data-num={index}
-                  ></input>
-                  <textarea
-                    name="memo-content"
-                    style={{
-                      width: "100%",
-                      height: "5em",
-                      boxSizing: "border-box",
-                      margin: "0",
-                    }}
-                    placeholder="content"
-                    defaultValue={memo[index].text}
-                    onChange={handleMemoChange}
-                    data-num={index}
-                  />
-                </a>
-              ))}
-              <button onClick={addInputForm}> 追加ボタン </button>
-            </p>
-            <button
-              onClick={() => {
-                router.push("/");
-              }}
-            >
-              時間割に戻る
-            </button>
-            <button onClick={onSubmit}>講義を編集</button>
+    <Layout title="授業情報の編集" goBack={() => router.push("/")}>
+      <div className="edit-page_content m-auto w-11/12 mt-4">
+        <div className="edit-page_inner m-2.5 block space-y-4">
+          <div className="edit-page_row my-2.5 block">
+            <p>授業名</p>
+            <input
+              name="title"
+              className="border border-black rounded-sm w-full h-8 box-border p-1"
+              value={title}
+              onChange={handleTitleChange}
+            ></input>
           </div>
+          <div className="add-page_row my-2.5">
+            <p>開講日時</p>
+            <div className="space-x-5">
+              {weekdays.map((w, i) => {
+                return (
+                  <span className="inline-block" key={`${w}-${i}`}>
+                    <input
+                      name="dow0"
+                      type="checkbox"
+                      value={`${i}`}
+                      onChange={handleDowChange}
+                      defaultChecked={dows.has(i)}
+                    />{" "}
+                    {w}
+                  </span>
+                );
+              })}
+            </div>
+            <select name="begin" value={begin} onChange={handleBeginChange}>
+              {[...Array(10).keys()].map((x) => (
+                <option value={`${x + 1}`} key={`option-left-value-${x}`}>
+                  {x + 1}限
+                </option>
+              ))}
+            </select>
+            〜
+            <select name="end" value={end} onChange={handleEndChange}>
+              {[...Array(10).keys()].map((x) => (
+                <option value={`${x + 1}`} key={`option-right-value-${x}`}>
+                  {x + 1}限
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="add-page_row" style={{ margin: "10px 0px" }}>
+            <div className="flex">
+              <p className="flex-grow">メモ</p>
+              <button
+                onClick={addInputForm}
+                className="bg-blue-400 hover:bg-blue-300 shadow-md rounded-full h-7 w-7"
+              >
+                +
+              </button>
+            </div>
+            {memo.map((_, index) => (
+              <a style={{ margin: "3px 0px" }} key={index}>
+                <input
+                  name="title"
+                  className="border border-black rounded-sm p-1 w-full h-7 box-border"
+                  placeholder="title"
+                  defaultValue={memo[index].title}
+                  onChange={handleMemoChange}
+                  data-num={index}
+                ></input>
+                <textarea
+                  name="memo-content"
+                  style={{
+                    width: "100%",
+                    height: "5em",
+                    boxSizing: "border-box",
+                    margin: "0",
+                  }}
+                  className="border border-black w-full m-0 p-1 h-20 box-border"
+                  placeholder="content"
+                  defaultValue={memo[index].text}
+                  onChange={handleMemoChange}
+                  data-num={index}
+                />
+              </a>
+            ))}
+          </div>
+          <Button onClick={onSubmit}>講義を編集</Button>
         </div>
       </div>
     </Layout>

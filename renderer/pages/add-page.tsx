@@ -95,7 +95,7 @@ const AddPage = () => {
     <Layout title="授業情報の追加" goBack={() => router.push("/")}>
       <div className="add-page_content m-auto w-11/12 mt-4">
         <div className="add-page_inner m-2.5 block space-y-4">
-          <p className="add-page_row my-2.5 block">
+          <div className="add-page_row my-2.5 block">
             <p>授業名</p>
             <input
               name="title"
@@ -103,20 +103,17 @@ const AddPage = () => {
               placeholder="授業名..."
               onChange={handleTitleChange}
             ></input>
-          </p>
-          <p className="add-page_row my-2.5">
+          </div>
+          <div className="add-page_row my-2.5">
             <p>開講曜日/時限</p>
-            {weekdays.map((w, i) => (
-              <span className="inline-block" key={`${w}-${i}`}>
-                <input
-                  type="checkbox"
-                  value={i}
-                  style={{ margin: "0px 0px 0px 10px" }}
-                  onChange={handleDowChange}
-                />{" "}
-                {w}
-              </span>
-            ))}
+            <div className="space-x-5">
+              {weekdays.map((w, i) => (
+                <span className="inline-block" key={`${w}-${i}`}>
+                  <input type="checkbox" value={i} onChange={handleDowChange} />{" "}
+                  {w}
+                </span>
+              ))}
+            </div>
             <select
               name="begin"
               className="border rounded-sm border-black ml-4"
@@ -150,7 +147,7 @@ const AddPage = () => {
               <option value="9">9限</option>
               <option value="10">10限</option>
             </select>
-          </p>
+          </div>
           <div className="add-page_row space-y-1 my-2.5">
             <div className="flex">
               <p className="flex-grow">メモ</p>
