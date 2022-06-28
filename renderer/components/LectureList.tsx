@@ -2,7 +2,6 @@ import Link from "next/link";
 import React, { useMemo } from "react";
 import ListItem from "./ListItem";
 import { Lecture, LectureDate, LectureMemo, User } from "../interfaces";
-import { stringify } from "querystring";
 
 type Props = {
   lecture: Lecture;
@@ -43,27 +42,38 @@ const getStringOfPeriod = (item: LectureDate) => {
 };
 
 const LectureList = ({ lecture }: Props) => (
-  <ul>
-    <h1>講義情報ページ</h1>
+  <div className="m-2.5">
     <h2>講義名: {lecture.name}</h2>
+    <h2>科目コード: {lecture.code}</h2>
     <Link href={`/edit-page?id=${lecture.id}`}>edit</Link>
     <h3>講義の日程</h3>
-    {lecture.dates.map((item, i) => (
-      <li key={i}>
-        {getStringOfDayOfWeek(item)}
-        曜日<br></br>
-        時限:{getStringOfPeriod(item)}
-      </li>
-    ))}
+    <ul className="pl-2">
+      {lecture.dates.map((item, i) => (
+        <li key={i}>
+          <div>
+            <p>
+              {getStringOfDayOfWeek(item)}曜日 時限:{getStringOfPeriod(item)}
+            </p>
+            <p></p>
+          </div>
+        </li>
+      ))}
+    </ul>
+
     <h3>講義に関するメモ</h3>
-    {lecture.memo.map((item, i) => (
-      <li key={i}>
-        {item.title}
-        <br></br>
-        <textarea value={item.text} contentEditable={false} />
-      </li>
-    ))}
-  </ul>
+    <ul className="pl-2 space-y-2">
+      {lecture.memo.map((item, i) => (
+        <li key={i}>
+          <p>{item.title}</p>
+          <textarea
+            className="border border-black"
+            value={item.text}
+            contentEditable={false}
+          />
+        </li>
+      ))}
+    </ul>
+  </div>
 );
 
 export default LectureList;
