@@ -25,7 +25,7 @@ jobs:
       - name: type checking
         run: yarn type-check
       - name: Check linting
-        run: yarn lint
+        run: yarn lint --max-warnings=0
       - name: Check format
         run: yarn format-check
       - name: Test application
