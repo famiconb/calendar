@@ -5,20 +5,6 @@ import { useLectureData } from "../hooks/useLectureData";
 import React from "react";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
-import clsx from "clsx";
-
-const availableColors = [
-  "bg-orange-300",
-  "bg-lime-400",
-  "bg-teel-300",
-  "bg-indigo-300",
-  "bg-fuchsia-400",
-  "bg-rose-400",
-  "bg-purple-500",
-  "bg-green-200",
-  "bg-amber-700",
-  "bg-stone-100",
-];
 
 /**
  * 講義情報の行を表示
@@ -66,12 +52,7 @@ const row_view = (number: number, lectures: Lecture[]) => {
               lecture.dates[i].dayOfWeek == dayOfWeek
             ) {
               row.push(
-                <th
-                  className={clsx(
-                    "border-solid border border-black h-12",
-                    availableColors[lecture.id % availableColors.length]
-                  )}
-                >
+                <th className="border-solid border border-black h-12">
                   <Link href={`/lecture-info?id=${lecture.id}`}>
                     {lecture.name}
                   </Link>
