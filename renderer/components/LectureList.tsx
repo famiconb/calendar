@@ -49,7 +49,11 @@ const makeHypertext = (str: String): JSX.Element => {
       /https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#\u3000-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+/
     );
     if (url != null) {
-      element.push(<a href={url[0]} className="underline text-sky-700">{url[0]} </a>);
+      element.push(
+        <a href={url[0]} className="underline text-sky-700">
+          {url[0]}{" "}
+        </a>
+      );
     } else {
       element.push(s + " ");
     }
