@@ -74,6 +74,41 @@ const TableHead: React.FC<{ children?: React.ReactNode }> = (props) => (
   <th className="border border-solid border-black w-28">{props.children}</th>
 );
 
+/**
+ * 表示されていない講義を取得
+ * @param lectures
+ * @returns
+ */
+const otherLecture = (lectures: Lecture[]) => {
+  const others = [];
+  for (let lectures_i = 0; lectures_i < lectures.length; ++lectures_i) {
+    const lecture: Lecture = lectures[lectures_i];
+    for (let i = 0; i < lecture.dates.length; ++i) {
+      for (let j = 0; j < lecture.dates[i].period.length; ++j) {
+        if (
+          lecture.dates[i].period[j] > 8 ||
+          lecture.dates[i].dayOfWeek == 0 ||
+          lecture.dates[i].dayOfWeek == 6
+        ) {
+          others.push(lecture);
+          break;
+        }
+      }
+    }
+  }
+  if (others.length != 0) {
+    const disp = [];
+    for (let i = 0; i < others.length; i++) {
+      const lecture = others[i]
+      const link = lecture.name +  ":曜日" + lecture.dates[0].dayOfWeek + ":時間" + lecture.dates[0].period
+      disp.push(
+        <p><Link href={`/lecture-info?id=${lecture.id}`}>{link}</Link></p>
+      );
+    }
+    return <div> {disp} </div>;
+  }
+};
+
 const IndexPage = () => {
   // 表示用の講義データ
   const { lectures } = useLectureData();
@@ -88,10 +123,7 @@ const IndexPage = () => {
       >
         講義追加
       </Button>
-      <div
-        className="p-2 w-screen h-screen"
-        style={{ height: "calc(100vh - 2.25rem)" }}
-      >
+      <div className="p-2 w-screen">
         <table className="border border-solid w-full h-full">
           <thead>
             <tr>
@@ -114,6 +146,10 @@ const IndexPage = () => {
             {row_view(8, lectures)}
           </tbody>
         </table>
+
+        <div className="whitespace-normal overflow-scroll h-20">
+          {otherLecture(lectures)}
+        </div>
       </div>
     </Layout>
   ) : (
