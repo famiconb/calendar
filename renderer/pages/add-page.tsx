@@ -110,7 +110,9 @@ const AddPage = () => {
         }
         if (date.period.length == 0) {
           passed = false;
-          errorMessages.push("講義開始時限は終了時限以前である必要があります。");
+          errorMessages.push(
+            "講義開始時限は終了時限以前である必要があります。"
+          );
         }
       }
     }
@@ -131,7 +133,9 @@ const AddPage = () => {
                 period == saved_lecture_period
               ) {
                 passed = false;
-                errorMessages.push("開講日時が"+saved_lecture.name+"と重複しています。");
+                errorMessages.push(
+                  "開講日時が" + saved_lecture.name + "と重複しています。"
+                );
               }
             }
           }
