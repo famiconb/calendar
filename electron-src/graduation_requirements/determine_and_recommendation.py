@@ -256,30 +256,55 @@ class Determiner:
         return ret
 
 
-user = User('情報工学コース修士課程', '情報工学コース修士課程',
-            'LAH.S433,LAH.T420,LAH.S501,LAC.M401,LAC.M527,CSC.Z491,CSC.Z492,CSC.Z591,CSC.Z592,CSC.U481,CSC.U482,CSC.T421,CSC.T422,CSC.T426,ART.T458,XCO.T484,XCO.T473,XCO.T474,XCO.T478')
+def test1():
+    user = User('情報工学コース修士課程', '情報工学コース修士課程',
+                'LAH.S433,LAH.T420,LAH.S501,LAC.M401,LAC.M527,CSC.Z491,CSC.Z492,CSC.Z591,CSC.Z592,CSC.U481,CSC.U482,CSC.T421,CSC.T422,CSC.T426,ART.T458,XCO.T484,XCO.T473,XCO.T474,XCO.T478')
 
-determiner = Determiner()
+    determiner = Determiner()
 
-results = determiner.determine_user_course(user)
-print(results)
+    results = determiner.determine_user_course(user)
+    print(results)
+    return results
 
-test_df = pd.ExcelFile('tests.xlsx').parse('Sheet1')
-
-determiner = Determiner()
-for i, test in test_df.iterrows():
-    # print(test)
-    # User(self, course, determine_course, class_codes)
-    user = User(test['所属コース'], test['判定コース'], test['履修科目'])
-    result = determiner.determine_user_course(user)
-    if not result:
-        result = determiner.recommend_class(user)
-        if test['返り値'] in result:
-            print(i, result)
-            result = 'YES'
+def test2() -> bool:
+    test_df = pd.ExcelFile('tests.xlsx').parse('Sheet1')
+    determiner = Determiner()
+    ok: bool = True
+    for i, test in test_df.iterrows():
+        # print(test)
+        # User(self, course, determine_course, class_codes)
+        user = User(test['所属コース'], test['判定コース'], test['履修科目'])
+        result: str = ""
+        if not determiner.determine_user_course(user):
+            recommend_class: set = determiner.recommend_class(user)
+            if test['返り値'] in recommend_class:
+                #print(i, result)
+                result = 'YES'
+            else:
+                result = 'NO'
         else:
-            result = 'NO'
-    print(result, test['返り値'])
+            if test['返り値'] == '〇':
+                result = 'YES'
+
+        if result != 'YES':
+            ok = False
+    return ok
+
+def run_sample():
+    print("Hello, world!")
+    print(test1())
+    print(test2())
+
+def determine_user_course(course: str, determine_course: str, class_codes: str):
+    user = User(course,determine_course,class_codes)
+    determiner = Determiner()
+    return determiner.determine_user_course(user)
 
 if __name__ == "__main__":
-    print("Hello, world!")
+    args = sys.argv
+    if (len(args) == 4):
+        print(determine_user_course(args[1], args[2], args[3]))
+    else:
+        run_sample()
+    
+
