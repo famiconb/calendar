@@ -127,14 +127,14 @@ const IndexPage = () => {
       <div className="h-screen">
         <div className="p-2 h-full hlex flex-col">
           <div>
-          <h1>{quarter + 1}Q の時間割</h1>
-      {quarter != 0 ? <Link href="/?quarter=0">[ 1Q ]</Link> : "< 1Q >"}
-      {"   "}
-      {quarter != 1 ? <Link href="/?quarter=1">[ 2Q ]</Link> : "< 2Q >"}
-      {"   "}
-      {quarter != 2 ? <Link href="/?quarter=2">[ 3Q ]</Link> : "< 3Q >"}
-      {"   "}
-      {quarter != 3 ? <Link href="/?quarter=3">[ 4Q ]</Link> : "< 4Q >"}
+            <h1>{quarter + 1}Q の時間割</h1>
+            {quarter != 0 ? <Link href="/?quarter=0">[ 1Q ]</Link> : "< 1Q >"}
+            {"   "}
+            {quarter != 1 ? <Link href="/?quarter=1">[ 2Q ]</Link> : "< 2Q >"}
+            {"   "}
+            {quarter != 2 ? <Link href="/?quarter=2">[ 3Q ]</Link> : "< 3Q >"}
+            {"   "}
+            {quarter != 3 ? <Link href="/?quarter=3">[ 4Q ]</Link> : "< 4Q >"}
             <Button
               color="primary"
               className="mx-2 mt-1.5"
@@ -156,7 +156,7 @@ const IndexPage = () => {
               </tr>
             </thead>
             <tbody>
-              {row_view(1, lectures ,quarter)}
+              {row_view(1, lectures, quarter)}
               {row_view(2, lectures, quarter)}
               {row_view(3, lectures, quarter)}
               {row_view(4, lectures, quarter)}
