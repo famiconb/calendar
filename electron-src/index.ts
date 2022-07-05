@@ -36,14 +36,14 @@ app.on("ready", async () => {
 app.on("window-all-closed", app.quit);
 
 app.on("browser-window-focus", () => {
-  for(const key in ['CommandOrControl+R','CommandOrControl+Shift+R', 'F5']) {
-    globalShortcut.register(key, () => {})
-  }
+  globalShortcut.register('CommandOrControl+R', () => {})
+  globalShortcut.register('CommandOrControl+Shift+R', () => {})
+  globalShortcut.register('CommandOrControl+R', () => {})
 })
 app.on("browser-window-blur", () => {
-  for(const key in ['CommandOrControl+R','CommandOrControl+Shift+R', 'F5']) {
-    globalShortcut.unregister(key)
-  }
+  globalShortcut.unregister('CommandOrControl+R')
+  globalShortcut.unregister('CommandOrControl+Shift+R')
+  globalShortcut.unregister('CommandOrControl+R')
 })
 
 // listen the channel `message` and resend the received message to the renderer process
