@@ -141,14 +141,15 @@ const EditPage = () => {
       }
     }
     // 開講日時の重複をvalidate
-    for (const date of edited_lecture.dates) {
-      for (const period of date.period) {
-        for (const saved_lecture of saved_lectures) {
-          if (edited_lecture.id == saved_lecture.id) {
-            continue;
-          }
-          for (const saved_lecture_date of saved_lecture.dates) {
-            for (const saved_lecture_period of saved_lecture_date.period) {
+    for (const saved_lecture of saved_lectures) {
+      if (edited_lecture.id == saved_lecture.id) {
+        continue;
+      }
+      let conflict_thislecture = false;
+      for (const saved_lecture_date of saved_lecture.dates) {
+        for (const saved_lecture_period of saved_lecture_date.period) {
+          for (const date of edited_lecture.dates) {
+            for (const period of date.period) {
               if (
                 date.dayOfWeek == saved_lecture_date.dayOfWeek &&
                 period == saved_lecture_period
@@ -157,10 +158,15 @@ const EditPage = () => {
                 errorMessages.push(
                   "開講日時が" + saved_lecture.name + "と重複しています。"
                 );
+                conflict_thislecture = true;
+                break;
               }
             }
+            if(conflict_thislecture){break;}
           }
+          if(conflict_thislecture){break;}
         }
+        if(conflict_thislecture){break;}
       }
     }
 
