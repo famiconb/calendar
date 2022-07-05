@@ -56,7 +56,7 @@ const row_view = (number: number, lectures: Lecture[], quarter: number) => {
                 <Link
                   href={`/lecture-info?id=${lecture.id}&quarter=${quarter}`}
                 >
-                  <th className="border-solid border border-black h-12">
+                  <th className="border-solid border border-black h-12 cursor-pointer">
                     {lecture.name}
                   </th>
                 </Link>
