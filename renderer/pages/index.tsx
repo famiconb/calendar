@@ -81,6 +81,16 @@ const TableHead: React.FC<{ children?: React.ReactNode }> = (props) => (
  */
 const otherLecture = (lectures: Lecture[]) => {
   const others = [];
+  const week = [
+    "日",
+    "月",
+    "火",
+    "水",
+    "木",
+    "金",
+    "土",
+    "その他"
+  ]
   for (let lectures_i = 0; lectures_i < lectures.length; ++lectures_i) {
     const lecture: Lecture = lectures[lectures_i];
     for (let i = 0; i < lecture.dates.length; ++i) {
@@ -88,14 +98,15 @@ const otherLecture = (lectures: Lecture[]) => {
         if (
           lecture.dates[i].period[j] > 8 ||
           lecture.dates[i].dayOfWeek == 0 ||
-          lecture.dates[i].dayOfWeek == 6
+          lecture.dates[i].dayOfWeek == 6 ||
+          lecture.dates[i].dayOfWeek == 7
         ) {
           others.push(
             <Link href={`/lecture-info?id=${lecture.id}`}>
             <tr className="text-center">
               <th> {lecture.name} </th>
-              <th> {lecture.dates[0].dayOfWeek} </th>
-              <th> {lecture.dates[0].period} </th>
+              <th> {week[lecture.dates[0].dayOfWeek]} </th>
+              <th> {lecture.dates[0].period.join('-')} </th>
             </tr>
             </Link>) 
           break;
@@ -155,9 +166,9 @@ const IndexPage = () => {
             <div className="border-double border-4 border-black flex-grow">
               <table className="w-full items-center">
                 <thead>
-                    <tr className="border-b border-black">
+                    <tr className="border-b border-black bg-gray-400">
                         <th>講義名</th>
-                        <th>ようび</th>
+                        <th>曜日</th>
                         <th>時間</th>
                     </tr>
                 </thead>
