@@ -162,11 +162,17 @@ const EditPage = () => {
                 break;
               }
             }
-            if(conflict_thislecture){break;}
+            if (conflict_thislecture) {
+              break;
+            }
           }
-          if(conflict_thislecture){break;}
+          if (conflict_thislecture) {
+            break;
+          }
         }
-        if(conflict_thislecture){break;}
+        if (conflict_thislecture) {
+          break;
+        }
       }
     }
 

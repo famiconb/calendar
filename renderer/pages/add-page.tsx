@@ -145,11 +145,17 @@ const AddPage = () => {
                 break;
               }
             }
-            if(conflict_thislecture){break;}
+            if (conflict_thislecture) {
+              break;
+            }
           }
-          if(conflict_thislecture){break;}
+          if (conflict_thislecture) {
+            break;
+          }
         }
-        if(conflict_thislecture){break;}
+        if (conflict_thislecture) {
+          break;
+        }
       }
     }
 
