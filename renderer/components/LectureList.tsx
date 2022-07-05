@@ -50,7 +50,13 @@ const makeHypertext = (str: String): JSX.Element => {
     );
     if (url != null) {
       element.push(
-        <a href={url[0]} className="underline text-sky-700">
+        <a
+          className="underline text-sky-700"
+          onClick={() => {
+            window.open(url[0], "", "width=800,height=600");
+            return false;
+          }}
+        >
           {url[0]}{" "}
         </a>
       );
