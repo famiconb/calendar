@@ -129,8 +129,9 @@ const AddPage = () => {
           for (const saved_lecture_date of saved_lecture.dates) {
             for (const saved_lecture_period of saved_lecture_date.period) {
               if (
-                date.dayOfWeek == saved_lecture_date.dayOfWeek &&
-                period == saved_lecture_period
+                date.dayOfWeek !== 7 &&
+                date.dayOfWeek === saved_lecture_date.dayOfWeek &&
+                period === saved_lecture_period
               ) {
                 passed = false;
                 errorMessages.push(
