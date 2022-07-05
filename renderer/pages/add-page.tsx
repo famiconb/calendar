@@ -66,6 +66,7 @@ const AddPage = () => {
 
   const onSubmit = () => {
     console.log("onSubmit");
+    const errorMessages: string[] = [];
     const saved_lectures = loadLecture(quarter);
     const data: Lecture = {
       id:
@@ -75,8 +76,9 @@ const AddPage = () => {
       name: title,
       code: code,
       dates: [],
-      memo: memo,
+      memo: [],
     };
+
     for (const dow of dows) {
       const date: LectureDate = {
         dayOfWeek: dow,
@@ -87,9 +89,73 @@ const AddPage = () => {
       }
       data.dates.push(date);
     }
+
+    for (const memoi of memo) {
+      if (memoi.title || memoi.text) {
+        data.memo.push(memoi);
+      }
+    }
+
     console.log(data);
-    saveLecture([...saved_lectures, data], quarter);
-    router.push("/?quarter=" + quarter.toString());
+
+    let passed = true;
+    if (data.name == null || data.name == "") {
+      passed = false;
+      errorMessages.push("授業名は必要です。");
+    }
+    if (data.dates.length == 0) {
+      passed = false;
+      errorMessages.push("開講日時は必要です。");
+    } else {
+      for (const date of data.dates) {
+        if (date.dayOfWeek == null) {
+          passed = false;
+          errorMessages.push("開講曜日は必要です。");
+        }
+        if (date.period.length == 0) {
+          passed = false;
+          errorMessages.push(
+            "講義開始時限は終了時限以前である必要があります。"
+          );
+        }
+      }
+    }
+    for (const memoi of data.memo) {
+      if (memoi.title == null || memoi.title == "") {
+        passed = false;
+        errorMessages.push("メモのtitleは必要です。");
+      }
+    }
+    // 開講日時の重複をvalidate
+    for (const date of data.dates) {
+      for (const period of date.period) {
+        for (const saved_lecture of saved_lectures) {
+          for (const saved_lecture_date of saved_lecture.dates) {
+            for (const saved_lecture_period of saved_lecture_date.period) {
+              if (
+                date.dayOfWeek == saved_lecture_date.dayOfWeek &&
+                period == saved_lecture_period
+              ) {
+                passed = false;
+                errorMessages.push(
+                  "開講日時が" + saved_lecture.name + "と重複しています。"
+                );
+              }
+            }
+          }
+        }
+      }
+    }
+
+    if (passed) {
+      console.log("passed");
+      saveLecture([...saved_lectures, data], quarter);
+      router.push("/?quarter=" + quarter.toString());
+    } else {
+      console.log("failed");
+      console.log(errorMessages);
+      window.alert(errorMessages);
+    }
   };
 
   const addInputForm = () => {
