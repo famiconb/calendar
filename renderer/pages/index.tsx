@@ -53,7 +53,9 @@ const row_view = (number: number, lectures: Lecture[], quarter: number) => {
               lecture.dates[i].dayOfWeek == dayOfWeek
             ) {
               row.push(
-                <Link href={`/lecture-info?id=${lecture.id}`}>
+                <Link
+                  href={`/lecture-info?id=${lecture.id}&quarter=${quarter}`}
+                >
                   <th className="border-solid border border-black h-12">
                     {lecture.name}
                   </th>
@@ -72,7 +74,9 @@ const row_view = (number: number, lectures: Lecture[], quarter: number) => {
 };
 
 const TableHead: React.FC<{ children?: React.ReactNode }> = (props) => (
-  <th className="border border-solid border-black w-28">{props.children}</th>
+  <th className="border border-solid border-black w-28 cursor-pointer">
+    {props.children}
+  </th>
 );
 
 /**
@@ -94,7 +98,7 @@ const otherLecture = (lectures: Lecture[]) => {
           lecture.dates[i].dayOfWeek == 7
         ) {
           others.push(
-            <Link href={`/lecture-info?id=${lecture.id}`}>
+            <Link href={`/lecture-info?id=${lecture.id}&quarter=${quarter}`}>
               <tr className="text-center">
                 <th> {lecture.name} </th>
                 <th> {week[lecture.dates[0].dayOfWeek]} </th>
@@ -138,7 +142,9 @@ const IndexPage = () => {
             <Button
               color="primary"
               className="mx-2 mt-1.5"
-              onClick={() => router.push("/add-page")}
+              onClick={() =>
+                router.push("/add-page?quarter=" + quarter.toString())
+              }
             >
               講義追加
             </Button>
@@ -170,7 +176,7 @@ const IndexPage = () => {
             <br></br>
             <h3>その他の講義</h3>
             <div className="border-double border-4 border-black flex-grow">
-              <table className="w-full items-center">
+              <table className="w-full items-center cursor-pointer">
                 <thead>
                   <tr className="border-b border-black bg-gray-400">
                     <th>講義名</th>
