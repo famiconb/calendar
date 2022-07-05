@@ -84,7 +84,7 @@ const TableHead: React.FC<{ children?: React.ReactNode }> = (props) => (
  * @param lectures
  * @returns
  */
-const otherLecture = (lectures: Lecture[]) => {
+const otherLecture = (lectures: Lecture[], quarter: number) => {
   const others = [];
   const week = ["日", "月", "火", "水", "木", "金", "土", "その他"];
   for (let lectures_i = 0; lectures_i < lectures.length; ++lectures_i) {
@@ -184,7 +184,7 @@ const IndexPage = () => {
                     <th>時間</th>
                   </tr>
                 </thead>
-                {otherLecture(lectures)}
+                {otherLecture(lectures, quarter)}
               </table>
             </div>
           </div>
