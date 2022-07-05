@@ -4,6 +4,7 @@ import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
+import DayOfWeeks from "../components/DayOfWeeks";
 
 const EditPage = () => {
   const router = useRouter();
@@ -25,6 +26,7 @@ const EditPage = () => {
     setCode(event.target.value);
   };
 
+  const [dows2, setDows2] = useState<number[]>([]);
   const [dows, setDows] = useState(new Set<number>());
   useEffect(() => {
     const dowSet = new Set<number>();
@@ -32,6 +34,7 @@ const EditPage = () => {
       dowSet.add(date.dayOfWeek);
     });
     setDows(dowSet);
+    setDows2(lecture.dates.map((x) => x.dayOfWeek));
     setDataLoaded(true);
   }, [lecture]);
   const handleDowChange = (event: any) => {
@@ -85,7 +88,7 @@ const EditPage = () => {
       dates: [],
       memo: [],
     };
-    for (const dow of dows) {
+    for (const dow of /* dows */ dows2) {
       const date: LectureDate = {
         dayOfWeek: dow,
         period: [],
@@ -220,7 +223,7 @@ const EditPage = () => {
           </div>
           <div className="add-page_row my-2.5">
             <p>開講日時</p>
-            <div className="space-x-5">
+            {/* <div className="space-x-5">
               {weekdays.map((w, i) => {
                 return (
                   <span className="inline-block" key={`${w}-${i}`}>
@@ -235,7 +238,11 @@ const EditPage = () => {
                   </span>
                 );
               })}
-            </div>
+            </div> */}
+            <DayOfWeeks
+              initialDayOfWeeks={dows2}
+              onDayOfWeeksChange={(x) => setDows2(x)}
+            />
             <select name="begin" value={begin} onChange={handleBeginChange}>
               {[...Array(10).keys()].map((x) => (
                 <option value={`${x + 1}`} key={`option-left-value-${x}`}>
