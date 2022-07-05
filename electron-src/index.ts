@@ -3,7 +3,7 @@ import { join } from "path";
 import { format } from "url";
 
 // Packages
-import { BrowserWindow, app, ipcMain, IpcMainEvent } from "electron";
+import { BrowserWindow, app, ipcMain, IpcMainEvent, globalShortcut } from "electron";
 import isDev from "electron-is-dev";
 import prepareNext from "electron-next";
 
@@ -21,14 +21,6 @@ app.on("ready", async () => {
     },
   });
 
-  const electronLocalshortcut = require('electron-localshortcut')
-  mainWindow.on("focus", (_: any) => {
-    electronLocalshortcut.register(mainWindow, ['CommandOrControl+R','CommandOrControl+Shift+R', 'F5'], () => {})
-  })
-  mainWindow.on("blur", (_: any) => {
-    electronLocalshortcut.unregisterAll(mainWindow)
-  })
-
   const url = isDev
     ? "http://localhost:8000/"
     : format({
@@ -42,6 +34,17 @@ app.on("ready", async () => {
 
 // Quit the app once all windows are closed
 app.on("window-all-closed", app.quit);
+
+app.on("browser-window-focus", () => {
+  for(const key in ['CommandOrControl+R','CommandOrControl+Shift+R', 'F5']) {
+    globalShortcut.register(key, () => {})
+  }
+})
+app.on("browser-window-blur", () => {
+  for(const key in ['CommandOrControl+R','CommandOrControl+Shift+R', 'F5']) {
+    globalShortcut.unregister(key)
+  }
+})
 
 // listen the channel `message` and resend the received message to the renderer process
 ipcMain.on("message", (event: IpcMainEvent, message: any) => {
