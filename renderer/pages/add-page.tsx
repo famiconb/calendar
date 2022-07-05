@@ -116,7 +116,9 @@ const AddPage = () => {
         }
         if (date.dayOfWeek == 7 && data.dates.length > 1) {
           passed = false;
-          errorMessages.push("開講曜日ではその他と曜日を同時に選択できません。"); 
+          errorMessages.push(
+            "開講曜日ではその他と曜日を同時に選択できません。"
+          );
         }
       }
     }
