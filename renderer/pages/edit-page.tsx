@@ -3,14 +3,16 @@ import Layout from "../components/Layout";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
+import { useQuarter } from "../hooks/useQuarter";
 import Button from "../components/Button";
 
 const EditPage = () => {
   const router = useRouter();
+  const quarter: number = useQuarter();
 
   const id = Number(router.query["id"]);
   const [lecture] = useState(
-    loadLecture().filter((lecture) => lecture.id == id)[0]
+    loadLecture(quarter).filter((lecture) => lecture.id == id)[0]
   );
 
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -103,7 +105,7 @@ const EditPage = () => {
 
     console.log(edited_lecture);
 
-    const saved_lectures = loadLecture();
+    const saved_lectures = loadLecture(quarter);
     const edited_lectures = saved_lectures.map((saved_lecture) => {
       if (saved_lecture.id != id) {
         return saved_lecture;
@@ -165,8 +167,8 @@ const EditPage = () => {
     console.log(edited_lectures);
     if (passed) {
       console.log("passed");
-      saveLecture(edited_lectures);
-      router.push("/");
+      saveLecture(edited_lectures, quarter);
+      router.push("/?quarter=" + quarter.toString());
     } else {
       console.log("failed");
       console.log(errorMessages);
@@ -187,7 +189,11 @@ const EditPage = () => {
   ) : (
     <Layout
       title="授業情報の編集"
-      goBack={() => router.push(`/lecture-info?id=${lecture.id}`)}
+      goBack={() =>
+        router.push(
+          `/lecture-info?id=${lecture.id}&quarter=${quarter.toString()}`
+        )
+      }
     >
       <div className="edit-page_content m-auto w-11/12 mt-4">
         <div className="edit-page_inner m-2.5 block space-y-4">
