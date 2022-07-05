@@ -26,27 +26,16 @@ const EditPage = () => {
     setCode(event.target.value);
   };
 
-  const [dows2, setDows2] = useState<number[]>([]);
-  const [dows, setDows] = useState(new Set<number>());
+  const [dows, setDows] = useState<number[]>([]);
+
   useEffect(() => {
     const dowSet = new Set<number>();
     lecture.dates.forEach((date) => {
       dowSet.add(date.dayOfWeek);
     });
-    setDows(dowSet);
-    setDows2(lecture.dates.map((x) => x.dayOfWeek));
+    setDows(lecture.dates.map((x) => x.dayOfWeek));
     setDataLoaded(true);
   }, [lecture]);
-  const handleDowChange = (event: any) => {
-    const value = Number(event.target.value);
-    if (dows.has(value)) {
-      dows.delete(value);
-    } else {
-      dows.add(value);
-    }
-    setDows(dows);
-    console.log(dows);
-  };
 
   const [begin, setBegin] = useState(lecture.dates[0].period[0]);
   const handleBeginChange = (event: any) => {
@@ -88,7 +77,7 @@ const EditPage = () => {
       dates: [],
       memo: [],
     };
-    for (const dow of /* dows */ dows2) {
+    for (const dow of dows) {
       const date: LectureDate = {
         dayOfWeek: dow,
         period: [],
@@ -223,25 +212,9 @@ const EditPage = () => {
           </div>
           <div className="add-page_row my-2.5">
             <p>開講日時</p>
-            {/* <div className="space-x-5">
-              {weekdays.map((w, i) => {
-                return (
-                  <span className="inline-block" key={`${w}-${i}`}>
-                    <input
-                      name="dow0"
-                      type="checkbox"
-                      value={`${i}`}
-                      onChange={handleDowChange}
-                      defaultChecked={dows.has(i)}
-                    />{" "}
-                    {w}
-                  </span>
-                );
-              })}
-            </div> */}
             <DayOfWeeks
-              initialDayOfWeeks={dows2}
-              onDayOfWeeksChange={(x) => setDows2(x)}
+              initialDayOfWeeks={dows}
+              onDayOfWeeksChange={(x) => setDows(x)}
             />
             <select name="begin" value={begin} onChange={handleBeginChange}>
               {[...Array(10).keys()].map((x) => (

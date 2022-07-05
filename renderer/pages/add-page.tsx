@@ -4,6 +4,7 @@ import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
+import DayOfWeeks from "../components/DayOfWeeks";
 
 const AddPage = () => {
   const router = useRouter();
@@ -13,20 +14,13 @@ const AddPage = () => {
     setTitle(event.target.value);
     console.log(title);
   };
+
   const [code, setCode] = useState("");
   const handleCodeChange = (event: any) => {
     setCode(event.target.value);
   };
-  const [dows, _] = useState(new Set<number>());
-  const handleDowChange = (event: any) => {
-    const value = Number(event.target.value);
-    if (dows.has(value)) {
-      dows.delete(value);
-    } else {
-      dows.add(value);
-    }
-    console.log(dows);
-  };
+
+  const [dows, setDows] = useState<number[]>([]);
 
   const [begin, setBegin] = useState(1);
   const handleBeginChange = (event: any) => {
@@ -166,8 +160,6 @@ const AddPage = () => {
     console.log(memo);
   };
 
-  const weekdays = ["日", "月", "火", "水", "木", "金", "土", "その他"];
-
   return (
     <Layout title="授業情報の追加" goBack={() => router.push("/")}>
       <div className="add-page_content m-auto w-11/12 mt-4">
@@ -191,14 +183,7 @@ const AddPage = () => {
           </div>
           <div className="add-page_row my-2.5">
             <p>開講曜日/時限</p>
-            <div className="space-x-5">
-              {weekdays.map((w, i) => (
-                <span className="inline-block" key={`${w}-${i}`}>
-                  <input type="checkbox" value={i} onChange={handleDowChange} />{" "}
-                  {w}
-                </span>
-              ))}
-            </div>
+            <DayOfWeeks onDayOfWeeksChange={(x) => setDows(x)} />
             <select
               name="begin"
               className="border rounded-sm border-black ml-4"
