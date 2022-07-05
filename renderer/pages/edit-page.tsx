@@ -129,7 +129,15 @@ const EditPage = () => {
         }
         if (date.period.length == 0) {
           passed = false;
-          errorMessages.push("開講時間は必要です。");
+          errorMessages.push(
+            "講義開始時限は終了時限以前である必要があります。"
+          );
+        }
+        if (date.dayOfWeek == 7 && edited_lecture.dates.length > 1) {
+          passed = false;
+          errorMessages.push(
+            "開講曜日では、その他と曜日を同時に選択できません。"
+          );
         }
       }
     }
