@@ -2,6 +2,7 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import { Lecture } from "../interfaces";
 import { useLectureData } from "../hooks/useLectureData";
+import { useQuarter } from "../hooks/useQuarter";
 import React from "react";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
@@ -12,7 +13,7 @@ import Button from "../components/Button";
  * @param lectures 講義情報
  * @returns number行目の時間割情報を表示
  */
-const row_view = (number: number, lectures: Lecture[]) => {
+const row_view = (number: number, lectures: Lecture[], quarter: number) => {
   // 時間割のnumber限目の列
   const row = [];
 
@@ -112,15 +113,28 @@ const otherLecture = (lectures: Lecture[]) => {
 };
 
 const IndexPage = () => {
+  // queryパラメータからquarterを取る
+  const quarter: number = useQuarter();
+
   // 表示用の講義データ
-  const { lectures } = useLectureData();
+  const { lectures } = useLectureData(quarter);
   const router = useRouter();
 
+  const prevQ = (quarter - 1 + 4) % 4;
+  const nextQ = (quarter + 1) % 4;
   return lectures != null ? (
     <Layout title="CUCalendar">
       <div className="h-screen">
         <div className="p-2 h-full hlex flex-col">
           <div>
+          <h1>{quarter + 1}Q の時間割</h1>
+      {quarter != 0 ? <Link href="/?quarter=0">[ 1Q ]</Link> : "< 1Q >"}
+      {"   "}
+      {quarter != 1 ? <Link href="/?quarter=1">[ 2Q ]</Link> : "< 2Q >"}
+      {"   "}
+      {quarter != 2 ? <Link href="/?quarter=2">[ 3Q ]</Link> : "< 3Q >"}
+      {"   "}
+      {quarter != 3 ? <Link href="/?quarter=3">[ 4Q ]</Link> : "< 4Q >"}
             <Button
               color="primary"
               className="mx-2 mt-1.5"
@@ -142,14 +156,14 @@ const IndexPage = () => {
               </tr>
             </thead>
             <tbody>
-              {row_view(1, lectures)}
-              {row_view(2, lectures)}
-              {row_view(3, lectures)}
-              {row_view(4, lectures)}
-              {row_view(5, lectures)}
-              {row_view(6, lectures)}
-              {row_view(7, lectures)}
-              {row_view(8, lectures)}
+              {row_view(1, lectures ,quarter)}
+              {row_view(2, lectures, quarter)}
+              {row_view(3, lectures, quarter)}
+              {row_view(4, lectures, quarter)}
+              {row_view(5, lectures, quarter)}
+              {row_view(6, lectures, quarter)}
+              {row_view(7, lectures, quarter)}
+              {row_view(8, lectures, quarter)}
             </tbody>
           </table>
           <div className="overflow-auto">

@@ -3,10 +3,14 @@ import Layout from "../components/Layout";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
+import { useQuarter } from "../hooks/useQuarter";
 import Button from "../components/Button";
 
 const AddPage = () => {
   const router = useRouter();
+
+  // queryパラメータからquarterを取る
+  const quarter: number = useQuarter();
 
   const [title, setTitle] = useState("");
   const handleTitleChange = (event: any) => {
@@ -19,10 +23,11 @@ const AddPage = () => {
   };
   const [dows, _] = useState(new Set<number>());
   const handleDowChange = (event: any) => {
-    if (dows.has(Number(event.target.value))) {
-      dows.delete(Number(event.target.value));
+    const value = Number(event.target.value);
+    if (dows.has(value)) {
+      dows.delete(value);
     } else {
-      dows.add(Number(event.target.value));
+      dows.add(value);
     }
     console.log(dows);
   };
@@ -42,7 +47,6 @@ const AddPage = () => {
   const [memo, setMemo] = useState<LectureMemo[]>([{ title: "", text: "" }]);
   const handleMemoChange = (event: any) => {
     const num = Number(event.target.dataset.num);
-
     setMemo((m) =>
       m.map((x, n) => {
         if (n === num) {
@@ -62,7 +66,8 @@ const AddPage = () => {
 
   const onSubmit = () => {
     console.log("onSubmit");
-    const saved_lectures = loadLecture();
+    const errorMessages: string[] = [];
+    const saved_lectures = loadLecture(quarter);
     const data: Lecture = {
       id:
         saved_lectures.length > 0
@@ -71,8 +76,9 @@ const AddPage = () => {
       name: title,
       code: code,
       dates: [],
-      memo: memo,
+      memo: [],
     };
+
     for (const dow of dows) {
       const date: LectureDate = {
         dayOfWeek: dow,
@@ -83,9 +89,79 @@ const AddPage = () => {
       }
       data.dates.push(date);
     }
+
+    for (const memoi of memo) {
+      if (memoi.title || memoi.text) {
+        data.memo.push(memoi);
+      }
+    }
+
     console.log(data);
-    saveLecture([...saved_lectures, data]);
-    router.push("/");
+
+    let passed = true;
+    if (data.name == null || data.name == "") {
+      passed = false;
+      errorMessages.push("授業名は必要です。");
+    }
+    if (data.dates.length == 0) {
+      passed = false;
+      errorMessages.push("開講日時は必要です。");
+    } else {
+      for (const date of data.dates) {
+        if (date.dayOfWeek == null) {
+          passed = false;
+          errorMessages.push("開講曜日は必要です。");
+        }
+        if (date.period.length == 0) {
+          passed = false;
+          errorMessages.push(
+            "講義開始時限は終了時限以前である必要があります。"
+          );
+        }
+        if (date.dayOfWeek == 7 && data.dates.length > 1) {
+          passed = false;
+          errorMessages.push(
+            "開講曜日ではその他と曜日を同時に選択できません。"
+          );
+        }
+      }
+    }
+    for (const memoi of data.memo) {
+      if (memoi.title == null || memoi.title == "") {
+        passed = false;
+        errorMessages.push("メモのtitleは必要です。");
+      }
+    }
+    // 開講日時の重複をvalidate
+    for (const date of data.dates) {
+      for (const period of date.period) {
+        for (const saved_lecture of saved_lectures) {
+          for (const saved_lecture_date of saved_lecture.dates) {
+            for (const saved_lecture_period of saved_lecture_date.period) {
+              if (
+                date.dayOfWeek == saved_lecture_date.dayOfWeek &&
+                period == saved_lecture_period
+              ) {
+                passed = false;
+                errorMessages.push(
+                  "開講日時が" + saved_lecture.name + "と重複しています。"
+                );
+              }
+            }
+          }
+        }
+      }
+    }
+
+    if (passed) {
+      console.log("passed");
+      saveLecture([...saved_lectures, data], quarter);
+      router.push("/?quarter=" + quarter.toString());
+    } else {
+      console.log("failed");
+      console.log(errorMessages);
+      window.alert(errorMessages);
+    }
   };
 
   const addInputForm = () => {
@@ -94,10 +170,13 @@ const AddPage = () => {
     console.log(memo);
   };
 
-  const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+  const weekdays = ["日", "月", "火", "水", "木", "金", "土", "その他"];
 
   return (
-    <Layout title="授業情報の追加" goBack={() => router.push("/")}>
+    <Layout
+      title="授業情報の追加"
+      goBack={() => router.push("/?quarter=" + quarter.toString())}
+    >
       <div className="add-page_content m-auto w-11/12 mt-4">
         <div className="add-page_inner m-2.5 block space-y-4">
           <div className="add-page_row my-2.5 block">

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Layout from "../components/Layout";
 import LectureList from "../components/LectureList";
+import { useQuarter } from "../hooks/useQuarter";
 import { Lecture, LectureDate, LectureMemo, User } from "../interfaces";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import React, { useState } from "react";
@@ -21,6 +22,7 @@ const customStyles = {
 
 const LectureInfoPage = () => {
   const router = useRouter();
+  const quarter = useQuarter();
   const query_id_raw = router.query["id"];
 
   /* モーダルの設定 */
@@ -50,13 +52,13 @@ const LectureInfoPage = () => {
   }
   try {
     const id = Array.isArray(query_id_raw) ? query_id_raw[0] : query_id_raw;
-    const lecture = findLecture(id);
+    const lecture = findLecture(id, quarter);
     /**
      * 開かれているページ(lectureのidと一致するもの)の講義情報を削除する
      */
     const deletePage = () => {
       console.log("delete click");
-      const lecData = loadLecture();
+      const lecData = loadLecture(quarter);
       console.log(lecData);
       for (let i = 0; i < lecData.length; i++) {
         // 保存済講義に同じidの講義を見つけたら削除
@@ -67,13 +69,16 @@ const LectureInfoPage = () => {
         }
       }
       //lecDataの上書き
-      saveLecture(lecData);
-      console.log(loadLecture());
-      router.push("/");
+      saveLecture(lecData, quarter);
+      console.log(loadLecture(quarter));
+      router.push("/?quarter=" + quarter.toString());
     };
 
     return (
-      <Layout title="講義の詳細情報" goBack={() => router.push("/")}>
+      <Layout
+        title="講義の詳細情報"
+        goBack={() => router.push("/?quarter=" + quarter.toString())}
+      >
         <LectureList lecture={lecture} />
         <Button onClick={openModal} color="red">
           削除
@@ -120,8 +125,8 @@ const LectureInfoErrorPage = (err: string) => {
   );
 };
 
-function findLecture(id: number | string) {
-  const lectures: Lecture[] = loadLecture();
+function findLecture(id: number | string, quarter: number) {
+  const lectures: Lecture[] = loadLecture(quarter);
   const found = lectures.find((lec) => lec.id === Number(id));
 
   if (!found) {
