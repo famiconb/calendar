@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { useMemo } from "react";
-import ListItem from "./ListItem";
-import { Lecture, LectureDate, LectureMemo, User } from "../interfaces";
+import { useQuarter } from "../hooks/useQuarter";
+import { Lecture, LectureDate, LectureMemo } from "../interfaces";
 
 type Props = {
   lecture: Lecture;
@@ -65,7 +65,9 @@ const LectureList = ({ lecture }: Props) => (
   <div className="m-2.5">
     <h2>講義名: {lecture.name}</h2>
     <h2>科目コード: {lecture.code}</h2>
-    <Link href={`/edit-page?id=${lecture.id}`}>edit</Link>
+    <Link href={`/edit-page?id=${lecture.id}&quarter=${useQuarter()}`}>
+      edit
+    </Link>
     <h3>講義の日程</h3>
     <ul className="pl-2">
       {lecture.dates.map((item, i) => (

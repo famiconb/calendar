@@ -3,11 +3,15 @@ import Layout from "../components/Layout";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
+import { useQuarter } from "../hooks/useQuarter";
 import Button from "../components/Button";
 import DayOfWeeks from "../components/DayOfWeeks";
 
 const AddPage = () => {
   const router = useRouter();
+
+  // queryパラメータからquarterを取る
+  const quarter: number = useQuarter();
 
   const [title, setTitle] = useState("");
   const handleTitleChange = (event: any) => {
@@ -57,7 +61,7 @@ const AddPage = () => {
   const onSubmit = () => {
     console.log("onSubmit");
     const errorMessages: string[] = [];
-    const saved_lectures = loadLecture();
+    const saved_lectures = loadLecture(quarter);
     const data: Lecture = {
       id:
         saved_lectures.length > 0
@@ -146,8 +150,8 @@ const AddPage = () => {
 
     if (passed) {
       console.log("passed");
-      saveLecture([...saved_lectures, data]);
-      router.push("/");
+      saveLecture([...saved_lectures, data], quarter);
+      router.push("/?quarter=" + quarter.toString());
     } else {
       console.log("failed");
       console.log(errorMessages);
@@ -162,7 +166,10 @@ const AddPage = () => {
   };
 
   return (
-    <Layout title="授業情報の追加" goBack={() => router.push("/")}>
+    <Layout
+      title="授業情報の追加"
+      goBack={() => router.push("/?quarter=" + quarter.toString())}
+    >
       <div className="add-page_content m-auto w-11/12 mt-4">
         <div className="add-page_inner m-2.5 block space-y-4">
           <div className="add-page_row my-2.5 block">
