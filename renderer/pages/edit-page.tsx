@@ -189,7 +189,11 @@ const EditPage = () => {
   ) : (
     <Layout
       title="授業情報の編集"
-      goBack={() => router.push(`/lecture-info?id=${lecture.id}&quarter=${quarter.toString()}`)}
+      goBack={() =>
+        router.push(
+          `/lecture-info?id=${lecture.id}&quarter=${quarter.toString()}`
+        )
+      }
     >
       <div className="edit-page_content m-auto w-11/12 mt-4">
         <div className="edit-page_inner m-2.5 block space-y-4">
