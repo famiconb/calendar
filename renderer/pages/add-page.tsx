@@ -23,10 +23,11 @@ const AddPage = () => {
   };
   const [dows, _] = useState(new Set<number>());
   const handleDowChange = (event: any) => {
-    if (dows.has(Number(event.target.value))) {
-      dows.delete(Number(event.target.value));
+    const value = Number(event.target.value);
+    if (dows.has(value)) {
+      dows.delete(value);
     } else {
-      dows.add(Number(event.target.value));
+      dows.add(value);
     }
     console.log(dows);
   };
@@ -46,7 +47,6 @@ const AddPage = () => {
   const [memo, setMemo] = useState<LectureMemo[]>([{ title: "", text: "" }]);
   const handleMemoChange = (event: any) => {
     const num = Number(event.target.dataset.num);
-
     setMemo((m) =>
       m.map((x, n) => {
         if (n === num) {
@@ -118,6 +118,12 @@ const AddPage = () => {
             "講義開始時限は終了時限以前である必要があります。"
           );
         }
+        if (date.dayOfWeek == 7 && data.dates.length > 1) {
+          passed = false;
+          errorMessages.push(
+            "開講曜日ではその他と曜日を同時に選択できません。"
+          );
+        }
       }
     }
     for (const memoi of data.memo) {
@@ -164,7 +170,7 @@ const AddPage = () => {
     console.log(memo);
   };
 
-  const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+  const weekdays = ["日", "月", "火", "水", "木", "金", "土", "その他"];
 
   return (
     <Layout
