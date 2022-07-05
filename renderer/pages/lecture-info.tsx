@@ -115,19 +115,20 @@ const LectureInfoPage = () => {
               >
                 「{lecture.name}」を消して大丈夫ですか？
               </h2>
-              <div className="space-x-2 pt-2">
-                <button
+              <div className="space-x-2 pt-2 flex justify-center">
+                <Button
+                  onClick={deletePage}
+                  color="red"
+                  className="border border-black rounded-sm text-white"
+                >
+                  消します！
+                </Button>
+                <Button
                   onClick={closeModal}
-                  className="border border-black rounded-sm"
+                  className="border border-black rounded-sm text-white"
                 >
                   やっぱやめます
-                </button>
-                <button
-                  onClick={deletePage}
-                  className="bg-red-400 p-0.5 rounded-sm text-white"
-                >
-                  消します!
-                </button>
+                </Button>
               </div>
             </Modal>
           </div>
