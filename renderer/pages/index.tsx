@@ -90,13 +90,13 @@ const IndexPage = () => {
   return lectures != null ? (
     <Layout title="CUCalendar">
       <h1>{quarter + 1}Q の時間割</h1>
-      {quarter!=0?<Link href="/?quarter=0">[ 1Q ]</Link>:"< 1Q >"}
+      {quarter != 0 ? <Link href="/?quarter=0">[ 1Q ]</Link> : "< 1Q >"}
       {"   "}
-      {quarter!=1?<Link href="/?quarter=1">[ 2Q ]</Link>:"< 2Q >"}
+      {quarter != 1 ? <Link href="/?quarter=1">[ 2Q ]</Link> : "< 2Q >"}
       {"   "}
-      {quarter!=2?<Link href="/?quarter=2">[ 3Q ]</Link>:"< 3Q >"}
+      {quarter != 2 ? <Link href="/?quarter=2">[ 3Q ]</Link> : "< 3Q >"}
       {"   "}
-      {quarter!=3?<Link href="/?quarter=3">[ 4Q ]</Link>:"< 4Q >"}
+      {quarter != 3 ? <Link href="/?quarter=3">[ 4Q ]</Link> : "< 4Q >"}
       <Button
         color="primary"
         className="mx-2 mt-1.5"
