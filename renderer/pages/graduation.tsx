@@ -5,14 +5,20 @@ import { useLectureData } from "../hooks/useLectureData";
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
+import { useQuarter } from "../hooks/useQuarter";
 
 
 const GraduationPage = () => {
 
-  // 表示用の講義データ
-  const { lectures } = useLectureData(0);
   const router = useRouter();
+  const quarter: number = useQuarter();
+  const lectures_allq: (Lecture[] | undefined)[] = []
+  lectures_allq[0] = useLectureData(0).lectures;
+  lectures_allq[1] = useLectureData(1).lectures;
+  lectures_allq[2] = useLectureData(2).lectures;
+  lectures_allq[3] = useLectureData(3).lectures;
 
+  //pythonとの通信
   useEffect(() => {
     const handleMessage = (_event: any[], args: any[]) => {
       console.log("from python:", args);
@@ -41,8 +47,11 @@ const GraduationPage = () => {
     global.ipcRenderer.send('check_graduation', [course, determine_course, class_codes])
   }
 
-  return lectures != null ? (
-    <Layout title="CUCalendar">
+  return (lectures_allq[0] != null && lectures_allq[1] != null && lectures_allq[2] != null && lectures_allq[3] != null) ? (
+    <Layout
+      title="修了判定"
+      goBack={() => router.push("/?quarter=" + quarter.toString())}
+    >
       <button onClick={onClick}>[YES]</button>
       <button onClick={onClickFalse}>[NO]</button>
     </Layout>
