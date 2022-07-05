@@ -53,9 +53,9 @@ const row_view = (number: number, lectures: Lecture[]) => {
             ) {
               row.push(
                 <Link href={`/lecture-info?id=${lecture.id}`}>
-                <th className="border-solid border border-black h-12">
+                  <th className="border-solid border border-black h-12">
                     {lecture.name}
-                </th>
+                  </th>
                 </Link>
               );
               found = true;
@@ -81,16 +81,7 @@ const TableHead: React.FC<{ children?: React.ReactNode }> = (props) => (
  */
 const otherLecture = (lectures: Lecture[]) => {
   const others = [];
-  const week = [
-    "日",
-    "月",
-    "火",
-    "水",
-    "木",
-    "金",
-    "土",
-    "その他"
-  ]
+  const week = ["日", "月", "火", "水", "木", "金", "土", "その他"];
   for (let lectures_i = 0; lectures_i < lectures.length; ++lectures_i) {
     const lecture: Lecture = lectures[lectures_i];
     for (let i = 0; i < lecture.dates.length; ++i) {
@@ -103,19 +94,20 @@ const otherLecture = (lectures: Lecture[]) => {
         ) {
           others.push(
             <Link href={`/lecture-info?id=${lecture.id}`}>
-            <tr className="text-center">
-              <th> {lecture.name} </th>
-              <th> {week[lecture.dates[0].dayOfWeek]} </th>
-              <th> {lecture.dates[0].period.join('-')} </th>
-            </tr>
-            </Link>) 
+              <tr className="text-center">
+                <th> {lecture.name} </th>
+                <th> {week[lecture.dates[0].dayOfWeek]} </th>
+                <th> {lecture.dates[0].period.join("-")} </th>
+              </tr>
+            </Link>
+          );
           break;
         }
       }
     }
   }
   if (others.length != 0) {
-    return <tbody className="whitespace-normal p-1">{others}</tbody>
+    return <tbody className="whitespace-normal p-1">{others}</tbody>;
   }
 };
 
@@ -137,7 +129,7 @@ const IndexPage = () => {
               講義追加
             </Button>
           </div>
-          
+
           <table className="border border-solid w-full">
             <thead>
               <tr>
@@ -166,13 +158,13 @@ const IndexPage = () => {
             <div className="border-double border-4 border-black flex-grow">
               <table className="w-full items-center">
                 <thead>
-                    <tr className="border-b border-black bg-gray-400">
-                        <th>講義名</th>
-                        <th>曜日</th>
-                        <th>時間</th>
-                    </tr>
+                  <tr className="border-b border-black bg-gray-400">
+                    <th>講義名</th>
+                    <th>曜日</th>
+                    <th>時間</th>
+                  </tr>
                 </thead>
-                    {otherLecture(lectures)}
+                {otherLecture(lectures)}
               </table>
             </div>
           </div>
