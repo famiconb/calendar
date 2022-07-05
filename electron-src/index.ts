@@ -21,6 +21,14 @@ app.on("ready", async () => {
     },
   });
 
+  const electronLocalshortcut = require('electron-localshortcut')
+  mainWindow.on("focus", (_: any) => {
+    electronLocalshortcut.register(mainWindow, ['CommandOrControl+R','CommandOrControl+Shift+R', 'F5'], () => {})
+  })
+  mainWindow.on("blur", (_: any) => {
+    electronLocalshortcut.unregisterAll(mainWindow)
+  })
+
   const url = isDev
     ? "http://localhost:8000/"
     : format({
