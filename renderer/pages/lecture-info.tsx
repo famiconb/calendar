@@ -8,8 +8,8 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
-import {BsFillTrashFill} from "react-icons/bs"
-import {BiEdit} from "react-icons/bi"
+import { BsFillTrashFill } from "react-icons/bs";
+import { BiEdit } from "react-icons/bi";
 
 const customStyles = {
   content: {
@@ -86,9 +86,6 @@ const LectureInfoPage = () => {
             <div className="my-2.5 block"></div>
             <LectureList lecture={lecture} />
             <div className="float-right">
-              <Button onClick={openModal} color="red" className="text-white">
-                <BsFillTrashFill />
-              </Button>
               <Button
                 color="primary"
                 className="mx-2 mt-1.5 text-white"
@@ -102,6 +99,9 @@ const LectureInfoPage = () => {
                 }
               >
                 <BiEdit />
+              </Button>
+              <Button onClick={openModal} color="red" className="text-white">
+                <BsFillTrashFill />
               </Button>
             </div>
             <Modal
