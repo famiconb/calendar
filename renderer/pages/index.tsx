@@ -52,11 +52,11 @@ const row_view = (number: number, lectures: Lecture[]) => {
               lecture.dates[i].dayOfWeek == dayOfWeek
             ) {
               row.push(
+                <Link href={`/lecture-info?id=${lecture.id}`}>
                 <th className="border-solid border border-black h-12">
-                  <Link href={`/lecture-info?id=${lecture.id}`}>
                     {lecture.name}
-                  </Link>
                 </th>
+                </Link>
               );
               found = true;
             }
@@ -90,22 +90,21 @@ const otherLecture = (lectures: Lecture[]) => {
           lecture.dates[i].dayOfWeek == 0 ||
           lecture.dates[i].dayOfWeek == 6
         ) {
-          others.push(lecture);
+          others.push(
+            <Link href={`/lecture-info?id=${lecture.id}`}>
+            <tr className="text-center">
+              <th> {lecture.name} </th>
+              <th> {lecture.dates[0].dayOfWeek} </th>
+              <th> {lecture.dates[0].period} </th>
+            </tr>
+            </Link>) 
           break;
         }
       }
     }
   }
   if (others.length != 0) {
-    const disp = [];
-    for (let i = 0; i < others.length; i++) {
-      const lecture = others[i]
-      const link = lecture.name +  ":曜日" + lecture.dates[0].dayOfWeek + ":時間" + lecture.dates[0].period
-      disp.push(
-        <p><Link href={`/lecture-info?id=${lecture.id}`}>{link}</Link></p>
-      );
-    }
-    return <div> {disp} </div>;
+    return <tbody className="whitespace-normal p-1">{others}</tbody>
   }
 };
 
@@ -116,39 +115,55 @@ const IndexPage = () => {
 
   return lectures != null ? (
     <Layout title="CUCalendar">
-      <Button
-        color="primary"
-        className="mx-2 mt-1.5"
-        onClick={() => router.push("/add-page")}
-      >
-        講義追加
-      </Button>
-      <div className="p-2 h-full">
-        <table className="border border-solid w-full">
-          <thead>
-            <tr>
-              <TableHead></TableHead>
-              <TableHead>月</TableHead>
-              <TableHead>火</TableHead>
-              <TableHead>水</TableHead>
-              <TableHead>木</TableHead>
-              <TableHead>金</TableHead>
-            </tr>
-          </thead>
-          <tbody>
-            {row_view(1, lectures)}
-            {row_view(2, lectures)}
-            {row_view(3, lectures)}
-            {row_view(4, lectures)}
-            {row_view(5, lectures)}
-            {row_view(6, lectures)}
-            {row_view(7, lectures)}
-            {row_view(8, lectures)}
-          </tbody>
-        </table>
-        <div className="h-20 overflow-auto border-double border-4 border-black">
-          <div className="whitespace-normal p-1">
-            {otherLecture(lectures)}
+      <div className="h-screen">
+        <div className="p-2 h-full hlex flex-col">
+          <div>
+            <Button
+              color="primary"
+              className="mx-2 mt-1.5"
+              onClick={() => router.push("/add-page")}
+            >
+              講義追加
+            </Button>
+          </div>
+          
+          <table className="border border-solid w-full">
+            <thead>
+              <tr>
+                <TableHead></TableHead>
+                <TableHead>月</TableHead>
+                <TableHead>火</TableHead>
+                <TableHead>水</TableHead>
+                <TableHead>木</TableHead>
+                <TableHead>金</TableHead>
+              </tr>
+            </thead>
+            <tbody>
+              {row_view(1, lectures)}
+              {row_view(2, lectures)}
+              {row_view(3, lectures)}
+              {row_view(4, lectures)}
+              {row_view(5, lectures)}
+              {row_view(6, lectures)}
+              {row_view(7, lectures)}
+              {row_view(8, lectures)}
+            </tbody>
+          </table>
+          <div className="overflow-auto">
+            <br></br>
+            <h3>その他の講義</h3>
+            <div className="border-double border-4 border-black flex-grow">
+              <table className="w-full items-center">
+                <thead>
+                    <tr className="border-b border-black">
+                        <th>講義名</th>
+                        <th>ようび</th>
+                        <th>時間</th>
+                    </tr>
+                </thead>
+                    {otherLecture(lectures)}
+              </table>
+            </div>
           </div>
         </div>
       </div>
