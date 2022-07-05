@@ -181,8 +181,6 @@ const EditPage = () => {
     console.log(memo);
   };
 
-  const weekdays = ["日", "月", "火", "水", "木", "金", "土", "その他"];
-
   return !dataLoaded ? (
     <div>loading...</div>
   ) : (
