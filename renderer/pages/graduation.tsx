@@ -20,9 +20,35 @@ const get_class_codes = (lectures_allq: Lecture[][]):string => {
       }
     }
   }
-  console.log(codes)
   return codes.join(",")
 }
+
+
+/**
+ * 科目コードが無い講義を取得
+ * @param lectures
+ * @returns
+ */
+ const otherLecture = (lectures_allq: Lecture[][]) => {
+  const others = [];
+  for (let index_lectures_allq = 0; index_lectures_allq < lectures_allq.length; index_lectures_allq++) {
+    const lectures = lectures_allq[index_lectures_allq];
+    for (let index = 0; index < lectures.length; index++) {
+      const lecture: Lecture = lectures[index];
+      if (!(lecture.code != null && lecture.code !== "")) {
+        others.push(
+          <tr className="text-center">
+            <th> {index_lectures_allq+1} </th>
+            <th> {lecture.name} </th>
+          </tr>
+        );
+      }
+    }
+  }
+  if (others.length != 0) {
+    return <tbody className="whitespace-normal p-1">{others}</tbody>;
+  }
+};
 
 const GraduationPage = () => {
 
@@ -66,6 +92,21 @@ const GraduationPage = () => {
       goBack={() => router.push("/?quarter=" + quarter.toString())}
     >
       <button onClick={onClick}>[YES]</button>
+      <div className="overflow-auto">
+        <br></br>
+        <h3>科目コードが無い講義</h3>
+        <div className="border-double border-4 border-black flex-grow">
+          <table className="w-full items-center cursor-pointer">
+            <thead>
+              <tr className="border-b border-black bg-gray-400">
+                <th>クオーター</th>
+                <th>講義名</th>
+              </tr>
+            </thead>
+            {otherLecture([lectures0, lectures1, lectures2, lectures3])}
+          </table>
+        </div>
+      </div>
     </Layout>
   ) : (
     <div>loading...</div>
