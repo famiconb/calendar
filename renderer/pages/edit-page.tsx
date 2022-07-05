@@ -37,10 +37,11 @@ const EditPage = () => {
     setDataLoaded(true);
   }, [lecture]);
   const handleDowChange = (event: any) => {
-    if (dows.has(Number(event.target.value))) {
-      dows.delete(Number(event.target.value));
+    const value = Number(event.target.value);
+    if (dows.has(value)) {
+      dows.delete(value);
     } else {
-      dows.add(Number(event.target.value));
+      dows.add(value);
     }
     setDows(dows);
     console.log(dows);
@@ -182,7 +183,7 @@ const EditPage = () => {
     console.log(memo);
   };
 
-  const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+  const weekdays = ["日", "月", "火", "水", "木", "金", "土", "その他"];
 
   return !dataLoaded ? (
     <div>loading...</div>
