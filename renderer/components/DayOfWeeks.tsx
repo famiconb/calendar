@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+const weekdayEng = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 
 interface Props {
   initialDayOfWeeks?: number[];
@@ -45,22 +46,24 @@ const DayOfWeeks: React.FC<Props> = (props) => {
           <input
             name="dow0"
             type="checkbox"
+            id={`day-of-weeks-${weekdayEng[i]}`}
             value={i}
             onChange={handleDowChange}
             checked={dows.includes(i)}
           />{" "}
-          {w}
+          <label htmlFor={`day-of-weeks-${weekdayEng[i]}`}>{w}</label>
         </span>
       ))}
       <span className="inline-block">
         <input
           name="dow0"
           type="checkbox"
+          id="day-of-weeks-other"
           value={7}
           onChange={handleDowChange}
           checked={dows.includes(7)}
         />{" "}
-        その他
+        <label htmlFor="day-of-weeks-other">その他</label>
       </span>
     </div>
   );
