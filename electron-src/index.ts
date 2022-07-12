@@ -12,6 +12,7 @@ import {
 } from "electron";
 import isDev from "electron-is-dev";
 import prepareNext from "electron-next";
+import { PythonShell, PythonShellError, Options } from "python-shell";
 
 // Prepare the renderer once the app is ready
 app.on("ready", async () => {
@@ -53,7 +54,27 @@ app.on("browser-window-blur", () => {
 });
 
 // listen the channel `message` and resend the received message to the renderer process
-ipcMain.on("message", (event: IpcMainEvent, message: any) => {
+ipcMain.on("check_graduation", (event: IpcMainEvent, message: any) => {
   console.log(message);
-  setTimeout(() => event.sender.send("message", "hi from electron"), 500);
+  const options: Options = {
+    mode: "text",
+    pythonOptions: ["-u"], // get print results in real-time
+    encoding: "utf8",
+    cwd: "./electron-src/graduation_requirements",
+    args: [message[0], message[1], message[2]],
+  };
+
+  PythonShell.run(
+    "determine_and_recommendation.py",
+    options,
+    function (err: PythonShellError | undefined, output?: any[] | undefined) {
+      if (err) {
+        console.log("E: ", err);
+        output = ["Error"];
+      }
+      // results is an array consisting of messages collected during execution
+      console.log("results: %j", output);
+      setTimeout(() => event.sender.send("check_graduation", output), 500);
+    }
+  );
 });
