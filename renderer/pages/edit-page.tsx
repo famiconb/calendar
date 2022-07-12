@@ -5,6 +5,7 @@ import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
 import { useQuarter } from "../hooks/useQuarter";
 import Button from "../components/Button";
+import PeriodSelector from "../components/PeriodSelector";
 import DayOfWeeks from "../components/DayOfWeeks";
 
 const EditPage = () => {
@@ -39,17 +40,10 @@ const EditPage = () => {
     setDataLoaded(true);
   }, [lecture]);
 
-  const [begin, setBegin] = useState(lecture.dates[0].period[0]);
-  const handleBeginChange = (event: any) => {
-    setBegin(Number(event.target.value));
-    console.log(begin);
-  };
-
-  const [end, setEnd] = useState(lecture.dates[0].period.slice(-1)[0]);
-  const handleEndChange = (event: any) => {
-    setEnd(Number(event.target.value));
-    console.log(end);
-  };
+  const [period, setPeriod] = useState<[number, number]>([
+    lecture.dates[0].period[0],
+    lecture.dates[0].period.slice(-1)[0],
+  ]);
 
   const [memo, setMemo] = useState<LectureMemo[]>([]);
 
@@ -84,7 +78,7 @@ const EditPage = () => {
         dayOfWeek: dow,
         period: [],
       };
-      for (let i = begin; i <= end; ++i) {
+      for (let i = period[0]; i <= period[1]; ++i) {
         date.period.push(i);
       }
       edited_lecture.dates.push(date);
@@ -233,21 +227,11 @@ const EditPage = () => {
               initialDayOfWeeks={dows}
               onDayOfWeeksChange={(x) => setDows(x)}
             />
-            <select name="begin" value={begin} onChange={handleBeginChange}>
-              {[...Array(10).keys()].map((x) => (
-                <option value={`${x + 1}`} key={`option-left-value-${x}`}>
-                  {x + 1}限
-                </option>
-              ))}
-            </select>
-            〜
-            <select name="end" value={end} onChange={handleEndChange}>
-              {[...Array(10).keys()].map((x) => (
-                <option value={`${x + 1}`} key={`option-right-value-${x}`}>
-                  {x + 1}限
-                </option>
-              ))}
-            </select>
+            <PeriodSelector
+              begin={period[0]}
+              end={period[1]}
+              onPeriodChange={(period) => setPeriod(period)}
+            />
           </div>
           <div className="add-page_row" style={{ margin: "10px 0px" }}>
             <div className="flex">
