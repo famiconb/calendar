@@ -210,6 +210,7 @@ const EditPage = () => {
             <input
               name="title"
               className="border-b border-black rounded-sm w-full h-8 box-border p-1"
+              placeholder="講義名..."
               value={title}
               onChange={handleTitleChange}
             ></input>
