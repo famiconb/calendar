@@ -7,6 +7,8 @@ import { useQuarter } from "../hooks/useQuarter";
 import Button from "../components/Button";
 import PeriodSelector from "../components/PeriodSelector";
 import DayOfWeeks from "../components/DayOfWeeks";
+import { FaPlus } from "react-icons/fa";
+import { BsCheckLg } from "react-icons/bs";
 
 const EditPage = () => {
   const router = useRouter();
@@ -194,7 +196,7 @@ const EditPage = () => {
     <div>loading...</div>
   ) : (
     <Layout
-      title="授業情報の編集"
+      title="講義情報の編集"
       goBack={() =>
         router.push(
           `/lecture-info?id=${lecture.id}&quarter=${quarter.toString()}`
@@ -204,25 +206,27 @@ const EditPage = () => {
       <div className="edit-page_content m-auto w-11/12 mt-4">
         <div className="edit-page_inner m-2.5 block space-y-4">
           <div className="edit-page_row my-2.5 block">
-            <p>授業名</p>
+            <p className="text-sm">講義名</p>
             <input
               name="title"
-              className="border border-black rounded-sm w-full h-8 box-border p-1"
+              className="border-b border-black rounded-sm w-full h-8 box-border p-1"
+              placeholder="講義名..."
               value={title}
               onChange={handleTitleChange}
             ></input>
           </div>
           <div className="edit-page_row my-3 block">
-            <p>科目コード</p>
+            <p className="text-sm">科目コード</p>
             <input
               name="科目コード"
-              className="border border-black rounded-sm w-full h-8 box-border p-1"
+              className="border-b border-black rounded-sm w-full h-8 box-border p-1"
+              placeholder="CSC.T000"
               value={code}
               onChange={handleCodeChange}
             ></input>
           </div>
           <div className="add-page_row my-2.5">
-            <p>開講日時</p>
+            <p className="text-sm">開講日時</p>
             <DayOfWeeks
               initialDayOfWeeks={dows}
               onDayOfWeeksChange={(x) => setDows(x)}
@@ -234,21 +238,23 @@ const EditPage = () => {
             />
           </div>
           <div className="add-page_row" style={{ margin: "10px 0px" }}>
-            <div className="flex">
-              <p className="flex-grow">メモ</p>
-              <button
+            <div className="flex p-1">
+              <div className="flex-grow text-sm">メモ</div>
+              <Button
                 onClick={addInputForm}
-                className="bg-blue-400 hover:bg-blue-300 shadow-md rounded-full h-7 w-7"
+                className="bg-blue-400 hover:bg-blue-300 shadow-md px-4"
               >
-                +
-              </button>
+                <div className="text-white">
+                  <FaPlus />
+                </div>
+              </Button>
             </div>
             {memo.map((_, index) => (
               <a style={{ margin: "3px 0px" }} key={index}>
                 <input
                   name="title"
-                  className="border border-black rounded-sm p-1 w-full h-7 box-border"
-                  placeholder="title"
+                  className="border-b border-black border-dashed rounded-sm p-1 w-full h-7"
+                  placeholder="タイトル..."
                   defaultValue={memo[index].title}
                   onChange={handleMemoChange}
                   data-num={index}
@@ -261,8 +267,8 @@ const EditPage = () => {
                     boxSizing: "border-box",
                     margin: "0",
                   }}
-                  className="border border-black w-full m-0 p-1 h-20 box-border"
-                  placeholder="content"
+                  className="w-full m-0 p-1 h-20 box-border"
+                  placeholder="コンテンツ..."
                   defaultValue={memo[index].text}
                   onChange={handleMemoChange}
                   data-num={index}
@@ -270,7 +276,9 @@ const EditPage = () => {
               </a>
             ))}
           </div>
-          <Button onClick={onSubmit}>編集を反映</Button>
+          <Button onClick={onSubmit} className="px-4 float-right text-white">
+            修正
+          </Button>
         </div>
       </div>
     </Layout>

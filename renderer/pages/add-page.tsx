@@ -7,6 +7,8 @@ import { useQuarter } from "../hooks/useQuarter";
 import Button from "../components/Button";
 import PeriodSelector from "../components/PeriodSelector";
 import DayOfWeeks from "../components/DayOfWeeks";
+import { FaPlus } from "react-icons/fa";
+import { GrTableAdd } from "react-icons/gr";
 
 const AddPage = () => {
   const router = useRouter();
@@ -170,30 +172,31 @@ const AddPage = () => {
 
   return (
     <Layout
-      title="授業情報の追加"
+      title="講義情報の追加"
       goBack={() => router.push("/?quarter=" + quarter.toString())}
     >
       <div className="add-page_content m-auto w-11/12 mt-4">
         <div className="add-page_inner m-2.5 block space-y-4">
           <div className="add-page_row my-2.5 block">
-            <p>授業名</p>
+            <p className="text-sm">講義名</p>
             <input
               name="title"
-              className="border border-black rounded-sm w-full h-8 box-border p-1"
-              placeholder="授業名..."
+              className="border-b border-black rounded-sm w-full h-8 box-border p-1"
+              placeholder="講義名..."
               onChange={handleTitleChange}
             ></input>
           </div>
           <div className="add-page_row my-3 block">
-            <p>科目コード</p>
+            <p className="text-sm">科目コード</p>
             <input
               name="科目コード"
-              className="border border-black rounded-sm w-full h-8 box-border p-1"
+              className="border-b border-black rounded-sm w-full h-8 box-border p-1"
+              placeholder="CSC.T000"
               onChange={handleCodeChange}
             ></input>
           </div>
           <div className="add-page_row my-2.5">
-            <p>開講曜日/時限</p>
+            <p className="text-sm">開講曜日/時限</p>
             <DayOfWeeks onDayOfWeeksChange={(x) => setDows(x)} />
 
             <PeriodSelector
@@ -204,26 +207,28 @@ const AddPage = () => {
           </div>
           <div className="add-page_row space-y-1 my-2.5">
             <div className="flex">
-              <p className="flex-grow">メモ</p>
-              <button
+              <p className="flex-grow text-sm">メモ</p>
+              <Button
                 onClick={addInputForm}
-                className="bg-blue-400 hover:bg-blue-300 shadow-md rounded-full h-7 w-7"
+                className="bg-blue-400 hover:bg-blue-300 shadow-md px-4"
               >
-                +
-              </button>
+                <div className="text-white">
+                  <FaPlus />
+                </div>
+              </Button>
             </div>
             {memo.map((_, index) => (
               <div style={{ margin: "3px 0px" }} key={`memo-${index}`}>
                 <input
                   name="title"
-                  className="border border-black rounded-sm p-1 w-full h-7 box-border"
+                  className="border-b border-dashed border-black rounded-sm p-1 w-full h-7 box-border"
                   placeholder="メモタイトル..."
                   onChange={handleMemoChange}
                   data-num={index}
                 ></input>
                 <textarea
                   name="text"
-                  className="border border-black w-full m-0 p-1 h-20 box-border"
+                  className="w-full m-0 p-1 h-20 box-border"
                   placeholder="コンテンツ..."
                   onChange={handleMemoChange}
                   data-num={index}
@@ -232,8 +237,13 @@ const AddPage = () => {
             ))}
           </div>
           <div className="flex flex-col space-y-2">
-            <div className="flex space-x-1">
-              <Button onClick={onSubmit}>追加</Button>
+            <div className="space-x-1">
+              <Button
+                onClick={onSubmit}
+                className="px-4  float-right text-white"
+              >
+                追加
+              </Button>
             </div>
           </div>
         </div>
