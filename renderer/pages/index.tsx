@@ -196,6 +196,13 @@ const IndexPage = () => {
             >
               講義追加
             </Button>
+            <Button
+              color="primary"
+              className="mx-2 mt-1.5"
+              onClick={() => router.push(`/graduation?quarter=${rawQuater}`)}
+            >
+              修了判定
+            </Button>
           </div>
           <table className="border border-solid w-full my-2">
             <thead>
