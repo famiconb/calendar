@@ -88,7 +88,7 @@ const LectureInfoPage = () => {
             <div className="float-right">
               <Button
                 color="primary"
-                className="mx-2 mt-1.5 text-white"
+                className="mx-2 mt-1.5 text-white px-4"
                 onClick={() =>
                   router.push(
                     "/edit-page?id=" +
@@ -100,7 +100,11 @@ const LectureInfoPage = () => {
               >
                 <BiEdit />
               </Button>
-              <Button onClick={openModal} color="red" className="text-white">
+              <Button
+                onClick={openModal}
+                color="red"
+                className="text-white px-4"
+              >
                 <BsFillTrashFill />
               </Button>
             </div>
@@ -121,15 +125,15 @@ const LectureInfoPage = () => {
                 <Button
                   onClick={deletePage}
                   color="red"
-                  className="border border-black rounded-sm text-white"
+                  className="rounded-sm text-white px-4"
                 >
-                  消します！
+                  ○
                 </Button>
                 <Button
                   onClick={closeModal}
-                  className="border border-black rounded-sm text-white"
+                  className="rounded-sm text-white px-4"
                 >
-                  やっぱやめます
+                  ×
                 </Button>
               </div>
             </Modal>
