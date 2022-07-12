@@ -7,6 +7,7 @@ import Modal from "react-modal";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
 import { useQuarter } from "../hooks/useQuarter";
+import { AiOutlineClose } from "react-icons/ai";
 
 // 引数のlecture群から科目コードを抽出
 const get_class_codes = (lectures_allq: Lecture[][]): string => {
@@ -75,22 +76,17 @@ const ResultModal = (props: Props) => {
   };
   return (
     <Modal
-      contentLabel="Check Modal"
+      contentLabel="Grad Modal"
       isOpen={props.isOpen}
       style={customStyles}
       onAfterOpen={() => {}}
       onRequestClose={props.onRequestClose}
     >
-      <h2>{props.text}</h2>
-      <div className="space-x-2 pt-2">
-        {" "}
-        <button
-          onClick={props.onRequestClose}
-          className="float-right border border-black rounded-sm"
-        >
-          閉じる
-        </button>
-      </div>
+      <Button onClick={props.onRequestClose} className="float-right rounded-sm">
+        <AiOutlineClose />
+      </Button>
+      <h2 className="clear-right py-1">{props.text}</h2>
+      <div className="space-x-2 pt-2"> </div>
     </Modal>
   );
 };
@@ -143,6 +139,7 @@ const CoursePulldown = (
     <select
       value={course_v}
       onChange={(event) => setCourse(event.target.value)}
+      className="p-1"
     >
       {course_list.map((course: string, i: number) => {
         return (
@@ -247,55 +244,69 @@ const GraduationPage = () => {
       title="修了判定"
       goBack={() => router.push("/?quarter=" + quarter.toString())}
     >
-      <p>所属コース</p>
-      {CoursePulldown(course, setCourse)}
-      <p>修了判定コース</p>
-      {CoursePulldown(determine_course, setDetermineCourse)}
-      <p>その他履修済み講義コード</p>
-      <input
-        name="other_lecture"
-        className="border border-black rounded-sm p-1 w-full h-7 box-border"
-        placeholder="LAH.S433,LAH.T420"
-        defaultValue=""
-        onChange={(event) => {
-          setOtherLecture(event.target.value);
-        }}
-      ></input>
-      <Button color="primary" className="mx-2 mt-1.5" onClick={onClick}>
-        修了判定を実行
-      </Button>
-      <ResultModal
-        isOpen={modalOKIsOpen}
-        onRequestClose={() => setOKIsOpen(false)}
-        text="OK: 修了要件を満たしています"
-      ></ResultModal>
-      <ResultModal
-        isOpen={modalNGIsOpen}
-        onRequestClose={() => setNGIsOpen(false)}
-        text="NG: 修了要件を満たしていません"
-      ></ResultModal>
-      <div className="overflow-auto">
-        <br></br>
-        <h3>科目コードが無い講義</h3>
-        <div className="border-double border-4 border-black flex-grow">
-          <table className="w-full items-center cursor-pointer">
-            <thead>
-              <tr className="border-b border-black bg-gray-400">
-                <th>クオーター</th>
-                <th>講義名</th>
-              </tr>
-            </thead>
-            {otherLecture([
-              lectures0,
-              lectures1,
-              lectures2,
-              lectures3,
-              lectures4,
-              lectures5,
-              lectures6,
-              lectures7,
-            ])}
-          </table>
+      <div className="add-page_content m-auto w-11/12 mt-4">
+        <div className="add-page_inner m-2.5 block space-y-4">
+          <div className="add-page_row my-2.5 block">
+            <p className="text-sm">所属コース</p>
+            {CoursePulldown(course, setCourse)}
+            <div className="p-2"></div>
+            <p className="text-sm">修了判定コース</p>
+            {CoursePulldown(determine_course, setDetermineCourse)}
+            <div className="p-2"></div>
+            <p className="text-sm">その他履修済み講義コード</p>
+            <input
+              name="other_lecture"
+              className="border-b border-black rounded-sm p-1 w-full h-7 box-border"
+              placeholder="LAH.S433,LAH.T420"
+              defaultValue=""
+              onChange={(event) => {
+                setOtherLecture(event.target.value);
+              }}
+            ></input>
+            <div className="p-2"></div>
+            <Button
+              color="primary"
+              className="mx-2 mt-1.5 text-white"
+              onClick={onClick}
+            >
+              修了判定
+            </Button>
+            <ResultModal
+              isOpen={modalOKIsOpen}
+              onRequestClose={() => setOKIsOpen(false)}
+              text="OK: 修了要件を満たしています"
+            ></ResultModal>
+            <ResultModal
+              isOpen={modalNGIsOpen}
+              onRequestClose={() => setNGIsOpen(false)}
+              text="NG: 修了要件を満たしていません"
+            ></ResultModal>
+            <div className="p-2"></div>
+            <div className="overflow-auto">
+              <br></br>
+              <h3 className="text-sm">科目コードが無い講義</h3>
+              <div className="border-double border-4 border-black flex-grow">
+                <table className="w-full items-center cursor-pointer">
+                  <thead>
+                    <tr className="border-b border-black bg-gray-300">
+                      <th>クオーター</th>
+                      <th>講義名</th>
+                    </tr>
+                  </thead>
+                  {otherLecture([
+                    lectures0,
+                    lectures1,
+                    lectures2,
+                    lectures3,
+                    lectures4,
+                    lectures5,
+                    lectures6,
+                    lectures7,
+                  ])}
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
