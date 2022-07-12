@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import Button from "../components/Button";
 import { useQuarter } from "../hooks/useQuarter";
 
-
 // 引数のlecture群から科目コードを抽出
 const get_class_codes = (lectures_allq: Lecture[][]): string => {
   const codes: string[] = [];
@@ -161,9 +160,9 @@ const GraduationPage = () => {
         lectures6,
         lectures7,
       ]);
-      if (class_codes !== "") {
+      if (class_codes === "") {
         class_codes = other_lecture;
-      } else {
+      } else if (other_lecture !== "") {
         class_codes = [class_codes, other_lecture].join(",");
       }
       global.ipcRenderer.send("check_graduation", [
@@ -174,14 +173,14 @@ const GraduationPage = () => {
     }
   };
 
-  return (lectures0 != null &&
+  return lectures0 != null &&
     lectures1 != null &&
     lectures2 != null &&
     lectures3 != null &&
     lectures4 != null &&
     lectures5 != null &&
     lectures6 != null &&
-    lectures7 != null) ? (
+    lectures7 != null ? (
     <Layout
       title="修了判定"
       goBack={() => router.push("/?quarter=" + quarter.toString())}
@@ -240,7 +239,16 @@ const GraduationPage = () => {
                 <th>講義名</th>
               </tr>
             </thead>
-            {otherLecture([lectures0, lectures1, lectures2, lectures3, lectures4, lectures5, lectures6, lectures7])}
+            {otherLecture([
+              lectures0,
+              lectures1,
+              lectures2,
+              lectures3,
+              lectures4,
+              lectures5,
+              lectures6,
+              lectures7,
+            ])}
           </table>
         </div>
       </div>
