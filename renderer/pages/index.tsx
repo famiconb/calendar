@@ -73,7 +73,7 @@ const row_view = (number: number, lectures: Lecture[], quarter: number) => {
                 >
                   <th
                     className={clsx(
-                      "border-solid border border-black h-12",
+                      "border-solid border border-black h-12  cursor-pointer",
                       availableColors[lecture.id % availableColors.length]
                     )}
                   >
