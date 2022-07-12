@@ -8,16 +8,6 @@ import { useRouter } from "next/router";
 import Button from "../components/Button";
 import { useQuarter } from "../hooks/useQuarter";
 
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-  },
-};
 
 // 引数のlecture群から科目コードを抽出
 const get_class_codes = (lectures_allq: Lecture[][]): string => {
@@ -74,6 +64,16 @@ interface Props {
   onRequestClose(event: React.MouseEvent | React.KeyboardEvent): void;
 }
 const ResultModal = (props: Props) => {
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
   return (
     <Modal
       contentLabel="Check Modal"
@@ -103,6 +103,10 @@ const GraduationPage = () => {
   const lectures1 = useLectureData(1).lectures;
   const lectures2 = useLectureData(2).lectures;
   const lectures3 = useLectureData(3).lectures;
+  const lectures4 = useLectureData(4).lectures;
+  const lectures5 = useLectureData(5).lectures;
+  const lectures6 = useLectureData(6).lectures;
+  const lectures7 = useLectureData(7).lectures;
   // const is_initialized_all = ():boolean => {
   //   return (lectures0 != null && lectures1 != null && lectures2 != null && lectures3 != null);
   // }
@@ -141,13 +145,21 @@ const GraduationPage = () => {
       lectures0 != null &&
       lectures1 != null &&
       lectures2 != null &&
-      lectures3 != null
+      lectures3 != null &&
+      lectures4 != null &&
+      lectures5 != null &&
+      lectures6 != null &&
+      lectures7 != null
     ) {
       let class_codes = get_class_codes([
         lectures0,
         lectures1,
         lectures2,
         lectures3,
+        lectures4,
+        lectures5,
+        lectures6,
+        lectures7,
       ]);
       if (class_codes !== "") {
         class_codes = other_lecture;
@@ -162,10 +174,14 @@ const GraduationPage = () => {
     }
   };
 
-  return lectures0 != null &&
+  return (lectures0 != null &&
     lectures1 != null &&
     lectures2 != null &&
-    lectures3 != null ? (
+    lectures3 != null &&
+    lectures4 != null &&
+    lectures5 != null &&
+    lectures6 != null &&
+    lectures7 != null) ? (
     <Layout
       title="修了判定"
       goBack={() => router.push("/?quarter=" + quarter.toString())}
@@ -224,7 +240,7 @@ const GraduationPage = () => {
                 <th>講義名</th>
               </tr>
             </thead>
-            {otherLecture([lectures0, lectures1, lectures2, lectures3])}
+            {otherLecture([lectures0, lectures1, lectures2, lectures3, lectures4, lectures5, lectures6, lectures7])}
           </table>
         </div>
       </div>
