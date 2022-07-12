@@ -5,6 +5,7 @@ import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
 import { useQuarter } from "../hooks/useQuarter";
 import Button from "../components/Button";
+import PeriodSelector from "../components/PeriodSelector";
 import DayOfWeeks from "../components/DayOfWeeks";
 
 const AddPage = () => {
@@ -26,17 +27,7 @@ const AddPage = () => {
 
   const [dows, setDows] = useState<number[]>([]);
 
-  const [begin, setBegin] = useState(1);
-  const handleBeginChange = (event: any) => {
-    setBegin(Number(event.target.value));
-    console.log(begin);
-  };
-
-  const [end, setEnd] = useState(1);
-  const handleEndChange = (event: any) => {
-    setEnd(Number(event.target.value));
-    console.log(end);
-  };
+  const [period, setPeriod] = useState<[number, number]>([1, 2]);
 
   const [memo, setMemo] = useState<LectureMemo[]>([{ title: "", text: "" }]);
   const handleMemoChange = (event: any) => {
@@ -78,7 +69,7 @@ const AddPage = () => {
         dayOfWeek: dow,
         period: [],
       };
-      for (let i = begin; i <= end; ++i) {
+      for (let i = period[0]; i <= period[1]; ++i) {
         date.period.push(i);
       }
       data.dates.push(date);
@@ -204,39 +195,12 @@ const AddPage = () => {
           <div className="add-page_row my-2.5">
             <p>開講曜日/時限</p>
             <DayOfWeeks onDayOfWeeksChange={(x) => setDows(x)} />
-            <select
-              name="begin"
-              className="border rounded-sm border-black ml-4"
-              onChange={handleBeginChange}
-            >
-              <option value="1">1限</option>
-              <option value="2">2限</option>
-              <option value="3">3限</option>
-              <option value="4">4限</option>
-              <option value="5">5限</option>
-              <option value="6">6限</option>
-              <option value="7">7限</option>
-              <option value="8">8限</option>
-              <option value="9">9限</option>
-              <option value="10">10限</option>
-            </select>
-            〜
-            <select
-              name="end"
-              className="border rounded-sm border-black"
-              onChange={handleEndChange}
-            >
-              <option value="1">1限</option>
-              <option value="2">2限</option>
-              <option value="3">3限</option>
-              <option value="4">4限</option>
-              <option value="5">5限</option>
-              <option value="6">6限</option>
-              <option value="7">7限</option>
-              <option value="8">8限</option>
-              <option value="9">9限</option>
-              <option value="10">10限</option>
-            </select>
+
+            <PeriodSelector
+              begin={period[0]}
+              end={period[1]}
+              onPeriodChange={(period) => setPeriod(period)}
+            />
           </div>
           <div className="add-page_row space-y-1 my-2.5">
             <div className="flex">

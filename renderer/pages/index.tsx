@@ -6,6 +6,21 @@ import { useQuarterWithYears } from "../hooks/useQuarter";
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
+import clsx from "clsx";
+
+const availableColors = [
+  "bg-orange-300",
+  "bg-pink-300",
+  "bg-lime-400",
+  "bg-indigo-400",
+  "bg-fuchsia-400",
+  "bg-rose-400",
+  "bg-purple-300",
+  "bg-green-200",
+  "bg-amber-600",
+  "bg-blue-400",
+  "bg-gray-400",
+];
 
 /**
  * 講義情報の行を表示
@@ -56,7 +71,12 @@ const row_view = (number: number, lectures: Lecture[], quarter: number) => {
                 <Link
                   href={`/lecture-info?id=${lecture.id}&quarter=${quarter}`}
                 >
-                  <th className="border-solid border border-black h-12">
+                  <th
+                    className={clsx(
+                      "border-solid border border-black h-12  cursor-pointer",
+                      availableColors[lecture.id % availableColors.length]
+                    )}
+                  >
                     {lecture.name}
                   </th>
                 </Link>
@@ -116,6 +136,11 @@ const otherLecture = (lectures: Lecture[], quarter: number) => {
   }
 };
 
+const QuarterButtonClassPrimary =
+  "mx-1 mt-1.5 bg-gray-100 border-2 border-gray-500";
+const QuarterButtonClassSecondary =
+  "mx-1 mt-1.5 bg-gray-100 border-4 border-blue-500";
+
 const IndexPage = () => {
   // queryパラメータからquarterを取る
   const { quarter, rawQuater, year } = useQuarterWithYears();
@@ -132,7 +157,7 @@ const IndexPage = () => {
       <div className="h-screen">
         <div className="p-2 h-full hlex flex-col">
           <div>
-            <h1>
+            <h1 className="text-xl">
               {year + 1}年目/{quarter + 1}Q の時間割
             </h1>
             <span className="space-x-2">
@@ -149,11 +174,16 @@ const IndexPage = () => {
               {[...Array(4).keys()].map((i) => (
                 <span key={`quater-link-to-${i}`}>
                   {quarter != i ? (
-                    <Link href={`/?quarter=${year * 4 + i}`}>
-                      <a>[ {i + 1}Q ]</a>
-                    </Link>
+                    <Button
+                      className={QuarterButtonClassPrimary}
+                      onClick={() => router.push(`/?quarter=${year * 4 + i}`)}
+                    >
+                      {i + 1}Q
+                    </Button>
                   ) : (
-                    `< ${i + 1}Q >`
+                    <Button className={QuarterButtonClassSecondary}>
+                      {i + 1}Q
+                    </Button>
                   )}
                 </span>
               ))}
@@ -167,8 +197,7 @@ const IndexPage = () => {
               講義追加
             </Button>
           </div>
-
-          <table className="border border-solid w-full">
+          <table className="border border-solid w-full my-2">
             <thead>
               <tr>
                 <TableHead></TableHead>
@@ -191,7 +220,6 @@ const IndexPage = () => {
             </tbody>
           </table>
           <div className="overflow-auto">
-            <br></br>
             <h3>その他の講義</h3>
             <div className="border-double border-4 border-black flex-grow">
               <table className="w-full items-center cursor-pointer">
