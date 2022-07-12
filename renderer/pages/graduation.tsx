@@ -95,6 +95,66 @@ const ResultModal = (props: Props) => {
   );
 };
 
+const course_list: string[] = [
+  "情報工学コース修士課程",
+  "情報工学コース博士後期課程",
+  "エンジニアリングデザインコース修士課程",
+  "サイバーセキュリティ特別専門学修プログラム",
+  "データサイエンス・AI特別専門学修プログラム",
+  "数学コース修士課程",
+  "物理学コース修士課程",
+  "化学コース修士課程",
+  "地球惑星科学コース修士課程",
+  "機械コース修士課程",
+  "システム制御コース修士課程",
+  "電気電子コース修士課程",
+  "情報通信コース修士課程",
+  "経営工学コース修士課程",
+  "材料コース修士課程",
+  "応用科学コース修士課程",
+  "数理・計算科学コース修士課程",
+  "生命理工学コース修士課程",
+  "建築学コース修士課程",
+  "土木工学コース修士",
+  "地球環境共創コース修士課程",
+  "社会・人間科学コース修士課程",
+  "技術経営専門職学位課程",
+  "エネルギーコース修士課程化学系所属",
+  "エネルギーコース修士課程機械系所属",
+  "エネルギーコース修士課程電気電子系所属",
+  "エネルギーコース修士課程材料系所属",
+  "エネルギーコース修士課程応用化学系所属",
+  "エネルギーコース修士課程融合理工学系所属",
+  "ライフエンジニアリングコース修士課程",
+  "原子核工学コース修士課程",
+  "知能情報コース修士課程",
+  "都市・環境学コース修士課程",
+  "数理ファイナンス特別専門学修プログラム",
+  "Sustainable Engineering特別専門学修プログラム",
+  "実践型アントレプレナー人材育成プログラム",
+  "環境デザイン特別専門学修プログラム",
+];
+
+const CoursePulldown = (
+  course_v: string,
+  setCourse: (course: string) => void
+) => {
+  return (
+    <select
+      value={course_v}
+      onChange={(event) => setCourse(event.target.value)}
+    >
+      {course_list.map((course: string, i: number) => {
+        return (
+          <option value={course} key={i}>
+            {course}
+          </option>
+        );
+      })}
+    </select>
+  );
+};
+
 const GraduationPage = () => {
   const router = useRouter();
   const quarter: number = useQuarter();
@@ -133,8 +193,10 @@ const GraduationPage = () => {
     };
   }, []);
 
-  const [course, setCourse] = useState<string>("");
-  const [determine_course, setDetermineCourse] = useState<string>("");
+  const [course, setCourse] = useState<string>(course_list[0]);
+  const [determine_course, setDetermineCourse] = useState<string>(
+    course_list[0]
+  );
   const [other_lecture, setOtherLecture] = useState<string>("");
   const onClick = () => {
     // const course = '情報工学コース修士課程';
@@ -186,25 +248,9 @@ const GraduationPage = () => {
       goBack={() => router.push("/?quarter=" + quarter.toString())}
     >
       <p>所属コース</p>
-      <input
-        name="course"
-        className="border border-black rounded-sm p-1 w-full h-7 box-border"
-        placeholder="情報工学コース修士課程"
-        defaultValue="情報工学コース修士課程"
-        onChange={(event) => {
-          setCourse(event.target.value);
-        }}
-      ></input>
+      {CoursePulldown(course, setCourse)}
       <p>修了判定コース</p>
-      <input
-        name="determine_course"
-        className="border border-black rounded-sm p-1 w-full h-7 box-border"
-        placeholder="情報工学コース修士課程"
-        defaultValue="情報工学コース修士課程"
-        onChange={(event) => {
-          setDetermineCourse(event.target.value);
-        }}
-      ></input>
+      {CoursePulldown(determine_course, setDetermineCourse)}
       <p>その他履修済み講義コード</p>
       <input
         name="other_lecture"
