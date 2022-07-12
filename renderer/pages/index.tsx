@@ -167,7 +167,7 @@ const IndexPage = () => {
                   console.log(selectedYear * 4 + quarter);
                   router.push(`/?quarter=${selectedYear * 4 + quarter}`);
                 }}
-                defaultValue={0}
+                defaultValue={year}
               >
                 <option value={0}>1年目</option>
                 <option value={1}>2年目</option>
