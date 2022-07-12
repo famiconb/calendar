@@ -219,6 +219,7 @@ const EditPage = () => {
             <input
               name="科目コード"
               className="border-b border-black rounded-sm w-full h-8 box-border p-1"
+              placeholder="CSC.T000"
               value={code}
               onChange={handleCodeChange}
             ></input>
