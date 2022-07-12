@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useQuarter } from "../hooks/useQuarter";
 import Button from "../components/Button";
 import PeriodSelector from "../components/PeriodSelector";
+import DayOfWeeks from "../components/DayOfWeeks";
 
 const AddPage = () => {
   const router = useRouter();
@@ -18,20 +19,13 @@ const AddPage = () => {
     setTitle(event.target.value);
     console.log(title);
   };
+
   const [code, setCode] = useState("");
   const handleCodeChange = (event: any) => {
     setCode(event.target.value);
   };
-  const [dows, _] = useState(new Set<number>());
-  const handleDowChange = (event: any) => {
-    const value = Number(event.target.value);
-    if (dows.has(value)) {
-      dows.delete(value);
-    } else {
-      dows.add(value);
-    }
-    console.log(dows);
-  };
+
+  const [dows, setDows] = useState<number[]>([]);
 
   const [period, setPeriod] = useState<[number, number]>([1, 2]);
 
@@ -112,7 +106,7 @@ const AddPage = () => {
         if (date.dayOfWeek == 7 && data.dates.length > 1) {
           passed = false;
           errorMessages.push(
-            "開講曜日ではその他と曜日を同時に選択できません。"
+            "開講曜日では、その他と曜日を同時に選択できません。"
           );
         }
       }
@@ -131,8 +125,9 @@ const AddPage = () => {
           for (const date of data.dates) {
             for (const period of date.period) {
               if (
-                date.dayOfWeek == saved_lecture_date.dayOfWeek &&
-                period == saved_lecture_period
+                date.dayOfWeek !== 7 &&
+                date.dayOfWeek === saved_lecture_date.dayOfWeek &&
+                period === saved_lecture_period
               ) {
                 passed = false;
                 errorMessages.push(
@@ -173,8 +168,6 @@ const AddPage = () => {
     console.log(memo);
   };
 
-  const weekdays = ["日", "月", "火", "水", "木", "金", "土", "その他"];
-
   return (
     <Layout
       title="授業情報の追加"
@@ -201,14 +194,8 @@ const AddPage = () => {
           </div>
           <div className="add-page_row my-2.5">
             <p>開講曜日/時限</p>
-            <div className="space-x-5">
-              {weekdays.map((w, i) => (
-                <span className="inline-block" key={`${w}-${i}`}>
-                  <input type="checkbox" value={i} onChange={handleDowChange} />{" "}
-                  {w}
-                </span>
-              ))}
-            </div>
+            <DayOfWeeks onDayOfWeeksChange={(x) => setDows(x)} />
+
             <PeriodSelector
               begin={period[0]}
               end={period[1]}

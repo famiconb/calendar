@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useQuarter } from "../hooks/useQuarter";
 import Button from "../components/Button";
 import PeriodSelector from "../components/PeriodSelector";
+import DayOfWeeks from "../components/DayOfWeeks";
 
 const EditPage = () => {
   const router = useRouter();
@@ -28,25 +29,16 @@ const EditPage = () => {
     setCode(event.target.value);
   };
 
-  const [dows, setDows] = useState(new Set<number>());
+  const [dows, setDows] = useState<number[]>([]);
+
   useEffect(() => {
     const dowSet = new Set<number>();
     lecture.dates.forEach((date) => {
       dowSet.add(date.dayOfWeek);
     });
-    setDows(dowSet);
+    setDows(lecture.dates.map((x) => x.dayOfWeek));
     setDataLoaded(true);
   }, [lecture]);
-  const handleDowChange = (event: any) => {
-    const value = Number(event.target.value);
-    if (dows.has(value)) {
-      dows.delete(value);
-    } else {
-      dows.add(value);
-    }
-    setDows(dows);
-    console.log(dows);
-  };
 
   const [period, setPeriod] = useState<[number, number]>([
     lecture.dates[0].period[0],
@@ -125,7 +117,15 @@ const EditPage = () => {
         }
         if (date.period.length == 0) {
           passed = false;
-          errorMessages.push("開講時間は必要です。");
+          errorMessages.push(
+            "講義開始時限は終了時限以前である必要があります。"
+          );
+        }
+        if (date.dayOfWeek == 7 && edited_lecture.dates.length > 1) {
+          passed = false;
+          errorMessages.push(
+            "開講曜日では、その他と曜日を同時に選択できません。"
+          );
         }
       }
     }
@@ -146,6 +146,7 @@ const EditPage = () => {
           for (const date of edited_lecture.dates) {
             for (const period of date.period) {
               if (
+                date.dayOfWeek !== 7 &&
                 date.dayOfWeek == saved_lecture_date.dayOfWeek &&
                 period == saved_lecture_period
               ) {
@@ -189,8 +190,6 @@ const EditPage = () => {
     console.log(memo);
   };
 
-  const weekdays = ["日", "月", "火", "水", "木", "金", "土", "その他"];
-
   return !dataLoaded ? (
     <div>loading...</div>
   ) : (
@@ -224,22 +223,10 @@ const EditPage = () => {
           </div>
           <div className="add-page_row my-2.5">
             <p>開講日時</p>
-            <div className="space-x-5">
-              {weekdays.map((w, i) => {
-                return (
-                  <span className="inline-block" key={`${w}-${i}`}>
-                    <input
-                      name="dow0"
-                      type="checkbox"
-                      value={`${i}`}
-                      onChange={handleDowChange}
-                      defaultChecked={dows.has(i)}
-                    />{" "}
-                    {w}
-                  </span>
-                );
-              })}
-            </div>
+            <DayOfWeeks
+              initialDayOfWeeks={dows}
+              onDayOfWeeksChange={(x) => setDows(x)}
+            />
             <PeriodSelector
               begin={period[0]}
               end={period[1]}
