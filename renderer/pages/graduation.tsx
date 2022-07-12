@@ -68,6 +68,34 @@ const otherLecture = (lectures_allq: Lecture[][]) => {
   }
 };
 
+interface Props {
+  isOpen: boolean;
+  text: string;
+  onRequestClose(event: React.MouseEvent | React.KeyboardEvent): void;
+}
+const ResultModal = (props: Props) => {
+  return (
+    <Modal
+      contentLabel="Check Modal"
+      isOpen={props.isOpen}
+      style={customStyles}
+      onAfterOpen={() => {}}
+      onRequestClose={props.onRequestClose}
+    >
+      <h2>{props.text}</h2>
+      <div className="space-x-2 pt-2">
+        {" "}
+        <button
+          onClick={props.onRequestClose}
+          className="float-right border border-black rounded-sm"
+        >
+          閉じる
+        </button>
+      </div>
+    </Modal>
+  );
+};
+
 const GraduationPage = () => {
   const router = useRouter();
   const quarter: number = useQuarter();
@@ -175,42 +203,16 @@ const GraduationPage = () => {
       <Button color="primary" className="mx-2 mt-1.5" onClick={onClick}>
         修了判定を実行
       </Button>
-      <Modal
-        contentLabel="Check Modal"
+      <ResultModal
         isOpen={modalOKIsOpen}
-        style={customStyles}
-        onAfterOpen={() => {}}
         onRequestClose={() => setOKIsOpen(false)}
-      >
-        <h2>OK: 修了要件を満たしています</h2>
-        <div className="space-x-2 pt-2">
-          {" "}
-          <button
-            onClick={() => setOKIsOpen(false)}
-            className="float-right border border-black rounded-sm"
-          >
-            閉じる
-          </button>
-        </div>
-      </Modal>
-      <Modal
-        contentLabel="Check Modal"
+        text="OK: 修了要件を満たしています"
+      ></ResultModal>
+      <ResultModal
         isOpen={modalNGIsOpen}
-        style={customStyles}
-        onAfterOpen={() => {}}
         onRequestClose={() => setNGIsOpen(false)}
-      >
-        <h2>NG: 修了要件を満たしていません</h2>
-        <div className="space-x-2 pt-2">
-          {" "}
-          <button
-            onClick={() => setNGIsOpen(false)}
-            className="float-right border border-black rounded-sm"
-          >
-            閉じる
-          </button>
-        </div>
-      </Modal>
+        text="NG: 修了要件を満たしていません"
+      ></ResultModal>
       <div className="overflow-auto">
         <br></br>
         <h3>科目コードが無い講義</h3>
