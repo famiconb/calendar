@@ -152,6 +152,7 @@ const EditPage = () => {
           for (const date of edited_lecture.dates) {
             for (const period of date.period) {
               if (
+                date.dayOfWeek !== 7 &&
                 date.dayOfWeek == saved_lecture_date.dayOfWeek &&
                 period == saved_lecture_period
               ) {
