@@ -6,6 +6,21 @@ import { useQuarter } from "../hooks/useQuarter";
 import React from "react";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
+import clsx from "clsx";
+
+const availableColors = [
+  "bg-orange-300",
+  "bg-pink-300",
+  "bg-lime-400",
+  "bg-indigo-400",
+  "bg-fuchsia-400",
+  "bg-rose-400",
+  "bg-purple-300",
+  "bg-green-200",
+  "bg-amber-600",
+  "bg-blue-400",
+  "bg-gray-400",
+];
 
 /**
  * 講義情報の行を表示
@@ -56,7 +71,12 @@ const row_view = (number: number, lectures: Lecture[], quarter: number) => {
                 <Link
                   href={`/lecture-info?id=${lecture.id}&quarter=${quarter}`}
                 >
-                  <th className="border-solid border border-black h-12 cursor-pointer">
+                  <th
+                    className={clsx(
+                      "border-solid border border-black h-12  cursor-pointer",
+                      availableColors[lecture.id % availableColors.length]
+                    )}
+                  >
                     {lecture.name}
                   </th>
                 </Link>
@@ -116,6 +136,11 @@ const otherLecture = (lectures: Lecture[], quarter: number) => {
   }
 };
 
+const QuarterButtonClassPrimary =
+  "mx-1 mt-1.2 bg-gray-100 border-2 border-gray-500";
+const QuarterButtonClassSecondary =
+  "mx-1 mt-1.2 bg-gray-100 border-4 border-blue-500";
+
 const IndexPage = () => {
   // queryパラメータからquarterを取る
   const quarter: number = useQuarter();
@@ -124,33 +149,66 @@ const IndexPage = () => {
   const { lectures } = useLectureData(quarter);
   const router = useRouter();
 
-  const prevQ = (quarter - 1 + 4) % 4;
-  const nextQ = (quarter + 1) % 4;
   return lectures != null ? (
     <Layout title="CUCalendar">
       <div className="h-screen">
         <div className="p-2 h-full hlex flex-col">
           <div>
-            <h1>{quarter + 1}Q の時間割</h1>
-            {quarter != 0 ? <Link href="/?quarter=0">[ 1Q ]</Link> : "< 1Q >"}
-            {"   "}
-            {quarter != 1 ? <Link href="/?quarter=1">[ 2Q ]</Link> : "< 2Q >"}
-            {"   "}
-            {quarter != 2 ? <Link href="/?quarter=2">[ 3Q ]</Link> : "< 3Q >"}
-            {"   "}
-            {quarter != 3 ? <Link href="/?quarter=3">[ 4Q ]</Link> : "< 4Q >"}
-            <Button
-              color="primary"
-              className="mx-2 mt-1.5"
-              onClick={() =>
-                router.push("/add-page?quarter=" + quarter.toString())
-              }
-            >
-              講義追加
-            </Button>
+            <h1 className="text-xl">{quarter + 1}Q の時間割</h1>
+            <h1>
+              {quarter != 0 ? (
+                <Button
+                  className={QuarterButtonClassPrimary}
+                  onClick={() => router.push("/?quarter=0")}
+                >
+                  1Q
+                </Button>
+              ) : (
+                <Button className={QuarterButtonClassSecondary}>1Q</Button>
+              )}
+              {quarter != 1 ? (
+                <Button
+                  className={QuarterButtonClassPrimary}
+                  onClick={() => router.push("/?quarter=1")}
+                >
+                  2Q
+                </Button>
+              ) : (
+                <Button className={QuarterButtonClassSecondary}>2Q</Button>
+              )}
+              {quarter != 2 ? (
+                <Button
+                  className={QuarterButtonClassPrimary}
+                  onClick={() => router.push("/?quarter=2")}
+                >
+                  3Q
+                </Button>
+              ) : (
+                <Button className={QuarterButtonClassSecondary}>3Q</Button>
+              )}
+              {quarter != 3 ? (
+                <Button
+                  className={QuarterButtonClassPrimary}
+                  onClick={() => router.push("/?quarter=3")}
+                >
+                  4Q
+                </Button>
+              ) : (
+                <Button className={QuarterButtonClassSecondary}>4Q</Button>
+              )}
+              <Button
+                color="primary"
+                className="mx-2 mt-1.2"
+                onClick={() =>
+                  router.push("/add-page?quarter=" + quarter.toString())
+                }
+              >
+                講義追加
+              </Button>
+            </h1>
           </div>
 
-          <table className="border border-solid w-full">
+          <table className="border border-solid w-full my-2">
             <thead>
               <tr>
                 <TableHead></TableHead>
@@ -173,7 +231,6 @@ const IndexPage = () => {
             </tbody>
           </table>
           <div className="overflow-auto">
-            <br></br>
             <h3>その他の講義</h3>
             <div className="border-double border-4 border-black flex-grow">
               <table className="w-full items-center cursor-pointer">
