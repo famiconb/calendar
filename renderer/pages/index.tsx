@@ -3,7 +3,7 @@ import Layout from "../components/Layout";
 import { Lecture } from "../interfaces";
 import { useLectureData } from "../hooks/useLectureData";
 import { useQuarterWithYears } from "../hooks/useQuarter";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
 
@@ -119,6 +119,9 @@ const otherLecture = (lectures: Lecture[], quarter: number) => {
 const IndexPage = () => {
   // queryパラメータからquarterを取る
   const { quarter, rawQuater, year } = useQuarterWithYears();
+  useEffect(() => {
+    console.log({ quarter, rawQuater, year });
+  }, [quarter, rawQuater, year]);
 
   // 表示用の講義データ
   const { lectures } = useLectureData(rawQuater);
@@ -130,13 +133,23 @@ const IndexPage = () => {
         <div className="p-2 h-full hlex flex-col">
           <div>
             <h1>
-              {year + 1}年目/{quarter + 1}Q({rawQuater + 1}Q) の時間割
+              {year + 1}年目/{quarter + 1}Q の時間割
             </h1>
-            <span className=" space-x-2">
-              {[...Array(8).keys()].map((i) => (
+            <span className="space-x-2">
+              <select
+                onChange={(e) => {
+                  const selectedYear = Number(e.target.value);
+                  console.log(selectedYear * 4 + quarter);
+                  router.push(`/?quarter=${selectedYear * 4 + quarter}`);
+                }}
+              >
+                <option value={0}>1年目</option>
+                <option value={1}>2年目</option>
+              </select>
+              {[...Array(4).keys()].map((i) => (
                 <span key={`quater-link-to-${i}`}>
-                  {rawQuater != i ? (
-                    <Link href={`/?quarter=${i}`}>
+                  {quarter != i ? (
+                    <Link href={`/?quarter=${year * 4 + i}`}>
                       <a>[ {i + 1}Q ]</a>
                     </Link>
                   ) : (
