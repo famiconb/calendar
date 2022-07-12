@@ -146,7 +146,7 @@ const GraduationPage = () => {
       <input
         name="course"
         className="border border-black rounded-sm p-1 w-full h-7 box-border"
-        placeholder="title"
+        placeholder="情報工学コース修士課程"
         defaultValue="情報工学コース修士課程"
         onChange={(event) => {
           setCourse(event.target.value);
@@ -156,17 +156,17 @@ const GraduationPage = () => {
       <input
         name="determine_course"
         className="border border-black rounded-sm p-1 w-full h-7 box-border"
-        placeholder="title"
+        placeholder="情報工学コース修士課程"
         defaultValue="情報工学コース修士課程"
         onChange={(event) => {
           setDetermineCourse(event.target.value);
         }}
       ></input>
-      <p>その他履修済み講義コード(LAH.S433,LAH.T420,...)</p>
+      <p>その他履修済み講義コード</p>
       <input
         name="other_lecture"
         className="border border-black rounded-sm p-1 w-full h-7 box-border"
-        placeholder="title"
+        placeholder="LAH.S433,LAH.T420"
         defaultValue=""
         onChange={(event) => {
           setOtherLecture(event.target.value);
@@ -182,12 +182,12 @@ const GraduationPage = () => {
         onAfterOpen={() => {}}
         onRequestClose={() => setOKIsOpen(false)}
       >
-        <h2>OK: 終了要件を満たしています</h2>
+        <h2>OK: 修了要件を満たしています</h2>
         <div className="space-x-2 pt-2">
           {" "}
           <button
-            onClick={() => setNGIsOpen(false)}
-            className="border border-black rounded-sm"
+            onClick={() => setOKIsOpen(false)}
+            className="float-right border border-black rounded-sm"
           >
             閉じる
           </button>
@@ -200,12 +200,12 @@ const GraduationPage = () => {
         onAfterOpen={() => {}}
         onRequestClose={() => setNGIsOpen(false)}
       >
-        <h2>NG: 終了要件を満たしていません</h2>
+        <h2>NG: 修了要件を満たしていません</h2>
         <div className="space-x-2 pt-2">
           {" "}
           <button
             onClick={() => setNGIsOpen(false)}
-            className="border border-black rounded-sm"
+            className="float-right border border-black rounded-sm"
           >
             閉じる
           </button>
