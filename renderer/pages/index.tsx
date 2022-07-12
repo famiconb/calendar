@@ -200,7 +200,7 @@ const IndexPage = () => {
             <Button
               color="primary"
               className="mx-2 mt-1.5"
-              onClick={() => router.push(`/graduation?quarter=${rawQuater}`)}
+              onClick={() => router.push(`/graduation?quarter=${rawQuarter}`)}
             >
               修了判定
             </Button>
