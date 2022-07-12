@@ -143,13 +143,13 @@ const QuarterButtonClassSecondary =
 
 const IndexPage = () => {
   // queryパラメータからquarterを取る
-  const { quarter, rawQuater, year } = useQuarterWithYears();
+  const { quarter, rawQuarter, year } = useQuarterWithYears();
   useEffect(() => {
-    console.log({ quarter, rawQuater, year });
-  }, [quarter, rawQuater, year]);
+    console.log({ quarter, rawQuater: rawQuarter, year });
+  }, [quarter, rawQuarter, year]);
 
   // 表示用の講義データ
-  const { lectures } = useLectureData(rawQuater);
+  const { lectures } = useLectureData(rawQuarter);
   const router = useRouter();
 
   return lectures != null ? (
@@ -167,6 +167,7 @@ const IndexPage = () => {
                   console.log(selectedYear * 4 + quarter);
                   router.push(`/?quarter=${selectedYear * 4 + quarter}`);
                 }}
+                defaultValue={0}
               >
                 <option value={0}>1年目</option>
                 <option value={1}>2年目</option>
@@ -192,7 +193,7 @@ const IndexPage = () => {
             <Button
               color="primary"
               className="mx-2 mt-1.5"
-              onClick={() => router.push(`/add-page?quarter=${rawQuater}`)}
+              onClick={() => router.push(`/add-page?quarter=${rawQuarter}`)}
             >
               講義追加
             </Button>
@@ -209,14 +210,9 @@ const IndexPage = () => {
               </tr>
             </thead>
             <tbody>
-              {row_view(1, lectures, quarter)}
-              {row_view(2, lectures, quarter)}
-              {row_view(3, lectures, quarter)}
-              {row_view(4, lectures, quarter)}
-              {row_view(5, lectures, quarter)}
-              {row_view(6, lectures, quarter)}
-              {row_view(7, lectures, quarter)}
-              {row_view(8, lectures, quarter)}
+              {[...Array(8).keys()].map((i) =>
+                row_view(i + 1, lectures, rawQuarter)
+              )}
             </tbody>
           </table>
           <div className="overflow-auto">
@@ -230,7 +226,7 @@ const IndexPage = () => {
                     <th>時間</th>
                   </tr>
                 </thead>
-                {otherLecture(lectures, quarter)}
+                {otherLecture(lectures, rawQuarter)}
               </table>
             </div>
           </div>
