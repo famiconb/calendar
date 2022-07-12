@@ -3,14 +3,16 @@ import Layout from "../components/Layout";
 import { Lecture, LectureDate, LectureMemo } from "../interfaces/index";
 import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
+import { useQuarter } from "../hooks/useQuarter";
 import Button from "../components/Button";
 
 const EditPage = () => {
   const router = useRouter();
+  const quarter: number = useQuarter();
 
   const id = Number(router.query["id"]);
   const [lecture] = useState(
-    loadLecture().filter((lecture) => lecture.id == id)[0]
+    loadLecture(quarter).filter((lecture) => lecture.id == id)[0]
   );
 
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -35,10 +37,11 @@ const EditPage = () => {
     setDataLoaded(true);
   }, [lecture]);
   const handleDowChange = (event: any) => {
-    if (dows.has(Number(event.target.value))) {
-      dows.delete(Number(event.target.value));
+    const value = Number(event.target.value);
+    if (dows.has(value)) {
+      dows.delete(value);
     } else {
-      dows.add(Number(event.target.value));
+      dows.add(value);
     }
     setDows(dows);
     console.log(dows);
@@ -76,12 +79,13 @@ const EditPage = () => {
 
   const onSubmit = () => {
     console.log("onSubmit");
+    const errorMessages: string[] = [];
     const edited_lecture: Lecture = {
       id: id,
       name: title,
       code: code,
       dates: [],
-      memo: memo,
+      memo: [],
     };
     for (const dow of dows) {
       const date: LectureDate = {
@@ -94,9 +98,15 @@ const EditPage = () => {
       edited_lecture.dates.push(date);
     }
 
+    for (const memoi of memo) {
+      if (memoi.title || memoi.text) {
+        edited_lecture.memo.push(memoi);
+      }
+    }
+
     console.log(edited_lecture);
 
-    const saved_lectures = loadLecture();
+    const saved_lectures = loadLecture(quarter);
     const edited_lectures = saved_lectures.map((saved_lecture) => {
       if (saved_lecture.id != id) {
         return saved_lecture;
@@ -104,9 +114,79 @@ const EditPage = () => {
         return edited_lecture;
       }
     });
+
+    let passed = true;
+    if (edited_lecture.name == null || edited_lecture.name == "") {
+      passed = false;
+      errorMessages.push("授業名は必要です。");
+    }
+    if (edited_lecture.dates.length == 0) {
+      passed = false;
+      errorMessages.push("開講日時は必要です。");
+    } else {
+      for (const date of edited_lecture.dates) {
+        if (date.dayOfWeek == null) {
+          passed = false;
+          errorMessages.push("開講曜日は必要です。");
+        }
+        if (date.period.length == 0) {
+          passed = false;
+          errorMessages.push("開講時間は必要です。");
+        }
+      }
+    }
+    for (const memoi of edited_lecture.memo) {
+      if (memoi.title == null || memoi.title == "") {
+        passed = false;
+        errorMessages.push("メモのtitleは必要です。");
+      }
+    }
+    // 開講日時の重複をvalidate
+    for (const saved_lecture of saved_lectures) {
+      if (edited_lecture.id == saved_lecture.id) {
+        continue;
+      }
+      let conflict_thislecture = false;
+      for (const saved_lecture_date of saved_lecture.dates) {
+        for (const saved_lecture_period of saved_lecture_date.period) {
+          for (const date of edited_lecture.dates) {
+            for (const period of date.period) {
+              if (
+                date.dayOfWeek == saved_lecture_date.dayOfWeek &&
+                period == saved_lecture_period
+              ) {
+                passed = false;
+                errorMessages.push(
+                  "開講日時が" + saved_lecture.name + "と重複しています。"
+                );
+                conflict_thislecture = true;
+                break;
+              }
+            }
+            if (conflict_thislecture) {
+              break;
+            }
+          }
+          if (conflict_thislecture) {
+            break;
+          }
+        }
+        if (conflict_thislecture) {
+          break;
+        }
+      }
+    }
+
     console.log(edited_lectures);
-    saveLecture(edited_lectures);
-    router.push("/");
+    if (passed) {
+      console.log("passed");
+      saveLecture(edited_lectures, quarter);
+      router.push("/?quarter=" + quarter.toString());
+    } else {
+      console.log("failed");
+      console.log(errorMessages);
+      window.alert(errorMessages);
+    }
   };
 
   const addInputForm = () => {
@@ -115,12 +195,19 @@ const EditPage = () => {
     console.log(memo);
   };
 
-  const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+  const weekdays = ["日", "月", "火", "水", "木", "金", "土", "その他"];
 
   return !dataLoaded ? (
     <div>loading...</div>
   ) : (
-    <Layout title="授業情報の編集" goBack={() => router.push("/")}>
+    <Layout
+      title="授業情報の編集"
+      goBack={() =>
+        router.push(
+          `/lecture-info?id=${lecture.id}&quarter=${quarter.toString()}`
+        )
+      }
+    >
       <div className="edit-page_content m-auto w-11/12 mt-4">
         <div className="edit-page_inner m-2.5 block space-y-4">
           <div className="edit-page_row my-2.5 block">
@@ -212,7 +299,7 @@ const EditPage = () => {
               </a>
             ))}
           </div>
-          <Button onClick={onSubmit}>講義を編集</Button>
+          <Button onClick={onSubmit}>編集を反映</Button>
         </div>
       </div>
     </Layout>

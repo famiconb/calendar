@@ -2,6 +2,7 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import { Lecture } from "../interfaces";
 import { useLectureData } from "../hooks/useLectureData";
+import { useQuarter } from "../hooks/useQuarter";
 import React from "react";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
@@ -26,7 +27,7 @@ const availableColors = [
  * @param lectures 講義情報
  * @returns number行目の時間割情報を表示
  */
-const row_view = (number: number, lectures: Lecture[]) => {
+const row_view = (number: number, lectures: Lecture[], quarter: number) => {
   // 時間割のnumber限目の列
   const row = [];
 
@@ -52,7 +53,7 @@ const row_view = (number: number, lectures: Lecture[]) => {
       row.push(
         <th className="border-solid border border-black">
           <p>{number}時限目</p>
-          <p>{lecture_time(number)}</p>
+          <p className="text-xs">{lecture_time(number)}</p>
         </th>
       );
     } else {
@@ -66,16 +67,18 @@ const row_view = (number: number, lectures: Lecture[]) => {
               lecture.dates[i].dayOfWeek == dayOfWeek
             ) {
               row.push(
-                <th
-                  className={clsx(
-                    "border-solid border border-black h-12",
-                    availableColors[lecture.id % availableColors.length]
-                  )}
+                <Link
+                  href={`/lecture-info?id=${lecture.id}&quarter=${quarter}`}
                 >
-                  <Link href={`/lecture-info?id=${lecture.id}`}>
+                  <th 
+                    className={clsx(
+                      "border-solid border border-black h-12",
+                      availableColors[lecture.id % availableColors.length]
+                    )}
+                  >
                     {lecture.name}
-                  </Link>
-                </th>
+                  </th>
+                </Link>
               );
               found = true;
             }
@@ -90,49 +93,121 @@ const row_view = (number: number, lectures: Lecture[]) => {
 };
 
 const TableHead: React.FC<{ children?: React.ReactNode }> = (props) => (
-  <th className="border border-solid border-black w-28">{props.children}</th>
+  <th className="border border-solid border-black w-28 cursor-pointer">
+    {props.children}
+  </th>
 );
 
+/**
+ * 表示されていない講義を取得
+ * @param lectures
+ * @returns
+ */
+const otherLecture = (lectures: Lecture[], quarter: number) => {
+  const others = [];
+  const week = ["日", "月", "火", "水", "木", "金", "土", "その他"];
+  for (let lectures_i = 0; lectures_i < lectures.length; ++lectures_i) {
+    const lecture: Lecture = lectures[lectures_i];
+    for (let i = 0; i < lecture.dates.length; ++i) {
+      for (let j = 0; j < lecture.dates[i].period.length; ++j) {
+        if (
+          lecture.dates[i].period[j] > 8 ||
+          lecture.dates[i].dayOfWeek == 0 ||
+          lecture.dates[i].dayOfWeek == 6 ||
+          lecture.dates[i].dayOfWeek == 7
+        ) {
+          others.push(
+            <Link href={`/lecture-info?id=${lecture.id}&quarter=${quarter}`}>
+              <tr className="text-center">
+                <th> {lecture.name} </th>
+                <th> {week[lecture.dates[0].dayOfWeek]} </th>
+                <th> {lecture.dates[0].period.join("-")} </th>
+              </tr>
+            </Link>
+          );
+          break;
+        }
+      }
+    }
+  }
+  if (others.length != 0) {
+    return <tbody className="whitespace-normal p-1">{others}</tbody>;
+  }
+};
+
 const IndexPage = () => {
+  // queryパラメータからquarterを取る
+  const quarter: number = useQuarter();
+
   // 表示用の講義データ
-  const { lectures } = useLectureData();
+  const { lectures } = useLectureData(quarter);
   const router = useRouter();
 
+  const prevQ = (quarter - 1 + 4) % 4;
+  const nextQ = (quarter + 1) % 4;
   return lectures != null ? (
     <Layout title="CUCalendar">
-      <Button
-        color="primary"
-        className="mx-2 mt-1.5"
-        onClick={() => router.push("/add-page")}
-      >
-        講義追加
-      </Button>
-      <div
-        className="p-2 w-screen h-screen"
-        style={{ height: "calc(100vh - 2.25rem)" }}
-      >
-        <table className="border border-solid w-full h-full">
-          <thead>
-            <tr>
-              <TableHead></TableHead>
-              <TableHead>月</TableHead>
-              <TableHead>火</TableHead>
-              <TableHead>水</TableHead>
-              <TableHead>木</TableHead>
-              <TableHead>金</TableHead>
-            </tr>
-          </thead>
-          <tbody>
-            {row_view(1, lectures)}
-            {row_view(2, lectures)}
-            {row_view(3, lectures)}
-            {row_view(4, lectures)}
-            {row_view(5, lectures)}
-            {row_view(6, lectures)}
-            {row_view(7, lectures)}
-            {row_view(8, lectures)}
-          </tbody>
-        </table>
+      <div className="h-screen">
+        <div className="p-2 h-full hlex flex-col">
+          <div>
+            <h1>{quarter + 1}Q の時間割</h1>
+            {quarter != 0 ? <Link href="/?quarter=0">[ 1Q ]</Link> : "< 1Q >"}
+            {"   "}
+            {quarter != 1 ? <Link href="/?quarter=1">[ 2Q ]</Link> : "< 2Q >"}
+            {"   "}
+            {quarter != 2 ? <Link href="/?quarter=2">[ 3Q ]</Link> : "< 3Q >"}
+            {"   "}
+            {quarter != 3 ? <Link href="/?quarter=3">[ 4Q ]</Link> : "< 4Q >"}
+            <Button
+              color="primary"
+              className="mx-2 mt-1.5"
+              onClick={() =>
+                router.push("/add-page?quarter=" + quarter.toString())
+              }
+            >
+              講義追加
+            </Button>
+          </div>
+
+          <table className="border border-solid w-full">
+            <thead>
+              <tr>
+                <TableHead></TableHead>
+                <TableHead>月</TableHead>
+                <TableHead>火</TableHead>
+                <TableHead>水</TableHead>
+                <TableHead>木</TableHead>
+                <TableHead>金</TableHead>
+              </tr>
+            </thead>
+            <tbody>
+              {row_view(1, lectures, quarter)}
+              {row_view(2, lectures, quarter)}
+              {row_view(3, lectures, quarter)}
+              {row_view(4, lectures, quarter)}
+              {row_view(5, lectures, quarter)}
+              {row_view(6, lectures, quarter)}
+              {row_view(7, lectures, quarter)}
+              {row_view(8, lectures, quarter)}
+            </tbody>
+          </table>
+          <div className="overflow-auto">
+            <br></br>
+            <h3>その他の講義</h3>
+            <div className="border-double border-4 border-black flex-grow">
+              <table className="w-full items-center cursor-pointer">
+                <thead>
+                  <tr className="border-b border-black bg-gray-400">
+                    <th>講義名</th>
+                    <th>曜日</th>
+                    <th>時間</th>
+                  </tr>
+                </thead>
+                {otherLecture(lectures, quarter)}
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </Layout>
   ) : (
