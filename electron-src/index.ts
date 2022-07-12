@@ -20,6 +20,7 @@ app.on("ready", async () => {
       preload: join(__dirname, "preload.js"),
     },
   });
+  mainWindow.setMenu(null);
 
   const url = isDev
     ? "http://localhost:8000/"
