@@ -10,19 +10,21 @@ type Props = {
 const getStringOfDayOfWeek = (item: LectureDate) => {
   switch (item.dayOfWeek) {
     case 0:
-      return "日";
+      return "日曜日";
     case 1:
-      return "月";
+      return "月曜日";
     case 2:
-      return "火";
+      return "火曜日";
     case 3:
-      return "水";
+      return "水曜日";
     case 4:
-      return "木";
+      return "木曜日";
     case 5:
-      return "金";
+      return "金曜日";
     case 6:
-      return "土";
+      return "土曜日";
+    case 7:
+      return "その他";
     default:
       return "曜日設定が間違っているぞ!!";
   }
@@ -50,7 +52,13 @@ const makeHypertext = (str: String): JSX.Element => {
     );
     if (url != null) {
       element.push(
-        <a href={url[0]} className="underline text-sky-700">
+        <a
+          className="underline text-sky-700 font-light cursor-pointer"
+          onClick={() => {
+            window.open(url[0], "", "width=800,height=600");
+            return false;
+          }}
+        >
           {url[0]}{" "}
         </a>
       );
@@ -63,30 +71,28 @@ const makeHypertext = (str: String): JSX.Element => {
 
 const LectureList = ({ lecture }: Props) => (
   <div className="m-2.5">
-    <h2>講義名: {lecture.name}</h2>
-    <h2>科目コード: {lecture.code}</h2>
-    <Link href={`/edit-page?id=${lecture.id}&quarter=${useQuarter()}`}>
-      edit
-    </Link>
-    <h3>講義の日程</h3>
-    <ul className="pl-2">
+    <p className="text-xl">{lecture.name}</p>
+    <p className="text-xs">{lecture.code}</p>
+    <p className="p-2"></p>
+    <p className="text-sm">開講日時</p>
+    <ul className="pl-2 border-4">
       {lecture.dates.map((item, i) => (
         <li key={i}>
           <div>
             <p>
-              {getStringOfDayOfWeek(item)}曜日 時限:{getStringOfPeriod(item)}
+              {getStringOfDayOfWeek(item)} の {getStringOfPeriod(item)} 時限
             </p>
             <p></p>
           </div>
         </li>
       ))}
     </ul>
-
-    <h3>講義に関するメモ</h3>
-    <ul className="pl-2 space-y-2">
+    <p className="p-2"></p>
+    <h3 className="text-sm">講義に関するメモ</h3>
+    <ul className="pl-2 space-y-2 border-4">
       {lecture.memo.map((item, i) => (
         <li key={i}>
-          <p>{item.title}</p>
+          <p className="font-bold">{item.title}</p>
           {makeHypertext(item.text)}
         </li>
       ))}

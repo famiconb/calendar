@@ -8,6 +8,8 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
+import { BsFillTrashFill } from "react-icons/bs";
+import { BiEdit } from "react-icons/bi";
 
 const customStyles = {
   content: {
@@ -79,35 +81,60 @@ const LectureInfoPage = () => {
         title="講義の詳細情報"
         goBack={() => router.push("/?quarter=" + quarter.toString())}
       >
-        <LectureList lecture={lecture} />
-        <Button onClick={openModal} color="red">
-          削除
-        </Button>
-        <Modal
-          contentLabel="Check Modal"
-          isOpen={modalIsOpen}
-          style={customStyles}
-          onAfterOpen={afterOpenModal}
-          onRequestClose={closeModal}
-        >
-          <h2 ref={(_subtitle) => (subtitle = _subtitle)} className="text-lg">
-            「{lecture.name}」を消して大丈夫ですか？
-          </h2>
-          <div className="space-x-2 pt-2">
-            <button
-              onClick={closeModal}
-              className="border border-black rounded-sm"
+        <div className="m-auto w-11/12 mt-4">
+          <div className="m-2.5 block space-y-4">
+            <div className="my-2.5 block"></div>
+            <LectureList lecture={lecture} />
+            <div className="float-right">
+              <Button
+                color="primary"
+                className="mx-2 mt-1.5 text-white"
+                onClick={() =>
+                  router.push(
+                    "/edit-page?id=" +
+                      lecture.id.toString() +
+                      "&quarter=" +
+                      quarter.toString()
+                  )
+                }
+              >
+                <BiEdit />
+              </Button>
+              <Button onClick={openModal} color="red" className="text-white">
+                <BsFillTrashFill />
+              </Button>
+            </div>
+            <Modal
+              contentLabel="Check Modal"
+              isOpen={modalIsOpen}
+              style={customStyles}
+              onAfterOpen={afterOpenModal}
+              onRequestClose={closeModal}
             >
-              やっぱやめる
-            </button>
-            <button
-              onClick={deletePage}
-              className="bg-red-400 p-0.5 rounded-sm"
-            >
-              消します!
-            </button>
+              <h2
+                ref={(_subtitle) => (subtitle = _subtitle)}
+                className="text-lg"
+              >
+                「{lecture.name}」を消して大丈夫ですか？
+              </h2>
+              <div className="space-x-2 pt-2 flex justify-center">
+                <Button
+                  onClick={deletePage}
+                  color="red"
+                  className="border border-black rounded-sm text-white"
+                >
+                  消します！
+                </Button>
+                <Button
+                  onClick={closeModal}
+                  className="border border-black rounded-sm text-white"
+                >
+                  やっぱやめます
+                </Button>
+              </div>
+            </Modal>
           </div>
-        </Modal>
+        </div>
       </Layout>
     );
   } catch (e: any) {

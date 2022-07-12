@@ -5,6 +5,8 @@ import { loadLecture, saveLecture } from "../utils/lecture";
 import { useRouter } from "next/router";
 import { useQuarter } from "../hooks/useQuarter";
 import Button from "../components/Button";
+import PeriodSelector from "../components/PeriodSelector";
+import DayOfWeeks from "../components/DayOfWeeks";
 
 const AddPage = () => {
   const router = useRouter();
@@ -17,32 +19,15 @@ const AddPage = () => {
     setTitle(event.target.value);
     console.log(title);
   };
+
   const [code, setCode] = useState("");
   const handleCodeChange = (event: any) => {
     setCode(event.target.value);
   };
-  const [dows, _] = useState(new Set<number>());
-  const handleDowChange = (event: any) => {
-    const value = Number(event.target.value);
-    if (dows.has(value)) {
-      dows.delete(value);
-    } else {
-      dows.add(value);
-    }
-    console.log(dows);
-  };
 
-  const [begin, setBegin] = useState(1);
-  const handleBeginChange = (event: any) => {
-    setBegin(Number(event.target.value));
-    console.log(begin);
-  };
+  const [dows, setDows] = useState<number[]>([]);
 
-  const [end, setEnd] = useState(1);
-  const handleEndChange = (event: any) => {
-    setEnd(Number(event.target.value));
-    console.log(end);
-  };
+  const [period, setPeriod] = useState<[number, number]>([1, 2]);
 
   const [memo, setMemo] = useState<LectureMemo[]>([{ title: "", text: "" }]);
   const handleMemoChange = (event: any) => {
@@ -84,7 +69,7 @@ const AddPage = () => {
         dayOfWeek: dow,
         period: [],
       };
-      for (let i = begin; i <= end; ++i) {
+      for (let i = period[0]; i <= period[1]; ++i) {
         date.period.push(i);
       }
       data.dates.push(date);
@@ -121,7 +106,7 @@ const AddPage = () => {
         if (date.dayOfWeek == 7 && data.dates.length > 1) {
           passed = false;
           errorMessages.push(
-            "開講曜日ではその他と曜日を同時に選択できません。"
+            "開講曜日では、その他と曜日を同時に選択できません。"
           );
         }
       }
@@ -133,22 +118,35 @@ const AddPage = () => {
       }
     }
     // 開講日時の重複をvalidate
-    for (const date of data.dates) {
-      for (const period of date.period) {
-        for (const saved_lecture of saved_lectures) {
-          for (const saved_lecture_date of saved_lecture.dates) {
-            for (const saved_lecture_period of saved_lecture_date.period) {
+    for (const saved_lecture of saved_lectures) {
+      let conflict_thislecture = false;
+      for (const saved_lecture_date of saved_lecture.dates) {
+        for (const saved_lecture_period of saved_lecture_date.period) {
+          for (const date of data.dates) {
+            for (const period of date.period) {
               if (
-                date.dayOfWeek == saved_lecture_date.dayOfWeek &&
-                period == saved_lecture_period
+                date.dayOfWeek !== 7 &&
+                date.dayOfWeek === saved_lecture_date.dayOfWeek &&
+                period === saved_lecture_period
               ) {
                 passed = false;
                 errorMessages.push(
                   "開講日時が" + saved_lecture.name + "と重複しています。"
                 );
+                conflict_thislecture = true;
+                break;
               }
             }
+            if (conflict_thislecture) {
+              break;
+            }
           }
+          if (conflict_thislecture) {
+            break;
+          }
+        }
+        if (conflict_thislecture) {
+          break;
         }
       }
     }
@@ -169,8 +167,6 @@ const AddPage = () => {
     setMemo((x) => [...x, { title: "", text: "" }]);
     console.log(memo);
   };
-
-  const weekdays = ["日", "月", "火", "水", "木", "金", "土", "その他"];
 
   return (
     <Layout
@@ -198,47 +194,13 @@ const AddPage = () => {
           </div>
           <div className="add-page_row my-2.5">
             <p>開講曜日/時限</p>
-            <div className="space-x-5">
-              {weekdays.map((w, i) => (
-                <span className="inline-block" key={`${w}-${i}`}>
-                  <input type="checkbox" value={i} onChange={handleDowChange} />{" "}
-                  {w}
-                </span>
-              ))}
-            </div>
-            <select
-              name="begin"
-              className="border rounded-sm border-black ml-4"
-              onChange={handleBeginChange}
-            >
-              <option value="1">1限</option>
-              <option value="2">2限</option>
-              <option value="3">3限</option>
-              <option value="4">4限</option>
-              <option value="5">5限</option>
-              <option value="6">6限</option>
-              <option value="7">7限</option>
-              <option value="8">8限</option>
-              <option value="9">9限</option>
-              <option value="10">10限</option>
-            </select>
-            〜
-            <select
-              name="end"
-              className="border rounded-sm border-black"
-              onChange={handleEndChange}
-            >
-              <option value="1">1限</option>
-              <option value="2">2限</option>
-              <option value="3">3限</option>
-              <option value="4">4限</option>
-              <option value="5">5限</option>
-              <option value="6">6限</option>
-              <option value="7">7限</option>
-              <option value="8">8限</option>
-              <option value="9">9限</option>
-              <option value="10">10限</option>
-            </select>
+            <DayOfWeeks onDayOfWeeksChange={(x) => setDows(x)} />
+
+            <PeriodSelector
+              begin={period[0]}
+              end={period[1]}
+              onPeriodChange={(period) => setPeriod(period)}
+            />
           </div>
           <div className="add-page_row space-y-1 my-2.5">
             <div className="flex">
