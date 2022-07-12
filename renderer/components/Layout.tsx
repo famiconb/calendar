@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import { useQuarter } from "../hooks/useQuarter";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 type Props = {
   children: ReactNode;
@@ -22,16 +23,16 @@ const Layout = ({
     </Head>
     <header>
       {goBack && (
-        <div className="p-2 flex bg-blue-200">
+        <div className="p-2 bg-blue-200">
           <div>
             <button
-              className="rounded-full text-xl w-8 h-8 hover:bg-blue-300"
+              className="rounded-full text-xl p-1 hover:bg-blue-300"
               onClick={goBack}
             >
-              ←
+              <AiOutlineArrowLeft />
             </button>
+            <span className="ml-4 p-1 text-2xl">{title}</span>
           </div>
-          <p className="ml-4 p-1">{title}</p>
         </div>
       )}
     </header>
