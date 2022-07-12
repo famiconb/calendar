@@ -15,3 +15,19 @@ export function useQuarter(): number {
         );
   return quarter;
 }
+
+interface Returns {
+  year: number;
+  quarter: number;
+  rawQuarter: number;
+}
+
+// o-indexed
+export const useQuarterWithYears = (): Returns => {
+  const rawQuarter = useQuarter();
+  return {
+    year: Math.floor(rawQuarter / 4),
+    quarter: rawQuarter % 4,
+    rawQuarter,
+  };
+};

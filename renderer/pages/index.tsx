@@ -2,8 +2,8 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import { Lecture } from "../interfaces";
 import { useLectureData } from "../hooks/useLectureData";
-import { useQuarter } from "../hooks/useQuarter";
-import React from "react";
+import { useQuarterWithYears } from "../hooks/useQuarter";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
 import clsx from "clsx";
@@ -137,16 +137,19 @@ const otherLecture = (lectures: Lecture[], quarter: number) => {
 };
 
 const QuarterButtonClassPrimary =
-  "mx-1 mt-1.2 bg-gray-100 border-2 border-gray-500";
+  "mx-1 mt-1.5 bg-gray-100 border-2 border-gray-500";
 const QuarterButtonClassSecondary =
-  "mx-1 mt-1.2 bg-gray-100 border-4 border-blue-500";
+  "mx-1 mt-1.5 bg-gray-100 border-4 border-blue-500";
 
 const IndexPage = () => {
   // queryパラメータからquarterを取る
-  const quarter: number = useQuarter();
+  const { quarter, rawQuarter, year } = useQuarterWithYears();
+  useEffect(() => {
+    console.log({ quarter, rawQuater: rawQuarter, year });
+  }, [quarter, rawQuarter, year]);
 
   // 表示用の講義データ
-  const { lectures } = useLectureData(quarter);
+  const { lectures } = useLectureData(rawQuarter);
   const router = useRouter();
 
   return lectures != null ? (
@@ -154,60 +157,47 @@ const IndexPage = () => {
       <div className="h-screen">
         <div className="p-2 h-full hlex flex-col">
           <div>
-            <h1 className="text-xl">{quarter + 1}Q の時間割</h1>
-            <h1>
-              {quarter != 0 ? (
-                <Button
-                  className={QuarterButtonClassPrimary}
-                  onClick={() => router.push("/?quarter=0")}
-                >
-                  1Q
-                </Button>
-              ) : (
-                <Button className={QuarterButtonClassSecondary}>1Q</Button>
-              )}
-              {quarter != 1 ? (
-                <Button
-                  className={QuarterButtonClassPrimary}
-                  onClick={() => router.push("/?quarter=1")}
-                >
-                  2Q
-                </Button>
-              ) : (
-                <Button className={QuarterButtonClassSecondary}>2Q</Button>
-              )}
-              {quarter != 2 ? (
-                <Button
-                  className={QuarterButtonClassPrimary}
-                  onClick={() => router.push("/?quarter=2")}
-                >
-                  3Q
-                </Button>
-              ) : (
-                <Button className={QuarterButtonClassSecondary}>3Q</Button>
-              )}
-              {quarter != 3 ? (
-                <Button
-                  className={QuarterButtonClassPrimary}
-                  onClick={() => router.push("/?quarter=3")}
-                >
-                  4Q
-                </Button>
-              ) : (
-                <Button className={QuarterButtonClassSecondary}>4Q</Button>
-              )}
-              <Button
-                color="primary"
-                className="mx-2 mt-1.2"
-                onClick={() =>
-                  router.push("/add-page?quarter=" + quarter.toString())
-                }
-              >
-                講義追加
-              </Button>
+            <h1 className="text-xl">
+              {year + 1}年目/{quarter + 1}Q の時間割
             </h1>
-          </div>
+            <span className="space-x-2">
+              <select
+                onChange={(e) => {
+                  const selectedYear = Number(e.target.value);
+                  console.log(selectedYear * 4 + quarter);
+                  router.push(`/?quarter=${selectedYear * 4 + quarter}`);
+                }}
+                defaultValue={year}
+              >
+                <option value={0}>1年目</option>
+                <option value={1}>2年目</option>
+              </select>
+              {[...Array(4).keys()].map((i) => (
+                <span key={`quater-link-to-${i}`}>
+                  {quarter != i ? (
+                    <Button
+                      className={QuarterButtonClassPrimary}
+                      onClick={() => router.push(`/?quarter=${year * 4 + i}`)}
+                    >
+                      {i + 1}Q
+                    </Button>
+                  ) : (
+                    <Button className={QuarterButtonClassSecondary}>
+                      {i + 1}Q
+                    </Button>
+                  )}
+                </span>
+              ))}
+            </span>
 
+            <Button
+              color="primary"
+              className="mx-2 mt-1.5"
+              onClick={() => router.push(`/add-page?quarter=${rawQuarter}`)}
+            >
+              講義追加
+            </Button>
+          </div>
           <table className="border border-solid w-full my-2">
             <thead>
               <tr>
@@ -220,14 +210,9 @@ const IndexPage = () => {
               </tr>
             </thead>
             <tbody>
-              {row_view(1, lectures, quarter)}
-              {row_view(2, lectures, quarter)}
-              {row_view(3, lectures, quarter)}
-              {row_view(4, lectures, quarter)}
-              {row_view(5, lectures, quarter)}
-              {row_view(6, lectures, quarter)}
-              {row_view(7, lectures, quarter)}
-              {row_view(8, lectures, quarter)}
+              {[...Array(8).keys()].map((i) =>
+                row_view(i + 1, lectures, rawQuarter)
+              )}
             </tbody>
           </table>
           <div className="overflow-auto">
@@ -241,7 +226,7 @@ const IndexPage = () => {
                     <th>時間</th>
                   </tr>
                 </thead>
-                {otherLecture(lectures, quarter)}
+                {otherLecture(lectures, rawQuarter)}
               </table>
             </div>
           </div>

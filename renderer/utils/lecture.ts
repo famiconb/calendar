@@ -3,7 +3,7 @@ import { Lecture } from "../interfaces";
 const STORAGE_KEY = "CUCalendar_";
 
 /**
- * @param quarter: 0,1,2,3のどれか
+ * @param quarter: 数値
  */
 export function loadLecture(quarter: number): Lecture[] {
   const data_str = localStorage.getItem(STORAGE_KEY + quarter.toString());
